@@ -5,8 +5,8 @@
  */
 package se_project;
 
-import SE_Project.exception.UndefinedPhaseException;
 import java.lang.Math;
+import se_project.exceptions.UndefinedPhaseException;
 
 /**
  *
