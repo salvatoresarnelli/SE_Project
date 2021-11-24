@@ -13,6 +13,7 @@ import se_project.exceptions.UndefinedPhaseException;
  * @author aless
  */
 public class ComplexNumber {
+    
     private double a;
     private double b;
 
@@ -47,8 +48,9 @@ public class ComplexNumber {
          return Math.atan(b/a)+Math.PI;
      }
      if(a>0){
-         return Math.atan(b/a);
+        return Math.atan(this.b/this.a);
      }
+     
      if(a==0 && b< 0){
      return -Math.PI/2;}
      if(a==0 && b>0){
@@ -62,6 +64,23 @@ public class ComplexNumber {
          double b = mod * Math.sin(phase);
          return new ComplexNumber(a,b);
      }
+     
+     public ComplexNumber conjugated(ComplexNumber n){
+         n.b+=-2*n.b;
+         return n;
+     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("");
+        sb.append(Double.toString(this.a));     
+        sb.append((this.b>=0) ? "+" : "");
+        sb.append(Double.toString(this.b));
+        sb.append("j");
+        return sb.toString();
+    }
+     
+     
      
 }
 

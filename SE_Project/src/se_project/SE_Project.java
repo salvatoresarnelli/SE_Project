@@ -32,6 +32,7 @@ public class SE_Project extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+        
     }
     
 }
