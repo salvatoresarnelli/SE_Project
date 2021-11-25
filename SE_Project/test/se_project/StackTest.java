@@ -12,9 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.rules.ExpectedException;
 import se_project.exceptions.EmptyStackException;
 import sun.rmi.runtime.Log;
@@ -79,7 +76,7 @@ public class StackTest {
         int result = stack.size();
         assertEquals(expected, result);
         
-        stack.push(new ComplexNumber(1));
+        stack.push(new ComplexNumber(1,0));
         int expected2 = 1;
         int result2 = stack.size();
         assertEquals(expected2, result2);
@@ -106,7 +103,7 @@ public class StackTest {
      */
     @Test
     public void testPeek() throws Exception {
-        ComplexNumber c = new ComplexNumber(3);
+        ComplexNumber c = new ComplexNumber(3,0);
         ComplexNumber expected = c;
         boolean success = stack.push(c);
         ComplexNumber result = stack.peek();
@@ -127,7 +124,7 @@ public class StackTest {
         boolean result = stack.isEmpty();
         assertEquals(expected, result);
         
-        boolean ret = stack.push(new ComplexNumber(0));
+        boolean ret = stack.push(new ComplexNumber(0,0));
         boolean result2 = stack.isEmpty();
         assertNotEquals(expected, result2);
     }

@@ -5,10 +5,6 @@
 package se_project;
 
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import se_project.exceptions.UndefinedPhaseException;
@@ -23,22 +19,6 @@ public class ComplexNumberTest {
     public ComplexNumberTest() {
     }
     
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
-
     /**
      * Test of getRealPart method, of class ComplexNumber.
      */
@@ -58,7 +38,7 @@ public class ComplexNumberTest {
     @Test
     public void testGetImaginaryPart() {
         System.out.println("getImaginaryPart");
-        ComplexNumber instance = new ComplexNumber(4);
+        ComplexNumber instance = new ComplexNumber(4,0);
         double expResult = 0.0;
         double result = instance.getImaginaryPart();
         assertEquals(expResult, result, 0.0);

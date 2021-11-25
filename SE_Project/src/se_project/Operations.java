@@ -18,7 +18,7 @@ import se_project.exceptions.UndefinedPhaseException;
  *
  * @author aless
  */
-public class Operations {
+public interface Operations {
     /**
      * Represents the sum
      *
@@ -225,3 +225,4 @@ public class Operations {
         return ret;
     }
 }
+    
