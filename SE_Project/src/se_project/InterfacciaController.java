@@ -35,12 +35,11 @@ public class InterfacciaController implements Initializable {
     
    
 
-  public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {
         textArea.setOnKeyPressed((KeyEvent event) -> {
         if (event.getCode().equals(KeyCode.ENTER)) 
             buttonPush.fire();
-    }
-    );
+        });
     }    
 
     @FXML
