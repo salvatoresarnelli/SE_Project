@@ -55,7 +55,7 @@ public class ParserStringTest {
         String expResult = "3 -3j";
         String result = parser.clearString(text);
         assertEquals(expResult, result);
-        text = "3 +3j";
+        text = "-3 +3j";
         expResult = "3 +3j";
         result = parser.clearString(text);
         assertEquals(expResult, result);
@@ -95,9 +95,31 @@ public class ParserStringTest {
         text = "invert sign";
         result = parser.checkOperation(text);
         assertEquals(expResult, result);
+        text = "+";
+        result = parser.checkOperation(text);
+        assertEquals(expResult, result);
+        text = "-";
+        result = parser.checkOperation(text);
+        assertEquals(expResult, result);
+        text = "*";
+        result = parser.checkOperation(text);
+        assertEquals(expResult, result);
+        text = ":";
+        result = parser.checkOperation(text);
+        assertEquals(expResult, result);
+        text = "+-";
+        result = parser.checkOperation(text);
+        assertEquals(expResult, result);
+        text = "sqrt";
+        result = parser.checkOperation(text);
+        assertEquals(expResult, result);
         text = "hello word";
         result = parser.checkOperation(text);
-        expResult = invalid_insert;
+        expResult = continue_checking;
+        assertEquals(expResult, result);
+        text = "\nsqrt";
+        expResult = operation;
+        result = parser.checkOperation(text);
         assertEquals(expResult, result);
     }
     @Test
@@ -123,7 +145,11 @@ public class ParserStringTest {
         boolean expResult = true;
         boolean result = parser.checkPossiblePartImaginary(text);
         assertEquals(expResult, result);
-        text = "+3helloword";
+        text = "+3jhelloword";
+        expResult = false;
+        result = parser.checkPossiblePartImaginary(text);
+        assertEquals(expResult, result);
+        text = "+3";
         expResult = false;
         result = parser.checkPossiblePartImaginary(text);
         assertEquals(expResult, result);
@@ -143,7 +169,7 @@ public class ParserStringTest {
         result = parser.checkPossibleOneNumber(text);
         assertEquals(expResult, result);
         text = "4hello";
-        expResult = continue_checking;
+        expResult = invalid_insert;
         result = parser.checkPossibleOneNumber(text);
         assertEquals(expResult, result);
         
@@ -182,12 +208,19 @@ public class ParserStringTest {
         expResult = complex_number;
         result = parser.checkComplexNumber(text);
         assertEquals(expResult, result);
+        text = "4j +3";
+        expResult = complex_number;
+        result = parser.checkComplexNumber(text);
+        assertEquals(expResult, result);
+        text = "4j +3j";
+        expResult = invalid_insert;
+        result = parser.checkComplexNumber(text);
+        assertEquals(expResult, result);
         text = "+4 +dkdkdj";
         expResult = invalid_insert;
         result = parser.checkComplexNumber(text);
         assertEquals(expResult, result);
-        
-       
+
     }
 
     /**
@@ -201,6 +234,10 @@ public class ParserStringTest {
         String result = parser.parserString(text);
         assertEquals(expResult, result);
         text = "++4";
+        expResult = invalid_insert;
+        result = parser.parserString(text);
+        assertEquals(expResult, result);
+        text = "--4";
         expResult = invalid_insert;
         result = parser.parserString(text);
         assertEquals(expResult, result);
@@ -249,6 +286,10 @@ public class ParserStringTest {
         expResult = ' ';
         result = parser.checkFirstCharacter(text);
         assertEquals(expResult, result);
+        text = "-4";
+        expResult = '-';
+        result = parser.checkFirstCharacter(text);
+        assertEquals(expResult, result);
         text = "\n+4\n";
         expResult = '+';
         result = parser.checkFirstCharacter(text);
@@ -261,7 +302,7 @@ public class ParserStringTest {
     @Test
     public void testRecognizeComplexNumber() {
         System.out.println("recognizeComplexNumber");
-        String text = "3 +3j";
+        String text = "+3 +3j";
         ComplexNumber expResult = new ComplexNumber(3, 3);
         ComplexNumber result = parser.recognizeComplexNumber(text);
         assertEquals(expResult.getRealPart(),result.getRealPart(),0);

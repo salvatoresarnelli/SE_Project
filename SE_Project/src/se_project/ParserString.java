@@ -51,9 +51,11 @@ public class ParserString {
  * @return      IL metodo torna la costante operation se i confronti con almeno una stringa citata prima ha successo, invalid_operation altrimenti.
  */
     public String checkOperation(String text){
+        text = text.replaceAll("\\n", "");
+        if(text.equals("+") || text.equals("-") || text.equals("*") || text.equals(":")||text.equals("+-") || text.equals("sqrt")) return operation;
         String possible_operation = text.toLowerCase();
         if(possible_operation.equals("addition") || possible_operation.equals("substraction") || possible_operation.equals("multiplication") || possible_operation.equals("division")|| possible_operation.equals("square root")|| possible_operation.equals("invert sign"))return operation;
-        return invalid_insert;
+        return continue_checking;
     }
 /**
  *Il metodo controlla se la stringa data in input è un numero reale.
@@ -123,7 +125,7 @@ public class ParserString {
  */
     public String checkPossibleOneNumber(String text){
         if(this.checkPossiblePartReal(text)) return single_number;
-        return this.checkPossiblePartImaginary(text) ? single_number : continue_checking;
+        return this.checkPossiblePartImaginary(text) ? single_number : invalid_insert;
         
     }
 /**
@@ -159,25 +161,39 @@ public class ParserString {
  */
     public String parserString(String text){
         if(text.length() == 0) return invalid_insert;
+        String return_value = this.checkOperation(text);
+        if(return_value.equals(operation))return return_value;
         text = clearString(text);
         if(text.startsWith("+") || text.startsWith("-")) return invalid_insert;
-        String return_value = checkComplexNumber(text);
+        return_value = checkComplexNumber(text);
         if (!(return_value.equals(continue_checking))) return return_value;
-        return_value = checkPossibleOneNumber(text);
-        return return_value.equals(continue_checking) ?  checkOperation(text): return_value;
- }
-        public char checkFirstCharacter(String text){
-            text = text.replaceAll("\\n", "");
-        if(text.startsWith("+") || text.startsWith("-")){
-            StringBuilder sb = new StringBuilder(text);
-            // Removing the first character
-            // of a string
-            return sb.charAt(0);
-            
-          }
-        return ' ';
-    }
+        return checkPossibleOneNumber(text);
         
+ }
+/**
+ *Il metodo controlla se la stringa data in input presenta un operatore + o un operatore - .
+ * @author emanu
+ * @param text , stringa da dover controllare.
+ * @return     ritorna l'operatore se presente, altrimenti uno carattere spazio.
+ * 
+ */
+    public char checkFirstCharacter(String text){
+        text = text.replaceAll("\\n", "");
+    if(text.startsWith("+") || text.startsWith("-")){
+        StringBuilder sb = new StringBuilder(text);
+        // Removing the first character
+        // of a string
+        return sb.charAt(0);
+
+      }
+    return ' ';
+}
+/**
+ *Il metodo converte una stringa data in input in un numero complesso.
+ * @author emanu
+ * @param text , stringa da dover controllare.
+ * @return      ritorna un numero complesso.
+ */
       
     public ComplexNumber recognizeComplexNumber(String text){
         String replaceAll = text.replaceAll(" ", "");
@@ -199,6 +215,13 @@ public class ParserString {
             
         }
     }
+   
+/**
+ *Il metodo converte una stringa data in input in un numero reale o in numero puramente immaginario.
+ * @author emanu
+ * @param text , stringa da dover controllare.
+ * @return      il metodo ritorna un numero complesso. 
+ */
     public ComplexNumber recognizeNumber(String text){
         String replaceAll = text.replaceAll(" ", "");
         char operator1 = this.checkFirstCharacter(text);

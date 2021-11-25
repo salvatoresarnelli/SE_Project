@@ -52,6 +52,7 @@ public class InterfacciaController implements Initializable {
         if(code.equals(single_number))
             n = parser.recognizeNumber(text);
         System.out.println(code);
+        System.out.println(n);
         
         /*
         if(code.equals(operation)){
