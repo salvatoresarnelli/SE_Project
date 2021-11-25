@@ -28,7 +28,7 @@
                   <Menu mnemonicParsing="false" text="Edit" />
                </menus>
             </MenuBar>
-            <TextArea fx:id="TextArea" layoutX="42.0" layoutY="74.0" prefHeight="47.0" prefWidth="325.0" />
+            <TextArea fx:id="textArea" layoutX="42.0" layoutY="74.0" prefHeight="47.0" prefWidth="325.0" />
             <Button layoutX="113.0" layoutY="398.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="0" />
             <Button layoutX="181.0" layoutY="398.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="." />
             <Button fx:id="buttonPush" layoutX="244.0" layoutY="398.0" mnemonicParsing="false" onAction="#ActionPush" prefHeight="25.0" prefWidth="52.0" text="Push" />

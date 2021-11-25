@@ -22,7 +22,6 @@ import javafx.scene.input.KeyEvent;
  * @author emanu
  */
 public class InterfacciaController implements Initializable {
-
     @FXML
     private TextArea textArea;
     @FXML
@@ -30,6 +29,10 @@ public class InterfacciaController implements Initializable {
     @FXML
     private ListView<ComplexNumber> listView;
     private final ParserString parser = new ParserString();
+    private final String operation  = "__OPERATION__";
+    private final String complex_number = "__COMPLEX__NUMBER__";
+    private final String single_number = "__SINGLENUMBER__";
+    
    
 
   public void initialize(URL url, ResourceBundle rb) {
@@ -42,11 +45,38 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void ActionPush(ActionEvent event) {
-        System.out.println(textArea.getText());
-        String code = parser.parserString(textArea.getText());
+        String text = textArea.getText();
+        String code = parser.parserString(text);
+        ComplexNumber n = new ComplexNumber(0,0);
+        if(code.equals(complex_number))
+            n = parser.recognizeComplexNumber(text);
+        if(code.equals(single_number))
+            n = parser.recognizeNumber(text);
         System.out.println(code);
+        
+        /*
+        if(code.equals(operation)){
+            switch(text){
+                case "addition":
+                    
+                    break;
+                case "substraction":
+                    
+                    break;
+                case "multiplication":
+                    break;
+                case "division":
+                    break;
+                case "square root":
+                    break;
+                case "invert sign":
+                    break;
+                     
+            }
+        }
+        */
+        
         textArea.clear(); 
-        //System.out.println("sono l'azione del button");
         
     }
     
