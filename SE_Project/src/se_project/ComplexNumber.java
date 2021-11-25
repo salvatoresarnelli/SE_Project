@@ -22,8 +22,17 @@ public class ComplexNumber {
         this.b = b;
     }
 
-    public ComplexNumber(double a) {
+    public ComplexNumber() {
+        a=0;
+        b=0;
+    }
+
+    public void setRealPart(double a) {
         this.a = a;
+    }
+
+    public void setImaginaryPart(double b) {
+        this.b = b;
     }
 
     public double getRealPart() {
