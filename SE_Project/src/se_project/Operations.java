@@ -84,7 +84,7 @@ public interface Operations {
         }
         double a = number1.getRealPart() - number2.getRealPart();
         double b = number1.getImaginaryPart() - number2.getImaginaryPart();
-        return new ComplexNumber(a, b);
+        return new ComplexNumber(Math.round(a),Math.round(b));
     }
 
     /**
@@ -126,7 +126,7 @@ public interface Operations {
 
         double a = number1.getRealPart() * number2.getRealPart() - number1.getImaginaryPart() * number2.getImaginaryPart();
         double b = number1.getRealPart() * number2.getImaginaryPart() + number2.getRealPart() * number1.getImaginaryPart();
-        return new ComplexNumber(a, b);
+        return new ComplexNumber(Math.round(a), Math.round(b));
     }
 
     /**
@@ -207,7 +207,14 @@ public interface Operations {
         if (number == null) {
             throw new InvalidNumberException();
         }
-        return new ComplexNumber(number.getRealPart() * -1, number.getImaginaryPart() * -1);
+        
+        double real = number.getRealPart();
+        double imag = number.getImaginaryPart();
+        if(real!=0)
+            real=real*-1;
+        if (imag!=0)
+            imag=imag*-1;
+        return new ComplexNumber(real,imag);
     }
 
     public static LinkedList<ComplexNumber> squareRoot(ComplexNumber number) throws UndefinedPhaseException{
@@ -218,8 +225,8 @@ public interface Operations {
         double sinPart=0,cosPart=0;
         
         for(int i=0;i<2;i++){
-        cosPart = Math.cos(0.5 * (phase+2*i*Math.PI));
-        sinPart = Math.sin(0.5 * (phase+2*i*Math.PI));
+        cosPart = Math.round(Math.cos(0.5 * (phase+2*i*Math.PI)));
+        sinPart = Math.round(Math.sin(0.5 * (phase+2*i*Math.PI)));
         ret.addLast(new ComplexNumber(retMod*cosPart,retMod*sinPart));
         }
         return ret;

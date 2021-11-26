@@ -6,6 +6,7 @@
 package se_project;
 
 import java.lang.Math;
+import other.Utilities;
 import se_project.exceptions.UndefinedPhaseException;
 
 /**
@@ -63,15 +64,15 @@ public class ComplexNumber {
      if(a==0 && b< 0){
      return -Math.PI/2;}
      if(a==0 && b>0){
-         return -Math.PI/2;
+         return Math.PI/2;
      }
      return -1;
     }
  
      public static ComplexNumber fromTrigonometric(double mod, double phase){
-         double a = mod * Math.cos(phase);
-         double b = mod * Math.sin(phase);
-         return new ComplexNumber(a,b);
+         double newA = mod * Math.cos(phase);
+         double newB = mod * Math.sin(phase);
+         return new ComplexNumber(Utilities.round(newA,3),Utilities.round(newB,3));
      }
      
      public ComplexNumber conjugated(ComplexNumber n){
