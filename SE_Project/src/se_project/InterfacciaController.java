@@ -75,7 +75,6 @@ public class InterfacciaController implements Initializable {
             n = solver.resolveOperation(text);
             observableList.add(n);
         }
-        
         listView.itemsProperty().bind(listProperty);
         textArea.clear();         
     }
