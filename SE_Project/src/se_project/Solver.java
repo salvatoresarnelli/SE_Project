@@ -37,7 +37,6 @@ public class Solver {
         return this.stack;
     }
     public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
-        text = text.replaceAll("\\n", "");
         switch(text){
                 case "addition":
                     return this.sum();
@@ -60,7 +59,7 @@ public class Solver {
                 case "+-":
                     return this.sign();             
             }
-        return null;
+       throw new InvalidNumberException();
     }
     public ComplexNumber sum() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 2) {
