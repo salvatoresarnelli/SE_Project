@@ -15,6 +15,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import se_project.exceptions.DivisionByZeroException;
+import se_project.exceptions.EmptyStackException;
+import se_project.exceptions.InvalidNumberException;
+import se_project.exceptions.NotApplicableOperation;
+import se_project.exceptions.UndefinedPhaseException;
 
 /**
  * FXML Controller class
@@ -28,6 +33,7 @@ public class InterfacciaController implements Initializable {
     private Button buttonPush;
     @FXML
     private ListView<ComplexNumber> listView;
+    private final Solver solver = Solver.getInstance();
     private final ParserString parser = new ParserString();
     private final String operation  = "__OPERATION__";
     private final String complex_number = "__COMPLEX__NUMBER__";
@@ -43,38 +49,22 @@ public class InterfacciaController implements Initializable {
     }    
 
     @FXML
-    private void ActionPush(ActionEvent event) {
+    private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
         String text = textArea.getText();
         String code = parser.parserString(text);
-        ComplexNumber n = new ComplexNumber(0,0);
-        if(code.equals(complex_number))
+        ComplexNumber n;
+        if(code.equals(complex_number)){
             n = parser.recognizeComplexNumber(text);
-        if(code.equals(single_number))
-            n = parser.recognizeNumber(text);
-        System.out.println(code);
-        System.out.println(n);
-        
-        /*
-        if(code.equals(operation)){
-            switch(text){
-                case "addition":
-                    
-                    break;
-                case "substraction":
-                    
-                    break;
-                case "multiplication":
-                    break;
-                case "division":
-                    break;
-                case "square root":
-                    break;
-                case "invert sign":
-                    break;
-                     
-            }
+            solver.getStack().push(n);
         }
-        */
+        if(code.equals(single_number)) {
+            n = parser.recognizeNumber(text);
+            solver.getStack().push(n);
+        }
+        if(code.equals(operation))
+            solver.resolveOperation(textArea.getText());
+           
+     
         
         textArea.clear(); 
         
