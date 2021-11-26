@@ -37,6 +37,7 @@ public class Solver {
         return this.stack;
     }
     public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
+        text = text.replaceAll("\\n", "");
         switch(text){
                 case "addition":
                     return this.sum();
@@ -54,16 +55,10 @@ public class Solver {
                     return this.division();
                 case ":":
                     return this.division();
-                    /*
-                case "square root":
-                    return this.squareRoot()
-                case "sqrt":
-                    break;
                 case "invert sign":
                     return this.sign();
                 case "+-":
-                    return this.sign();
-                     */
+                    return this.sign();             
             }
         return null;
     }

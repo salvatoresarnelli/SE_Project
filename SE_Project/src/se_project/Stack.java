@@ -28,7 +28,11 @@ public class Stack {
         stack.addLast(c);
         return true;
     }
-    
+
+    public LinkedList<ComplexNumber> getStack() {
+        return stack;
+    }
+
     public int size() {
         return stack.size();
     }
@@ -51,6 +55,15 @@ public class Stack {
     @Override
     public String toString() {
         return "stack = " + stack;
+    }
+    
+    public boolean fromListToStack(LinkedList<ComplexNumber> list) {
+        if(list == null) return false;
+        for(ComplexNumber c: list) {
+            stack.addLast(c);
+        }
+        return true;
+
     }
 
 }

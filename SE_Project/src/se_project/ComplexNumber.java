@@ -21,6 +21,10 @@ public class ComplexNumber {
         this.a = a;
         this.b = b;
     }
+    
+    public ComplexNumber(double a) {
+        this.a = a;
+    }
 
     public ComplexNumber() {
         a=0;

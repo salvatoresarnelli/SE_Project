@@ -7,7 +7,13 @@ package se_project;
 
 import javafx.scene.control.ListView;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Observable;
 import java.util.ResourceBundle;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,14 +44,17 @@ public class InterfacciaController implements Initializable {
     private final String operation  = "__OPERATION__";
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
-    
-   
+    private ObservableList<ComplexNumber> observableList; 
+    protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
 
     public void initialize(URL url, ResourceBundle rb) {
+        observableList = FXCollections.observableList(solver.getStack().getStack());
+
         textArea.setOnKeyPressed((KeyEvent event) -> {
         if (event.getCode().equals(KeyCode.ENTER)) 
             buttonPush.fire();
         });
+        listProperty.set(observableList);  
     }    
 
     @FXML
@@ -55,19 +64,20 @@ public class InterfacciaController implements Initializable {
         ComplexNumber n;
         if(code.equals(complex_number)){
             n = parser.recognizeComplexNumber(text);
-            solver.getStack().push(n);
+            observableList.add(n);
         }
         if(code.equals(single_number)) {
             n = parser.recognizeNumber(text);
-            solver.getStack().push(n);
+            
+            observableList.add(n);
         }
-        if(code.equals(operation))
-            solver.resolveOperation(textArea.getText());
-           
-     
+        if(code.equals(operation)) {
+            n = solver.resolveOperation(text);
+            observableList.add(n);
+        }
         
-        textArea.clear(); 
-        
+        listView.itemsProperty().bind(listProperty);
+        textArea.clear();         
     }
     
 }
