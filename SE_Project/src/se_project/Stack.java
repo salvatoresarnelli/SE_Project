@@ -22,7 +22,7 @@ public class Stack {
      * Metodo costruttore della classe Stack.
      * @author Salvatore Sarnelli
      * @param  
-     * @return      stack
+     * @return stack
      * 
      */
 
@@ -46,8 +46,8 @@ public class Stack {
     * complesso alla fine dello stack.
     * @author Salvatore Sarnelli
     * @param ComplexNumber c , numero complesso da dover inserire.
-    * @return      true se l'inserimento è stato effettuato
-    *              correttamente, false altrimenti.  
+    * @return true se l'inserimento è stato effettuato
+    *         correttamente, false altrimenti.  
     */
     
     public boolean push(ComplexNumber c) {
@@ -60,7 +60,7 @@ public class Stack {
     * Il metodo si occupa di restituire la dimensione dello stack.
     * @author Salvatore Sarnelli
     * @param 
-    * @return      dimensione dello stack.           
+    * @return dimensione dello stack.           
     */
 
     public int size() {
@@ -72,7 +72,7 @@ public class Stack {
     * dello stack.
     * @author Salvatore Sarnelli
     * @param 
-    * @return      numero complesso rimosso dallo stack.    
+    * @return numero complesso rimosso dallo stack.    
     * @throws EmptyStackException se si senta di rimuovere un elemento 
     *         dallo stack vuoto
     */
@@ -88,7 +88,7 @@ public class Stack {
     * elemento nello stack, senza rimuoverlo.
     * @author Salvatore Sarnelli
     * @param 
-    * @return      numero complesso letto dallo stack. 
+    * @return numero complesso letto dallo stack. 
     * @throws EmptyStackException se si senta di rimuovere un elemento 
     *         dallo stack vuoto.
     */
@@ -102,7 +102,7 @@ public class Stack {
     * Il metodo si occupa di verificare se lo stack è vuoto.
     * @author Salvatore Sarnelli
     * @param 
-    * @return       true, se lo stack è vuoto, false altrimenti.
+    * @return true, se lo stack è vuoto, false altrimenti.
     */
     
     public boolean isEmpty() {
@@ -113,7 +113,7 @@ public class Stack {
     * Il metodo si occupa di stampare gli elementi dello stack.
     * @author Salvatore Sarnelli
     * @param 
-    * @return      elementi dello stack.
+    * @return elementi dello stack.
     */
     
     @Override
@@ -124,9 +124,9 @@ public class Stack {
     /**
     * Il metodo si occupa di inserire nello stack una lista di numeri complessi.
     * @author Salvatore Sarnelli
-    * @param       LinkedList<ComplexNumber> list
-    * @return      true, se gli elementi sono stati inseriti correttamente,
-    *              false altrimenti.
+    * @param  LinkedList<ComplexNumber> list
+    * @return true, se gli elementi sono stati inseriti correttamente,
+    *         false altrimenti.
     */    
     
     public boolean fromListToStack(LinkedList<ComplexNumber> list) {
