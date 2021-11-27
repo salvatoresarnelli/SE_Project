@@ -86,7 +86,7 @@ public class ParserString {
             try {
                  double image_finale = Double.parseDouble(image);
                  return true;
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 return false;
             }
            
@@ -141,7 +141,7 @@ public class ParserString {
         if(text.contains("+") || text.contains("-")){
             String replaceAll = text.replaceAll(" ", "");
             String [] scanner = replaceAll.split("\\+|\\-");
-            if(scanner.length > 2) return invalid_insert;
+            if(scanner.length >= 1) return invalid_insert;
             if(this.checkPossiblePartReal(scanner[0]))
                 return this.checkPossiblePartImaginary(scanner[1]) ? complex_number: invalid_insert;
             if(this.checkPossiblePartImaginary(scanner[0]))

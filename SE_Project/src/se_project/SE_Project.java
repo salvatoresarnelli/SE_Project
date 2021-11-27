@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -22,6 +23,7 @@ public class SE_Project extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("calculator.fxml"));
         
         Scene scene = new Scene(root);
+        //stage.getIcons().add(new Image("/photo.png"));
         
         stage.setScene(scene);
         stage.show();

@@ -33,7 +33,7 @@ public class Solver {
         }
         return instance;
     }
-    public Stack getStack(){
+    public Stack getStructureStack(){
         return this.stack;
     }
     public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
