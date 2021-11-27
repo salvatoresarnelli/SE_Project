@@ -5,6 +5,7 @@
  */
 package se_project;
 
+import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -126,6 +127,20 @@ public class StackTest {
         
         boolean ret = stack.push(new ComplexNumber(0,0));
         boolean result2 = stack.isEmpty();
+        assertNotEquals(expected, result2);
+    }
+    
+    @Test
+    public void testFromListToStack() {
+        boolean expected = true;
+        LinkedList<ComplexNumber> list = new LinkedList<>();
+        list.addLast(new ComplexNumber(0,0));
+        list.addLast(new ComplexNumber(3, 6));
+        
+        boolean result = stack.fromListToStack(list);
+        assertEquals(expected, result);
+        
+        boolean result2 = stack.fromListToStack(null);
         assertNotEquals(expected, result2);
     }
 

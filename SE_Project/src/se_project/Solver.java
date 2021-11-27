@@ -8,6 +8,7 @@ package se_project;
 import java.util.LinkedList;
 import se_project.*;
 import se_project.exceptions.DivisionByZeroException;
+import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
@@ -18,22 +19,49 @@ import se_project.exceptions.UndefinedPhaseException;
  */
 public class Solver {
 
-    LinkedList<ComplexNumber> stack;
+    private Stack stack;
     private static Solver instance = null;
 
-    private Solver(LinkedList<ComplexNumber> stack) {
+    private Solver(Stack stack) {
         this.stack = stack;
     }
 
     public static Solver getInstance() {
         // Crea l'oggetto solo se NON esiste:
         if (instance == null) {
-            instance = new Solver(new LinkedList<>());
+            instance = new Solver(new Stack());
         }
         return instance;
     }
-
-    public ComplexNumber sum() throws NotApplicableOperation, InvalidNumberException {
+    public Stack getStack(){
+        return this.stack;
+    }
+    public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
+        switch(text){
+                case "addition":
+                    return this.sum();
+                case "+":
+                    return this.sum();
+                case "substraction":
+                    return this.difference();
+                case "-":
+                    return  this.difference();
+                case "multiplication":
+                    return this.dot();
+                case "*":
+                    return  this.dot();
+                case "division":
+                    return this.division();
+                case ":":
+                    return this.division();
+                case "invert sign":
+                    return this.sign();
+                case "+-":
+                    return this.sign();             
+            }
+       throw new InvalidNumberException();
+    }
+    public ComplexNumber sum() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 2) {
             ComplexNumber c1 = stack.pop();
             ComplexNumber c2 = stack.pop();
@@ -43,7 +71,7 @@ public class Solver {
         }
     }
 
-    public ComplexNumber dot() throws NotApplicableOperation, InvalidNumberException {
+    public ComplexNumber dot() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 2) {
             ComplexNumber c1 = stack.pop();
             ComplexNumber c2 = stack.pop();
@@ -53,7 +81,7 @@ public class Solver {
         }
     }
 
-    public ComplexNumber difference() throws NotApplicableOperation, InvalidNumberException {
+    public ComplexNumber difference() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 2) {
             ComplexNumber c1 = stack.pop();
             ComplexNumber c2 = stack.pop();
@@ -63,7 +91,7 @@ public class Solver {
         }
     }
 
-    public ComplexNumber division() throws NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
+    public ComplexNumber division() throws NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException, EmptyStackException {
         if (stack.size() >= 2) {
             ComplexNumber c1 = stack.pop();
             ComplexNumber c2 = stack.pop();
@@ -73,7 +101,7 @@ public class Solver {
         }
     }
 
-    public ComplexNumber sign() throws NotApplicableOperation, InvalidNumberException {
+    public ComplexNumber sign() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 1) {
             ComplexNumber c1 = stack.pop();
             return Operations.signOperation(c1);
@@ -82,4 +110,15 @@ public class Solver {
         }
     }
 
+    public LinkedList<ComplexNumber> squareRoot() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException{
+        if (stack.size() >= 1) {
+            ComplexNumber c1 = stack.pop();
+            return Operations.squareRoot(c1);
+        } else {
+            throw new NotApplicableOperation();
+        }
+        
+    }
+    
+    
 }

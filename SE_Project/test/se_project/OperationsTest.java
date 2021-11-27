@@ -326,6 +326,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testSumOpposite() throws InvalidNumberException {
         //(Real Part=A,Im =B) + (Real Part=-A, Im=-B)
         result.setRealPart(0);
@@ -542,6 +543,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDifferenceRNegativeINegativeRNegativeINegative() throws InvalidNumberException {
 
         //(Real Part <0, Imaginary Part <0) + (Real Part<0, Imaginary Part<0).
@@ -569,6 +571,7 @@ public class OperationsTest {
         assertEquals(result, Operations.differenceOperation(a, b));
     }
 
+    @Test
     public void testDifferenceRPositiveIZeroRNegativeIZero() throws InvalidNumberException {
         //(Real Part>0, Im=0) + (Real Part<0,Im=0) 
         result.setRealPart(5);
@@ -702,6 +705,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRPositiveINegativeRPositiveINegative() throws InvalidNumberException {
         //(Real Part >0, Imaginary Part <0) + (Real Part>0, Imaginary Part<0).
         result.setRealPart(6);
@@ -714,6 +718,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRPositiveINegativeRNegativeIPositive() throws InvalidNumberException {
 
         //(Real Part >0, Imaginary Part <0) + (Real Part<0, Imaginary Part>0).
@@ -723,10 +728,11 @@ public class OperationsTest {
         a.setImaginaryPart(-2);
         b.setRealPart(-2);
         b.setImaginaryPart(3);
-        assertEquals(result, Operations.addOperation(a, b));
+        assertEquals(result, Operations.dotOperation(a, b));
 
     }
 
+    @Test
     public void testDotRPositiveINegativeRNegativeINegative() throws InvalidNumberException {
 
         //(Real Part >0, Imaginary Part <0) + (Real Part<0, Imaginary Part<0).
@@ -736,10 +742,11 @@ public class OperationsTest {
         a.setImaginaryPart(-3);
         b.setRealPart(-2);
         b.setImaginaryPart(-3);
-        assertEquals(result, Operations.addOperation(a, b));
+        assertEquals(result, Operations.dotOperation(a, b));
 
     }
 
+    @Test
     public void testDotRNegativeIPositiveRPositiveIPositive() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part >0) + (Real Part>0, Imaginary Part>0).
         result.setRealPart(-21);
@@ -751,6 +758,7 @@ public class OperationsTest {
         assertEquals(result, Operations.dotOperation(a, b));
     }
 
+    @Test
     public void testDotRNegativeIPositiveRPositiveINegative() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part >0) + (Real Part>0, Imaginary Part<0).
         result.setRealPart(3);
@@ -763,6 +771,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRNegativeIPositiveRNegativeIPositive() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part >0) + (Real Part<0, Imaginary Part>0).
         result.setRealPart(-4);
@@ -776,10 +785,11 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRNegativeIPositiveRNegativeINegative() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part >0) + (Real Part<0, Imaginary Part<0).
         result.setRealPart(9);
-        result.setImaginaryPart(7);
+        result.setImaginaryPart(-7);
         a.setRealPart(-2);
         a.setImaginaryPart(3);
         b.setRealPart(-3);
@@ -788,6 +798,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRNegativeINegativeRPositiveIPositive() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part <0) + (Real Part>0, Imaginary Part>0).
         result.setRealPart(1);
@@ -799,6 +810,7 @@ public class OperationsTest {
         assertEquals(result, Operations.dotOperation(a, b));
     }
 
+    @Test
     public void testDotRNegativeINegativeRPositiveINegative() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part <0) + (Real Part>0, Imaginary Part<0).
 
@@ -808,10 +820,11 @@ public class OperationsTest {
         a.setImaginaryPart(-2);
         b.setRealPart(3);
         b.setImaginaryPart(-2);
-        assertEquals(result, Operations.addOperation(a, b));
+        assertEquals(result, Operations.dotOperation(a, b));
 
     }
 
+    @Test
     public void testDotRNegativeINegativeRNegativeIPositve() throws InvalidNumberException {
         //(Real Part <0, Imaginary Part <0) + (Real Part<0, Imaginary Part>0).
         result.setRealPart(3);
@@ -824,6 +837,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRNegativeINegativeRNegativeINegative() throws InvalidNumberException {
 
         //(Real Part <0, Imaginary Part <0) + (Real Part<0, Imaginary Part<0).
@@ -837,6 +851,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRPositiveIZeroRPositiveIZero() throws InvalidNumberException {
 
         //(Real Part >0,Im=0) + (Real Part>0,Im=0)
@@ -849,6 +864,7 @@ public class OperationsTest {
         assertEquals(result, Operations.dotOperation(a, b));
     }
 
+    @Test
     public void testDotRPositiveIZeroRNegativeIZero() throws InvalidNumberException {
         //(Real Part>0, Im=0) + (Real Part<0,Im=0) 
         result.setRealPart(-4);
@@ -861,6 +877,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRNegativeIZeroRNegativeIZero() throws InvalidNumberException {
         //(Real Part<0, Im =0) + (Real Part<0, Im=0)
         result.setRealPart(2);
@@ -873,6 +890,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRZeroIPositiveRZeroIPositive() throws InvalidNumberException {
         // (Real Part=0, Im>0) + (Real Part=0, Im>0)
         result.setRealPart(-1);
@@ -885,6 +903,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRZeroIZeroRZeroIZero() throws InvalidNumberException {
         //(Real Part=0,Im =0) + (Real Part=0, Im=0)
         result.setRealPart(0);
@@ -897,6 +916,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotRNonZeroIZeroRZeroINonZero() throws InvalidNumberException {
         //(Real Part!=0,Im =0) + (Real Part=0, Im!=0)
         result.setRealPart(0);
@@ -909,6 +929,7 @@ public class OperationsTest {
 
     }
 
+    @Test
     public void testDotOpposite() throws InvalidNumberException {
         //(Real Part=A,Im =B) + (Real Part=A, Im=B)
         result.setRealPart(1);
@@ -922,7 +943,7 @@ public class OperationsTest {
 
     /*----------------------------DIVISION----------------------------------------*/
     @Test
-    public void testDivisionRPositiveIPositiveRPositiveINegative() throws InvalidNumberException,UndefinedPhaseException, DivisionByZeroException {
+    public void testDivisionRPositiveIPositiveRPositiveINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part >0, Imaginary Part >0) + (Real Part>0, Imaginary Part<0).
         result.setRealPart(-0.7500);
         result.setImaginaryPart(1.2500);
@@ -930,12 +951,13 @@ public class OperationsTest {
         a.setImaginaryPart(4);
         b.setRealPart(2);
         b.setImaginaryPart(-2);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
 
     @Test
-    public void testDivisionRPositiveIPositiveRNegativeIPositive() throws InvalidNumberException,UndefinedPhaseException, DivisionByZeroException {
+    public void testDivisionRPositiveIPositiveRNegativeIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part >0, Imaginary Part >0) + (Real Part<0, Imaginary Part>0).
         result.setRealPart(0.2);
         result.setImaginaryPart(-0.6);
@@ -943,11 +965,13 @@ public class OperationsTest {
         a.setImaginaryPart(1);
         b.setRealPart(-1);
         b.setImaginaryPart(2);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
+
     }
 
     @Test
-    public void testDivisionRPositiveIPositiveRNegativeINegative() throws InvalidNumberException,UndefinedPhaseException, DivisionByZeroException {
+    public void testDivisionRPositiveIPositiveRNegativeINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part >0, Imaginary Part >0) + (Real Part<0, Imaginary Part<0).
         result.setRealPart(-2);
         result.setImaginaryPart(0);
@@ -955,11 +979,13 @@ public class OperationsTest {
         a.setImaginaryPart(10);
         b.setRealPart(-5);
         b.setImaginaryPart(-5);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
+
     }
 
     @Test
-    public void testDivisionRPositiveINegativeRPositiveIPositive() throws InvalidNumberException,UndefinedPhaseException, DivisionByZeroException {
+    public void testDivisionRPositiveINegativeRPositiveIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part >0, Imaginary Part <0) + (Real Part>0, Imaginary Part>0).
         result.setRealPart(0);
         result.setImaginaryPart(-1);
@@ -971,7 +997,9 @@ public class OperationsTest {
 
     }
 
-    public void testDivisionRPositiveINegativeRPositiveINegative() throws InvalidNumberException,UndefinedPhaseException, DivisionByZeroException{
+    @Test
+
+    public void testDivisionRPositiveINegativeRPositiveINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part >0, Imaginary Part <0) + (Real Part>0, Imaginary Part<0).
         result.setRealPart(1.3846);
         result.setImaginaryPart(-0.0769);
@@ -979,22 +1007,28 @@ public class OperationsTest {
         a.setImaginaryPart(-3);
         b.setRealPart(3);
         b.setImaginaryPart(-2);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRPositiveINegativeRNegativeIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
 
         //(Real Part >0, Imaginary Part <0) + (Real Part<0, Imaginary Part>0).
         result.setRealPart(-0.6154);
-        result.setImaginaryPart(0.769);
+        result.setImaginaryPart(0.077);
         a.setRealPart(1);
         a.setImaginaryPart(-2);
         b.setRealPart(-2);
         b.setImaginaryPart(3);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRPositiveINegativeRNegativeINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
 
@@ -1005,21 +1039,28 @@ public class OperationsTest {
         a.setImaginaryPart(-3);
         b.setRealPart(-2);
         b.setImaginaryPart(-3);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
 
+    @Test
+
     public void testDivisionRNegativeIPositiveRPositiveIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part >0) + (Real Part>0, Imaginary Part>0).
-        result.setRealPart(-0.2647);  
+        result.setRealPart(-0.2647);
 
         result.setImaginaryPart(0.5588);
         a.setRealPart(-3);
         a.setImaginaryPart(2);
         b.setRealPart(5);
         b.setImaginaryPart(3);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
+
     }
+
+    @Test
 
     public void testDivisionRNegativeIPositiveRPositiveINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part >0) + (Real Part>0, Imaginary Part<0).
@@ -1029,9 +1070,12 @@ public class OperationsTest {
         a.setImaginaryPart(2);
         b.setRealPart(3);
         b.setImaginaryPart(-3);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRNegativeIPositiveRNegativeIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part >0) + (Real Part<0, Imaginary Part>0).
@@ -1042,14 +1086,17 @@ public class OperationsTest {
         b.setRealPart(-2);
         b.setImaginaryPart(2);
 
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRNegativeIPositiveRNegativeINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part >0) + (Real Part<0, Imaginary Part<0).
         result.setRealPart(0.3000);
-        result.setImaginaryPart(- 1.1000);
+        result.setImaginaryPart(-1.1000);
         a.setRealPart(-2);
         a.setImaginaryPart(3);
         b.setRealPart(-3);
@@ -1058,30 +1105,38 @@ public class OperationsTest {
 
     }
 
+    @Test
+
     public void testDivisionRNegativeINegativeRPositiveIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part <0) + (Real Part>0, Imaginary Part>0).
-        result.setRealPart(  -0.6800 );
-        result.setImaginaryPart(- 0.2400);
+        result.setRealPart(-0.6800);
+        result.setImaginaryPart(-0.2400);
         a.setRealPart(-2);
         a.setImaginaryPart(-3);
         b.setRealPart(4);
         b.setImaginaryPart(3);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
+
     }
+
+    @Test
 
     public void testDivisionRNegativeINegativeRPositiveINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part <0) + (Real Part>0, Imaginary Part<0).
 
         result.setRealPart(0.0769);
-        result.setImaginaryPart(- 0.6154);
+        result.setImaginaryPart(-0.6154);
         a.setRealPart(-1);
         a.setImaginaryPart(-2);
         b.setRealPart(3);
         b.setImaginaryPart(-2);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
 
+    @Test
     public void testDivisionRNegativeINegativeRNegativeIPositve() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part <0, Imaginary Part <0) + (Real Part<0, Imaginary Part>0).
         result.setRealPart(-0.2000);
@@ -1090,14 +1145,17 @@ public class OperationsTest {
         a.setImaginaryPart(-1);
         b.setRealPart(-1);
         b.setImaginaryPart(2);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRNegativeINegativeRNegativeINegative() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
 
         //(Real Part <0, Imaginary Part <0) + (Real Part<0, Imaginary Part<0).
-        result.setRealPart(1.5000 );
+        result.setRealPart(1.5000);
         result.setImaginaryPart(0.5000);
         a.setRealPart(-1);
         a.setImaginaryPart(-2);
@@ -1106,6 +1164,8 @@ public class OperationsTest {
         assertEquals(result, Operations.divisionOperation(a, b));
 
     }
+
+    @Test
 
     public void testDivisionRPositiveIZeroRPositiveIZero() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
 
@@ -1119,6 +1179,7 @@ public class OperationsTest {
         assertEquals(result, Operations.divisionOperation(a, b));
     }
 
+    @Test
     public void testDivisionRPositiveIZeroRNegativeIZero() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part>0, Im=0) + (Real Part<0,Im=0) 
         result.setRealPart(-0.25);
@@ -1127,9 +1188,12 @@ public class OperationsTest {
         a.setImaginaryPart(0);
         b.setRealPart(-4);
         b.setImaginaryPart(0);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRNegativeIZeroRNegativeIZero() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part<0, Im =0) + (Real Part<0, Im=0)
@@ -1139,9 +1203,12 @@ public class OperationsTest {
         a.setImaginaryPart(0);
         b.setRealPart(-2);
         b.setImaginaryPart(0);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionRZeroIPositiveRZeroIPositive() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         // (Real Part=0, Im>0) + (Real Part=0, Im>0)
@@ -1151,9 +1218,12 @@ public class OperationsTest {
         a.setImaginaryPart(1);
         b.setRealPart(0);
         b.setImaginaryPart(1);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test(expected = DivisionByZeroException.class)
 
     public void testDivisionRZeroIZeroRZeroIZero() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part=0,Im =0) + (Real Part=0, Im=0)
@@ -1161,9 +1231,11 @@ public class OperationsTest {
         a.setImaginaryPart(0);
         b.setRealPart(0);
         b.setImaginaryPart(0);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        Operations.divisionOperation(a, b);
 
     }
+
+    @Test
 
     public void testDivisionRNonZeroIZeroRZeroINonZero() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part!=0,Im =0) + (Real Part=0, Im!=0)
@@ -1173,9 +1245,12 @@ public class OperationsTest {
         a.setImaginaryPart(0);
         b.setRealPart(0);
         b.setImaginaryPart(3);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
 
     }
+
+    @Test
 
     public void testDivisionOpposite() throws InvalidNumberException, UndefinedPhaseException, DivisionByZeroException {
         //(Real Part=A,Im =B) + (Real Part=-A, Im=-B)
@@ -1185,7 +1260,9 @@ public class OperationsTest {
         a.setImaginaryPart(7);
         b.setRealPart(6);
         b.setImaginaryPart(7);
-        assertEquals(result, Operations.divisionOperation(a, b));
+        assertEquals(result.getRealPart(), Operations.divisionOperation(a, b).getRealPart(), 0.3);
+        assertEquals(result.getImaginaryPart(), Operations.divisionOperation(a, b).getImaginaryPart(), 0.3);
+
     }
 
     /*----------------------------SIGN----------------------------------------*/
@@ -1219,7 +1296,7 @@ public class OperationsTest {
 
     /*----------------------------SQRT----------------------------------------*/
     @Test
-    public void testSqrtRNegativeIZero() throws UndefinedPhaseException {
+    public void testSqrtRNegativeIZero() throws InvalidNumberException {
 
         LinkedList<ComplexNumber> results = new LinkedList<>();
         results.add(new ComplexNumber(0, 2));
@@ -1233,7 +1310,7 @@ public class OperationsTest {
     }
 
     @Test
-    public void testSqrtRPositiveIZero() throws UndefinedPhaseException {
+    public void testSqrtRPositiveIZero() throws InvalidNumberException {
 
         LinkedList<ComplexNumber> results = new LinkedList<>();
         results.add(new ComplexNumber(2, 0));
@@ -1247,12 +1324,64 @@ public class OperationsTest {
     }
 
     @Test
-    public void testSqrtRZeroIPositive() throws UndefinedPhaseException {
+    public void testSqrtRZeroIPositive() throws InvalidNumberException {
 
         LinkedList<ComplexNumber> results = new LinkedList<>();
-        results.add(new ComplexNumber(0, 2));
-        results.add(new ComplexNumber(0, -2));
-        a.setRealPart(-4);
+        results.add(new ComplexNumber(1.4142, 1.4142));
+        results.add(new ComplexNumber(-1.4142, -1.4142));
+        a.setRealPart(0);
+        a.setImaginaryPart(4);
+        LinkedList<ComplexNumber> obtained = Operations.squareRoot(a);
+        results.forEach(number -> {
+            assertTrue(obtained.contains(number));
+        });
+    }
+
+    @Test
+    public void testSqrtRZeroINegative() throws InvalidNumberException {
+
+        LinkedList<ComplexNumber> results = new LinkedList<>();
+        results.add(new ComplexNumber(1.4142, -1.4142));
+        results.add(new ComplexNumber(-1.4142, 1.4142));
+        a.setRealPart(0);
+        a.setImaginaryPart(-4);
+        LinkedList<ComplexNumber> obtained = Operations.squareRoot(a);
+        results.forEach(number -> {
+            assertTrue(obtained.contains(number));
+        });
+    }
+
+    @Test
+    public void testSqrtRPositiveIPositive() throws InvalidNumberException {
+        LinkedList<ComplexNumber> results = new LinkedList<>();
+        results.add(new ComplexNumber(1.5538, 0.6436));
+        results.add(new ComplexNumber(-1.5538, -0.6436));
+        a.setRealPart(2);
+        a.setImaginaryPart(2);
+        LinkedList<ComplexNumber> obtained = Operations.squareRoot(a);
+        results.forEach(number -> {
+            assertTrue(obtained.contains(number));
+        });
+    }
+
+    @Test
+    public void testSqrtRNegativeIPositive() throws InvalidNumberException {
+        LinkedList<ComplexNumber> results = new LinkedList<>();
+        results.add(new ComplexNumber(0.6436, 1.5538));
+        results.add(new ComplexNumber(-0.6436, -1.5538));
+        a.setRealPart(-2);
+        a.setImaginaryPart(2);
+        LinkedList<ComplexNumber> obtained = Operations.squareRoot(a);
+        results.forEach(number -> {
+            assertTrue(obtained.contains(number));
+        });
+    }
+
+    @Test
+    public void testSqrtPhaseUndefined() throws InvalidNumberException {
+        LinkedList<ComplexNumber> results = new LinkedList<>();
+        results.add(new ComplexNumber(0, 0));
+        a.setRealPart(0);
         a.setImaginaryPart(0);
         LinkedList<ComplexNumber> obtained = Operations.squareRoot(a);
         results.forEach(number -> {
@@ -1261,142 +1390,101 @@ public class OperationsTest {
     }
 
     @Test
-    public void testSqrtRZeroINegative() throws UndefinedPhaseException {
-
+    public void testSqrtRNegativeINegative() throws InvalidNumberException {
         LinkedList<ComplexNumber> results = new LinkedList<>();
-        results.add(new ComplexNumber(0, 2));
-        results.add(new ComplexNumber(0, -2));
-        a.setRealPart(-4);
-        a.setImaginaryPart(0);
+
+        results.add(new ComplexNumber(0.6436, -1.5538));
+        results.add(new ComplexNumber(-0.6436, +1.5538));
+        a.setRealPart(-2);
+        a.setImaginaryPart(-2);
         LinkedList<ComplexNumber> obtained = Operations.squareRoot(a);
         results.forEach(number -> {
             assertTrue(obtained.contains(number));
         });
-    }
-
-    @Test
-    public void testSqrtRPositiveIPositive() throws UndefinedPhaseException {
-
-    }
-
-    @Test
-    public void testSqrtRNegativeIPositive() throws UndefinedPhaseException {
-
-    }
-
-    @Test
-    public void testSqrtPhaseUndefined() throws UndefinedPhaseException {
-    }
-
-    @Test
-    public void testSqrtRNegativeINegative() throws UndefinedPhaseException {
-
     }
 
     /*-------------------------NULL POINTER-----------------------------------*/
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testSumOneNull() throws InvalidNumberException {
-        //(null+null)
+        ComplexNumber x = null;
+        a.setRealPart(1);
+        a.setImaginaryPart(0);
+        Operations.addOperation(x, a);
 
     }
 
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testSumBothNull() throws InvalidNumberException {
-        //(null+null)
-
+        ComplexNumber x = null;
+        ComplexNumber y = null;
+        Operations.addOperation(x, y);
     }
 
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testDifferenceOneNull() throws InvalidNumberException {
-        //(null+null)
+        ComplexNumber x = null;
+        a.setRealPart(1);
+        a.setImaginaryPart(0);
+        Operations.differenceOperation(x, a);
 
     }
 
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testDifferenceBothNull() throws InvalidNumberException {
-        //(null+null)
-
+        //(null-null)
+        ComplexNumber x = null;
+        ComplexNumber y = null;
+        Operations.differenceOperation(x, y);
     }
 
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testDotOneNull() throws InvalidNumberException {
         //(null+null)
+        ComplexNumber x = null;
+        a.setRealPart(1);
+        a.setImaginaryPart(0);
+        Operations.dotOperation(x, a);
 
     }
 
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testDotBothNull() throws InvalidNumberException {
-        //(null+null)
+        //(null*null)
+        ComplexNumber x = null;
+        ComplexNumber y = null;
+        Operations.dotOperation(x, y);
 
     }
 
-    @Test
-    public void testDivisionOneNull() throws InvalidNumberException {
+    @Test(expected = InvalidNumberException.class)
+    public void testDivisionOneNull() throws InvalidNumberException, DivisionByZeroException {
         //(null+null)
+        ComplexNumber x = null;
+        a.setRealPart(1);
+        a.setImaginaryPart(0);
+        Operations.divisionOperation(x, a);
 
     }
 
-    @Test
-    public void testDivisionothNull() throws InvalidNumberException {
+    @Test(expected = InvalidNumberException.class)
+    public void testDivisionothNull() throws InvalidNumberException, DivisionByZeroException {
         //(null+null)
+        ComplexNumber x = null;
+        ComplexNumber y = null;
+        Operations.divisionOperation(x, y);
 
     }
 
-    @Test
+    @Test(expected = InvalidNumberException.class)
     public void testSignNull() throws InvalidNumberException {
-
+        ComplexNumber x = null;
+        Operations.signOperation(x);
     }
-    /*
-      
-     */
-}
 
-/*
-    @Test //Mutiply
-    public void testMultiply() {
-        //re > 0 && im > 0
-        complexA.setRe(1);
-        complexA.setIm(1);
-        complexB.setRe(2);
-        complexB.setIm(1);
-        assertEquals(new Complex(1, 3), complexA.multiply(complexB));
-        assertEquals(new Complex(1, 3), complexB.multiply(complexA));
-        //re < 0 && im > 0
-        complexA.setRe(-1);
-        complexA.setIm(1);
-        complexB.setRe(-2);
-        complexB.setIm(1);
-        assertEquals(new Complex(1, -3), complexA.multiply(complexB));
-        assertEquals(new Complex(1, -3), complexB.multiply(complexA));
-        //re < 0 && im < 0
-        complexA.setRe(-1);
-        complexA.setIm(-1);
-        complexB.setRe(-2);
-        complexB.setIm(-1);
-        assertEquals(new Complex(1, 3), complexA.multiply(complexB));
-        assertEquals(new Complex(1, 3), complexB.multiply(complexA));
-        //re > 0 && im < 0
-        complexA.setRe(1);
-        complexA.setIm(-1);
-        complexB.setRe(2);
-        complexB.setIm(-1);
-        assertEquals(new Complex(1, -3), complexA.multiply(complexB));
-        assertEquals(new Complex(1, -3), complexB.multiply(complexA));
-        //A -> re=0, im != 0
-        complexA.setRe(0);
-        complexA.setIm(1);
-        complexB.setRe(-2);
-        complexB.setIm(1);
-        assertEquals(new Complex(-1, -2), complexA.multiply(complexB));
-        assertEquals(new Complex(-1, -2), complexB.multiply(complexA));
-        //re!=0, im = 0
-        complexA.setRe(1);
-        complexA.setIm(0);
-        complexB.setRe(-2);
-        complexB.setIm(1);
-        assertEquals(new Complex(-2, 1), complexA.multiply(complexB));
-        assertEquals(new Complex(-2, 1), complexB.multiply(complexA));
-        //A, B -> re!=0, A, B -> im = 0, return real number
-        complexA.setRe(1);
-        complexA.setIm(0);
- */
+    @Test(expected = InvalidNumberException.class)
+    public void testSqrtNull() throws InvalidNumberException {
+        ComplexNumber x = null;
+        Operations.squareRoot(x);
+    }
+
+}
