@@ -53,7 +53,7 @@ public class InterfacciaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         observableList = FXCollections.observableList(solver.getStructureStack().getStack());
 
-        textArea.setOnKeyPressed((KeyEvent event) -> {
+        inputField.setOnKeyPressed((KeyEvent event) -> {
         if (event.getCode().equals(KeyCode.ENTER)) 
                 buttonPush.fire();
         });
@@ -84,8 +84,6 @@ public class InterfacciaController implements Initializable {
 
         
     }
-      @FXML
-    private void ActionReleased(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
-        }
+     
 
 }

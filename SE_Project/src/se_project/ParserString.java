@@ -81,6 +81,8 @@ public class ParserString {
     public boolean checkPossiblePartImaginary(String text){
         if(text.contains("j")) {
             String image = text.replace("j","");
+            if(image.equals(""))
+                image="1";
             try {
                 double image_finale = Double.parseDouble(image);
                 return true;
@@ -116,7 +118,7 @@ public class ParserString {
         if(text.contains("+") || text.contains("-")) {
             String replaceAll = text.replaceAll(" ", "");
             String [] scanner = replaceAll.split("\\+|\\-");
-            if(scanner.length >= 1) 
+            if(scanner.length > 2) 
                 return invalid_insert;
             if(this.checkPossiblePartReal(scanner[0]))
                 return this.checkPossiblePartImaginary(scanner[1]) ? complex_number: invalid_insert;
@@ -187,11 +189,15 @@ public class ParserString {
         String [] scanner = text.split("\\+|\\-");
         if(scanner[0].contains("j")) {
             String image = scanner[0].replace("j","");
+            if(image.equals(""))
+                image="1";
             return new ComplexNumber(Double.parseDouble( operator2 + scanner[1]), Double.parseDouble(operator1 + image));
         }
         else {
             double real = Double.parseDouble(operator1 + scanner[0]);
             String image = scanner[1].replace("j","");
+            if(image.equals(""))
+                image="1";
             return new ComplexNumber(real , Double.parseDouble(operator2 + image));
         }
     }

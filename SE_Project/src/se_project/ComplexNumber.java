@@ -212,7 +212,8 @@ public class ComplexNumber {
         StringBuilder sb = new StringBuilder("");
         sb.append(Double.toString(this.a));     
         sb.append((this.b>=0) ? "+" : "");
-        sb.append(Double.toString(this.b));
+        if(this.b!=1)
+            sb.append(Double.toString(this.b));
         sb.append("j");
         return sb.toString();
     }
