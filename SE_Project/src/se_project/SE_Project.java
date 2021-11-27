@@ -5,6 +5,9 @@
  */
 package se_project;
 
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,9 +25,7 @@ public class SE_Project extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("calculator.fxml"));
         
-        Scene scene = new Scene(root);
-        //stage.getIcons().add(new Image("/photo.png"));
-        
+        Scene scene = new Scene(root); 
         stage.setScene(scene);
         stage.show();
     }
