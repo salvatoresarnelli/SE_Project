@@ -64,7 +64,6 @@ public class InterfacciaController implements Initializable {
     private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
         String text = textArea.getText();
         String code = parser.parserString(text);
-        System.out.println(code);
         ComplexNumber n;
         if(code.equals(complex_number)){
             n = parser.recognizeComplexNumber(text);
