@@ -6,6 +6,7 @@ package se_project;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.UndefinedPhaseException;
 
 /**
@@ -120,7 +121,7 @@ public class ComplexNumberTest {
      * Test of conjugated method, of class ComplexNumber.
      */
     @Test
-    public void testConjugated() {
+    public void testConjugated() throws InvalidNumberException{
         System.out.println("conjugated");
         ComplexNumber n = new ComplexNumber(4, -5);
         String result = n.conjugated(n).toString();

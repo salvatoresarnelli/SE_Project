@@ -38,28 +38,28 @@ public class Solver {
     }
     public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
         switch(text){
-                case "addition":
-                    return this.sum();
-                case "+":
-                    return this.sum();
-                case "substraction":
-                    return this.difference();
-                case "-":
-                    return  this.difference();
-                case "multiplication":
-                    return this.dot();
-                case "*":
-                    return  this.dot();
-                case "division":
-                    return this.division();
-                case ":":
-                    return this.division();
-                case "invert sign":
-                    return this.sign();
-                case "+-":
-                    return this.sign();             
+            case "addition":
+                return this.sum();
+            case "+":
+                return this.sum();
+            case "substraction":
+                return this.difference();
+            case "-":
+                return  this.difference();
+            case "multiplication":
+                return this.dot();
+            case "*":
+                return  this.dot();
+            case "division":
+                return this.division();
+            case ":":
+                return this.division();
+            case "invert sign":
+                return this.sign();
+            case "+-":
+                return this.sign();             
             }
-       throw new InvalidNumberException();
+        throw new InvalidNumberException();
     }
     public ComplexNumber sum() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 2) {
