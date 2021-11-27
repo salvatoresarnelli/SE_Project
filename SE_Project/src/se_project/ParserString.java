@@ -81,8 +81,11 @@ public class ParserString {
     public boolean checkPossiblePartImaginary(String text){
         if(text.contains("j")) {
             String image = text.replace("j","");
-            if(image.equals(""))
+            if(image.equals("")){
                 image="1";
+                return true;
+            }
+
             try {
                 double image_finale = Double.parseDouble(image);
                 return true;
@@ -120,10 +123,26 @@ public class ParserString {
             String [] scanner = replaceAll.split("\\+|\\-");
             if(scanner.length > 2) 
                 return invalid_insert;
-            if(this.checkPossiblePartReal(scanner[0]))
+            if(this.checkPossiblePartReal(scanner[0])){
+                try {
+                    String element = scanner[1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    return  invalid_insert;
+                }
                 return this.checkPossiblePartImaginary(scanner[1]) ? complex_number: invalid_insert;
-            if(this.checkPossiblePartImaginary(scanner[0]))
+            }
+                
+            if(this.checkPossiblePartImaginary(scanner[0])){
+                 try {
+                    String element = scanner[1];
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    return  invalid_insert;
+                }
                 return this.checkPossiblePartReal(scanner[1]) ? complex_number: invalid_insert;
+
+            }
+                
+               
             return invalid_insert;
         }
         return continue_checking;
@@ -214,6 +233,10 @@ public class ParserString {
         text = this.clearString(text);
         if(text.contains("j")){
             String image = text.replace("j","");
+              if(image.equals("")){
+                return new ComplexNumber(0, Double.parseDouble(operator1 + "1"));
+            }
+            
             return new ComplexNumber(0, Double.parseDouble(operator1 + image));
         }
         else {
