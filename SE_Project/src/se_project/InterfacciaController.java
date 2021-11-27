@@ -17,7 +17,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -47,6 +50,7 @@ public class InterfacciaController implements Initializable {
     private final String operation  = "__OPERATION__";
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
+    private final String invalid_insert = "__INVALID__";
     private ObservableList<ComplexNumber> observableList;
     protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
 
@@ -78,6 +82,18 @@ public class InterfacciaController implements Initializable {
             n = solver.resolveOperation(text);
             observableList.add(n);
         }
+         if(code.equals(invalid_insert)){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Inserimento non valido");
+                alert.setHeaderText("L'elemento inserito non è corretto , riprovare");
+                alert.setContentText(text + " --> L'inserimento non è valido");
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK);
+
+
+        });
+         }
+
         listView.itemsProperty().bind(listProperty);
         inputField.clear();
         
