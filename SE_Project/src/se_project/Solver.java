@@ -111,7 +111,6 @@ public class Solver {
     }
 
     public LinkedList<ComplexNumber> squareRoot() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException{
-
         if (stack.size() >= 1) {
             ComplexNumber c1 = stack.pop();
             return Operations.squareRoot(c1);
