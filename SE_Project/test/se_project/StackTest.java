@@ -135,6 +135,7 @@ public class StackTest {
         boolean expected = true;
         LinkedList<ComplexNumber> list = new LinkedList<>();
         list.addLast(new ComplexNumber(0,0));
+
         list.addLast(new ComplexNumber(3, 6));
         
         boolean result = stack.fromListToStack(list);

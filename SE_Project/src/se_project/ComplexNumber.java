@@ -73,7 +73,7 @@ public class ComplexNumber {
          double newA = mod * Math.cos(phase);
          double newB = mod * Math.sin(phase);
          return new ComplexNumber(Utilities.round(newA,3),Utilities.round(newB,3));
-     }
+    }
      
      public ComplexNumber conjugated(ComplexNumber n){
          n.b+=-2*n.b;
@@ -86,6 +86,7 @@ public class ComplexNumber {
         return hash;
     }
 
+   
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
