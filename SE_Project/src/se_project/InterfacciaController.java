@@ -17,7 +17,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -44,12 +47,12 @@ public class InterfacciaController implements Initializable {
     private final String operation  = "__OPERATION__";
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
+    private final String invalid_insert = "__INVALID__";
     private ObservableList<ComplexNumber> observableList; 
     protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
 
     public void initialize(URL url, ResourceBundle rb) {
-        observableList = FXCollections.observableList(solver.getStack().getStack());
-
+        observableList = FXCollections.observableList(solver.getStructureStack().getStack());
         textArea.setOnKeyPressed((KeyEvent event) -> {
         if (event.getCode().equals(KeyCode.ENTER)) 
             buttonPush.fire();
@@ -61,6 +64,7 @@ public class InterfacciaController implements Initializable {
     private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
         String text = textArea.getText();
         String code = parser.parserString(text);
+        System.out.println(code);
         ComplexNumber n;
         if(code.equals(complex_number)){
             n = parser.recognizeComplexNumber(text);
@@ -68,13 +72,31 @@ public class InterfacciaController implements Initializable {
         }
         if(code.equals(single_number)) {
             n = parser.recognizeNumber(text);
-            
             observableList.add(n);
         }
         if(code.equals(operation)) {
-            n = solver.resolveOperation(text);
-            observableList.add(n);
+            text = text.replaceAll("\\n","");
+            if(text.equals("square root")|| text.equals("sqrt"))
+                observableList.addAll(solver.squareRoot());
+            else {
+                n = solver.resolveOperation(text);
+                observableList.add(n);
+            }
+  
         }
+        if(code.equals(invalid_insert)){
+                
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Inserimento non valido");
+                alert.setHeaderText("L'elemento inserito non è corretto , riprovare");
+                alert.setContentText(text + " --> L'inserimento non è valido");
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK);
+                        
+    
+});
+                
+            }
         listView.itemsProperty().bind(listProperty);
         textArea.clear();         
     }
