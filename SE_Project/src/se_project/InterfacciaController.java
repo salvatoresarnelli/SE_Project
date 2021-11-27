@@ -36,6 +36,7 @@ import se_project.exceptions.UndefinedPhaseException;
  * @author emanu
  */
 public class InterfacciaController implements Initializable {
+
     @FXML
     private TextArea textArea;
     @FXML
@@ -44,60 +45,60 @@ public class InterfacciaController implements Initializable {
     private ListView<ComplexNumber> listView;
     private final Solver solver = Solver.getInstance();
     private final ParserString parser = new ParserString();
-    private final String operation  = "__OPERATION__";
+    private final String operation = "__OPERATION__";
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
     private final String invalid_insert = "__INVALID__";
-    private ObservableList<ComplexNumber> observableList; 
+    private ObservableList<ComplexNumber> observableList;
     protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
 
     public void initialize(URL url, ResourceBundle rb) {
         observableList = FXCollections.observableList(solver.getStructureStack().getStack());
         textArea.setOnKeyPressed((KeyEvent event) -> {
-        if (event.getCode().equals(KeyCode.ENTER)) 
-            buttonPush.fire();
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                buttonPush.fire();
+            }
         });
-        listProperty.set(observableList);  
-    }    
+        listProperty.set(observableList);
+    }
 
     @FXML
     private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
         String text = textArea.getText();
         String code = parser.parserString(text);
         ComplexNumber n;
-        if(code.equals(complex_number)){
+        if (code.equals(complex_number)) {
             n = parser.recognizeComplexNumber(text);
             observableList.add(n);
         }
-        if(code.equals(single_number)) {
+        if (code.equals(single_number)) {
             n = parser.recognizeNumber(text);
             observableList.add(n);
         }
-        if(code.equals(operation)) {
-            text = text.replaceAll("\\n","");
-            if(text.equals("square root")|| text.equals("sqrt"))
+        if (code.equals(operation)) {
+            text = text.replaceAll("\\n", "");
+            if (text.equals("square root") || text.equals("sqrt")) {
                 observableList.addAll(solver.squareRoot());
-            else {
+            } else {
                 n = solver.resolveOperation(text);
                 observableList.add(n);
             }
-  
+
         }
-        if(code.equals(invalid_insert)){
-                
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Inserimento non valido");
-                alert.setHeaderText("L'elemento inserito non è corretto , riprovare");
-                alert.setContentText(text + " --> L'inserimento non è valido");
-                alert.showAndWait().ifPresent(rs -> {
-                    if (rs == ButtonType.OK);
-                        
-    
-});
-                
-            }
+        if (code.equals(invalid_insert)) {
+
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Inserimento non valido");
+            alert.setHeaderText("L'elemento inserito non è corretto , riprovare");
+            alert.setContentText(text + " --> L'inserimento non è valido");
+            alert.showAndWait().ifPresent(rs -> {
+                if (rs == ButtonType.OK);
+
+            });
+
+        }
         listView.itemsProperty().bind(listProperty);
-        textArea.clear();         
+        textArea.clear();
     }
-    
+
 }
