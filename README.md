@@ -10,3 +10,4 @@ Link di accesso alla bacheca Trello: https://trello.com/invite/b/HhHejC1C/e2fa99
 
 Prima Sprint - Presentazione: https://docs.google.com/presentation/d/1xhJZJdGaMovmdF6ybgiHfvb-Fg1-vhMVpnVuyQZz0h0/edit?usp=sharing
 
+Seconda Sprint - Presentazione: https://docs.google.com/presentation/d/1lrA6B-ius-9Ku0UxHyVS2ZbVGEPV9kNc6hmBybiP9Fc/edit?usp=sharing
