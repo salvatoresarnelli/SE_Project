@@ -81,8 +81,13 @@ public class InterfacciaController implements Initializable {
         }
         if (code.equals(operation)) {
             try {
-                n = solver.resolveOperation(text);
-                observableList.add(n);
+                if(text.equals("square root") || text.equals("sqrt")) {
+                    observableList.addAll(solver.squareRoot());
+                } else {
+                    n = solver.resolveOperation(text);
+                    observableList.add(n);
+                }
+
             } catch (DivisionByZeroException ex) {
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Errore!");
