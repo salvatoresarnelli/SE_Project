@@ -57,7 +57,8 @@ public class Solver {
             case "invert sign":
                 return this.sign();
             case "+-":
-                return this.sign();             
+                return this.sign();         
+                
             }
         throw new InvalidNumberException();
     }

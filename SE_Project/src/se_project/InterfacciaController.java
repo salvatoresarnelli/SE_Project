@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -64,7 +66,7 @@ public class InterfacciaController implements Initializable {
     }
 
     @FXML
-    private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
+    private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException {
         String text = inputField.getText();
             String code = parser.parserString(text);
         ComplexNumber n;
@@ -78,8 +80,18 @@ public class InterfacciaController implements Initializable {
             observableList.add(n);
         }
         if (code.equals(operation)) {
-            n = solver.resolveOperation(text);
-            observableList.add(n);
+            try {
+                n = solver.resolveOperation(text);
+                observableList.add(n);
+            } catch (DivisionByZeroException ex) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Errore!");
+                alert.setHeaderText("Operazione non ammissibile.");
+                alert.setContentText("Non si può dividere per zero.");
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK);      
+                });
+            }
         }
          if(code.equals(invalid_insert)){
                 Alert alert = new Alert(AlertType.ERROR);
