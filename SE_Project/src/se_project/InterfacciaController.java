@@ -37,8 +37,7 @@ import se_project.exceptions.UndefinedPhaseException;
  * @author emanu
  */
 public class InterfacciaController implements Initializable {
-    @FXML
-    private TextArea textArea;
+    
     @FXML 
     private TextField inputField;
     @FXML

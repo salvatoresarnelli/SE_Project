@@ -27,6 +27,8 @@ public class SE_Project extends Application {
         
         Scene scene = new Scene(root); 
         stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setFullScreen(false);
         stage.show();
     }
 
