@@ -22,11 +22,15 @@ public class ComplexNumber {
     /**
     * Metodo costruttore della classe ComplexNumber.
     * @author pio
-    * @param       double a, double b
-    * @return      Numero complesso con parte reale e immaginaria.
+     * @param a
+     * @param b
     */
 
     public ComplexNumber(double a, double b) {
+        if(a==-0)
+            a=0;
+        if (b==-0)
+            b=0;
         this.a = a;
         this.b = b;
     }
@@ -34,8 +38,7 @@ public class ComplexNumber {
     /**
     * Metodo costruttore della classe ComplexNumber in caso di assenza di parametri.
     * @author pio
-    * @param       
-    * @return      
+    * @param      
     */
 
     public ComplexNumber() {
@@ -45,9 +48,8 @@ public class ComplexNumber {
     
     /**
     * Il metodo si occupa di settare la parte reale di un numero complesso.
-    * @author pio
-    * @param       double a
-    * @return      
+    * @author pio      
+     * @param a      
     */
 
     public void setRealPart(double a) {
@@ -56,9 +58,8 @@ public class ComplexNumber {
     
     /**
     * Il metodo si occupa di settare la parte immaginaria di un numero complesso.
-    * @author pio
-    * @param       double b
-    * @return      
+    * @author pio      
+     * @param b      
     */
 
     public void setImaginaryPart(double b) {
@@ -101,10 +102,9 @@ public class ComplexNumber {
     /**
     * Il metodo si occupa di ricavare la fase di un numero complesso.
     * @author pio
+     * @throws se_project.exceptions.UndefinedPhaseException
     * @param       
     * @return fase del numero complesso.
-    * @throws UndefinedPahseException se il numero complesso ha 
-    *         parte reale e immaginaria nulla.
     * 
     */
     
@@ -134,7 +134,8 @@ public class ComplexNumber {
     * Il metodo si occupa di trasformare il numero complesso in forma trigonometrica
     * in un numero complesso in forma cartesiana. 
     * @author pio
-    * @param  double mod, double phase
+     * @param mod
+     * @param phase
     * @return numero complesso in forma cartesiana.
     */
  
@@ -147,9 +148,9 @@ public class ComplexNumber {
     /**
     * Il metodo si occupa di calcolare il coniugato di un numero compesso.
     * @author pio
-    * @param ComplexNumber n
+     * @param n
     * @return congiugato del numero complesso.
-    * @throws InvalidNumerException se il numero complesso è null.
+     * @throws se_project.exceptions.InvalidNumberException
     */
      
     public ComplexNumber conjugated(ComplexNumber n) throws InvalidNumberException{
@@ -174,7 +175,6 @@ public class ComplexNumber {
     /**
     * Il metodo si occupa verificare se un numero complesso è uguale ad un oggetto.
     * @author pio
-    * @param Object obj
     * @return true, se il numero complesso è uguale ad un altro oggetto, 
     *         false altrimenti. 
     */
