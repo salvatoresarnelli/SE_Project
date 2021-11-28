@@ -68,7 +68,7 @@ public class InterfacciaController implements Initializable {
     @FXML
     private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException {
         String text = inputField.getText();
-            String code = parser.parserString(text);
+        String code = parser.parserString(text);
         ComplexNumber n;
         if (code.equals(complex_number)) {
             n = parser.recognizeComplexNumber(text);
@@ -76,7 +76,6 @@ public class InterfacciaController implements Initializable {
         }
         if (code.equals(single_number)) {
             n = parser.recognizeNumber(text);
-
             observableList.add(n);
         }
         if (code.equals(operation)) {
@@ -98,24 +97,16 @@ public class InterfacciaController implements Initializable {
                 });
             }
         }
-         if(code.equals(invalid_insert)){
+        if(code.equals(invalid_insert)){
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Inserimento non valido");
                 alert.setHeaderText("L'elemento inserito non è corretto , riprovare");
                 alert.setContentText(text + " --> L'inserimento non è valido");
                 alert.showAndWait().ifPresent(rs -> {
                     if (rs == ButtonType.OK);
-
-
-        });
-         }
-
+                });
+        }
         listView.itemsProperty().bind(listProperty);
-        inputField.clear();
-        
-
-        
+        inputField.clear(); 
     }
-     
-
 }
