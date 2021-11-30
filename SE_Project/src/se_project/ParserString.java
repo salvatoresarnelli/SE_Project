@@ -48,7 +48,7 @@ public class ParserString {
      * @param text la stringa da dover controllare
      * @return      IL metodo torna la costante operation se i confronti con almeno una stringa citata prima ha successo, invalid_operation altrimenti.
      */
-    public String checkOperation(String text){
+    public String checkOperation(String text) throws ArrayIndexOutOfBoundsException{
         text = text.replaceAll("\\n", "");
         if(text.equals("+") || text.equals("-") || text.equals("*") || text.equals(":")||text.equals("+-") || text.equals("sqrt")) return operation;
             String possible_operation = text.toLowerCase();
@@ -103,7 +103,7 @@ public class ParserString {
      * @return      ritorna complex_number  se la stringa è un numero, continue_checking altrimenti.
      * 
      */
-    public String checkPossibleOneNumber(String text){
+    public String checkPossibleOneNumber(String text) throws  ArrayIndexOutOfBoundsException{
         if(this.checkPossiblePartReal(text)) 
             return single_number;
         return this.checkPossiblePartImaginary(text) ? single_number : invalid_insert; 
@@ -117,7 +117,7 @@ public class ParserString {
      *              altrimenti invalid_insert.
      * 
      */
-    public String checkComplexNumber(String text){
+    public String checkComplexNumber(String text) throws ArrayIndexOutOfBoundsException{
         if(text.contains("+") || text.contains("-")) {
             String replaceAll = text.replaceAll(" ", "");
             String [] scanner = replaceAll.split("\\+|\\-");
@@ -156,7 +156,7 @@ public class ParserString {
      *              se la stringa text contiene un'operazione, invalid_insert altrimenti.
      * 
      */
-    public String parserString(String text){
+    public String parserString(String text) throws ArrayIndexOutOfBoundsException{
         if(text.length() == 0) 
             return invalid_insert;
         String return_value = this.checkOperation(text);

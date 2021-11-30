@@ -78,12 +78,15 @@ public class DecoratorParserOperation extends  ParserString{
             textString = this.clearStringOperation(textString);
             String[] string = textString.split("\\$");
             String possible_name = string[0];
+          
             if(possible_name.length() <= 1 || linkedList.contains(possible_name))
                 return invalid_insert;
             String possible_operations = string[1];
             if(!this.checkName(possible_name)) return invalid_insert;
             possible_operations = this.removeInitialSpaces(possible_operations);
-            if(!hashMap.containsKey(string[0])){
+            System.out.println(possible_name);
+            System.out.println(hashMap);
+            if(!hashMap.containsKey(possible_name)){
                 String [] operations = possible_operations.split("\\s+");
                 for(String possibile_operation : operations){
                     if(!hashMap.containsKey(possibile_operation) && !linkedList.contains(possibile_operation)) 
@@ -95,6 +98,7 @@ public class DecoratorParserOperation extends  ParserString{
                 hashMap.put(possible_name, final_operations);
                 return possible_name;
             }
+            
             throw new InvalidNameException("nome già utilizzato");
             
             

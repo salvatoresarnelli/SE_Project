@@ -123,6 +123,7 @@ public class InterfacciaController implements Initializable {
             prevs.addLast(text);
             index = prevs.size();
         }
+       
         String code = decoratorParserOperation.parserString(text);
         ComplexNumber n;
         if (code.equals(complex_number)) {
