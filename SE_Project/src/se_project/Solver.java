@@ -7,6 +7,11 @@ package se_project;
 
 import java.util.LinkedList;
 import se_project.*;
+import se_project.commands.ColonsCommand;
+import se_project.commands.DotCommand;
+import se_project.commands.MinusCommand;
+import se_project.commands.PlusCommand;
+import se_project.commands.SignCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
@@ -39,25 +44,25 @@ public class Solver {
     public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
         switch(text){
             case "addition":
-                return this.sum();
+                return new PlusCommand(stack).execute();
             case "+":
-                return this.sum();
+                return new PlusCommand(stack).execute();
             case "substraction":
-                return this.difference();
+                return new MinusCommand(stack).execute();
             case "-":
-                return  this.difference();
+                return  new MinusCommand(stack).execute();
             case "multiplication":
-                return this.dot();
+                return new DotCommand(stack).execute();
             case "*":
-                return  this.dot();
+                return  new DotCommand(stack).execute();
             case "division":
-                return this.division();
+                return new ColonsCommand(stack).execute();
             case ":":
-                return this.division();
+                return new ColonsCommand(stack).execute();
             case "invert sign":
-                return this.sign();
+                return new SignCommand(stack).execute();
             case "+-":
-                return this.sign();         
+                return new SignCommand(stack).execute();         
                 
             }
         throw new InvalidNumberException();
