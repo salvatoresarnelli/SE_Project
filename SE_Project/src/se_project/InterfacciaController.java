@@ -37,7 +37,9 @@ import se_project.exceptions.UndefinedPhaseException;
  * @author emanu
  */
 public class InterfacciaController implements Initializable {
-
+    /*Vengono definite una linked list contenente i comandi passati precedentemente
+    nella casella di testo, un indice contenente l'indice attuale della lista e un 
+    list iterator per iterare tale lista.*/
     LinkedList<String> prevs;
     int index = 0;
     ListIterator<String> it;
@@ -59,15 +61,18 @@ public class InterfacciaController implements Initializable {
 
     public void initialize(URL url, ResourceBundle rb) {
         observableList = FXCollections.observableList(solver.getStructureStack().getStack());
+        /*si inizilizzano lista e iteratore*/
         prevs = new LinkedList<>();
         it = prevs.listIterator();
         inputField.setOnKeyPressed((KeyEvent event) -> {
             String tmp;
-
+            /*se è stato premuto enter, si passa la stringa scritta nella casella 
+            di testo al parser*/
             if (event.getCode().equals(KeyCode.ENTER)) {
                 buttonPush.fire();
             }
-
+            /*se è stata premuta freccia su, si prende il comando passato precedentemente a 
+            quello in cui si sta iterando. Se non ci sono comandi precedenti, non fa nulla.*/
             if (event.getCode().equals(KeyCode.UP)) {
                 try {
                     it = prevs.listIterator(index);
@@ -81,6 +86,9 @@ public class InterfacciaController implements Initializable {
 
                 }
             }
+            /*se è stata premuta freccia giù, si prende il comando passato successivamente a 
+            quello in cui si sta iterando. Se non ci sono comandi successivi, si inserisce la
+            stringa vuota nella casella di testo.*/
             if (event.getCode().equals(KeyCode.DOWN)) {
                     try {
                     it = prevs.listIterator(index);
