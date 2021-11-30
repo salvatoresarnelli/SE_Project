@@ -22,6 +22,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -52,12 +54,15 @@ public class InterfacciaController implements Initializable {
     private ListView<ComplexNumber> listView;
     private final Solver solver = Solver.getInstance();
     private final ParserString parser = new ParserString();
+    private final DecoratorParserOperation decoratorParserOperation = new DecoratorParserOperation(parser);
     private final String operation = "__OPERATION__";
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
     private final String invalid_insert = "__INVALID__";
     private ObservableList<ComplexNumber> observableList;
     protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
+    @FXML
+    private SplitMenuButton splitMenuButton;
 
     public void initialize(URL url, ResourceBundle rb) {
         observableList = FXCollections.observableList(solver.getStructureStack().getStack());
@@ -118,14 +123,14 @@ public class InterfacciaController implements Initializable {
             prevs.addLast(text);
             index = prevs.size();
         }
-        String code = parser.parserString(text);
+        String code = decoratorParserOperation.parserString(text);
         ComplexNumber n;
         if (code.equals(complex_number)) {
-            n = parser.recognizeComplexNumber(text);
+            n = decoratorParserOperation.recognizeComplexNumber(text);
             observableList.add(n);
         }
         if (code.equals(single_number)) {
-            n = parser.recognizeNumber(text);
+            n = decoratorParserOperation.recognizeNumber(text);
             observableList.add(n);
         }
         if (code.equals(operation)) {
@@ -138,33 +143,48 @@ public class InterfacciaController implements Initializable {
                 }
 
             } catch (DivisionByZeroException ex) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Errore!");
-                alert.setHeaderText("Operazione non ammissibile.");
-                alert.setContentText("Non si può dividere per zero.");
-                alert.showAndWait().ifPresent(rs -> {
-                    if (rs == ButtonType.OK);
-                });
+              this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
             }
         }
-        if (code.equals(invalid_insert)) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Inserimento non valido");
-            alert.setHeaderText("L'elemento inserito non è corretto , riprovare");
-            alert.setContentText(text + " --> L'inserimento non è valido");
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK);
-            });
+   if(code.equals(invalid_insert))
+            this.Alert("Inserimento non valido", "L'elemento inserito non è corretto , riprovare", text + " --> L'inserimento non è valido");
+        if(decoratorParserOperation.getNames().contains(code)){
+            MenuItem choice = new MenuItem(code);
+            splitMenuButton.getItems().add(choice);
+            choice.setOnAction((e)-> {
+            inputField.clear();
+            LinkedList<String> operations = decoratorParserOperation.getOperations(code);
+            operations.forEach((op) -> {
+                try {
+                    if(op.equals("square root") || op.equals("sqrt")) {
+                        observableList.addAll(solver.squareRoot());
+                    } else
+                        observableList.add(solver.resolveOperation(op));
+                    
+                    
+                } catch (DivisionByZeroException ex) {
+                    this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+                    
+                }   catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
+                    this.Alert("Errore!", "Operazione non ammissibile", " ");
+                }
+                });
+            
+});
+            
         }
+
         listView.itemsProperty().bind(listProperty);
         inputField.clear();
     }
     
+    @FXML
     public void numberOnText(ActionEvent ae){
         String no = ((Button)ae.getSource()).getText();
         inputField.setText(inputField.getText()+no);
     }
     
+    @FXML
     public void operationOnText(ActionEvent ae){
         String no = ((Button)ae.getSource()).getText();
         inputField.setText(inputField.getText()+no);
@@ -190,5 +210,16 @@ public class InterfacciaController implements Initializable {
         inputField.setText(inputField.getText()+"+-");
     }
     
+      public void Alert(String title , String headerText, String contentText){
+        Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(headerText);
+            alert.setContentText(contentText);
+            alert.showAndWait().ifPresent(rs -> {
+                if (rs == ButtonType.OK);      
+            });
     
+}
+
+   
 }
