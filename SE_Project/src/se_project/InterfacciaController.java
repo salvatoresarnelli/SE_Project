@@ -159,4 +159,36 @@ public class InterfacciaController implements Initializable {
         listView.itemsProperty().bind(listProperty);
         inputField.clear();
     }
+    
+    public void numberOnText(ActionEvent ae){
+        String no = ((Button)ae.getSource()).getText();
+        inputField.setText(inputField.getText()+no);
+    }
+    
+    public void operationOnText(ActionEvent ae){
+        String no = ((Button)ae.getSource()).getText();
+        inputField.setText(inputField.getText()+no);
+    }
+    
+    @FXML
+    void divisionOnText(ActionEvent event) {
+        inputField.setText(inputField.getText()+"/");
+    }
+
+    @FXML
+    void multiplicationOnText(ActionEvent event) {
+        inputField.setText(inputField.getText()+"*");
+    }
+    
+     @FXML
+    void sqrtOnText(ActionEvent event) {
+        inputField.setText(inputField.getText()+"sqrt");
+    }
+    
+     @FXML
+    void invertedOnText(ActionEvent event) {
+        inputField.setText(inputField.getText()+"+-");
+    }
+    
+    
 }

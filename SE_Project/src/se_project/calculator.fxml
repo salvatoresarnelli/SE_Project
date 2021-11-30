@@ -25,25 +25,25 @@
                   <Menu mnemonicParsing="false" text="Edit" />
                </menus>
             </MenuBar>
-            <Button layoutX="113.0" layoutY="398.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="0" />
-            <Button layoutX="181.0" layoutY="398.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="." />
+            <Button layoutX="113.0" layoutY="398.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="0" />
+            <Button layoutX="181.0" layoutY="398.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="." />
             <Button fx:id="buttonPush" layoutX="244.0" layoutY="398.0" mnemonicParsing="false" onAction="#ActionPush" prefHeight="25.0" prefWidth="52.0" text="Push" />
-            <Button layoutX="314.0" layoutY="398.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="+" />
-            <Button layoutX="314.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="-" />
-            <Button layoutX="314.0" layoutY="320.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="x" />
-            <Button layoutX="314.0" layoutY="283.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="÷" />
+            <Button layoutX="314.0" layoutY="398.0" mnemonicParsing="false" onAction="#operationOnText" prefHeight="25.0" prefWidth="52.0" text="+" />
+            <Button layoutX="314.0" layoutY="359.0" mnemonicParsing="false" onAction="#operationOnText" prefHeight="25.0" prefWidth="52.0" text="-" />
+            <Button layoutX="314.0" layoutY="320.0" mnemonicParsing="false" onAction="#multiplicationOnText" prefHeight="25.0" prefWidth="52.0" text="x" />
+            <Button layoutX="314.0" layoutY="283.0" mnemonicParsing="false" onAction="#divisionOnText" prefHeight="25.0" prefWidth="52.0" text="÷" />
             <Button layoutX="314.0" layoutY="248.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="CE" />
-            <Button layoutX="113.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="1" />
-            <Button layoutX="181.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="2" />
-            <Button layoutX="244.0" layoutY="359.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="3" />
-            <Button layoutX="113.0" layoutY="320.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="4" />
-            <Button layoutX="181.0" layoutY="320.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="5" />
-            <Button layoutX="244.0" layoutY="320.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="6" />
-            <Button layoutX="113.0" layoutY="283.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="7" />
-            <Button layoutX="181.0" layoutY="283.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="8" />
-            <Button layoutX="244.0" layoutY="283.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="9" />
-            <Button layoutX="244.0" layoutY="248.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="√" />
-            <Button layoutX="181.0" layoutY="248.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="+-" />
+            <Button layoutX="113.0" layoutY="359.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="1" />
+            <Button layoutX="181.0" layoutY="359.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="2" />
+            <Button layoutX="244.0" layoutY="359.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="3" />
+            <Button layoutX="113.0" layoutY="320.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="4" />
+            <Button layoutX="181.0" layoutY="320.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="5" />
+            <Button layoutX="244.0" layoutY="320.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="6" />
+            <Button layoutX="113.0" layoutY="283.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="7" />
+            <Button layoutX="181.0" layoutY="283.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="8" />
+            <Button layoutX="244.0" layoutY="283.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" text="9" />
+            <Button layoutX="244.0" layoutY="248.0" mnemonicParsing="false" onAction="#sqrtOnText" prefHeight="25.0" prefWidth="52.0" text="√" />
+            <Button layoutX="181.0" layoutY="248.0" mnemonicParsing="false" onAction="#invertedOnText" prefHeight="25.0" prefWidth="52.0" text="+-" />
             <Button layoutX="113.0" layoutY="248.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="sin" />
             <Button layoutX="43.0" layoutY="248.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="cos" />
             <Button layoutX="43.0" layoutY="283.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" text="tan" />
