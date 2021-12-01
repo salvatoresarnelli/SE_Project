@@ -7,10 +7,13 @@ package se_project;
 
 import javafx.scene.control.ListView;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Spliterator;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -39,6 +42,7 @@ import se_project.exceptions.UndefinedPhaseException;
  * @author emanu
  */
 public class InterfacciaController implements Initializable {
+
     /*Vengono definite una linked list contenente i comandi passati precedentemente
     nella casella di testo, un indice contenente l'indice attuale della lista e un 
     list iterator per iterare tale lista.*/
@@ -59,6 +63,7 @@ public class InterfacciaController implements Initializable {
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
     private final String invalid_insert = "__INVALID__";
+    private final String still_name_inserted = "__NAME__";
     private ObservableList<ComplexNumber> observableList;
     protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
     @FXML
@@ -83,8 +88,9 @@ public class InterfacciaController implements Initializable {
                     it = prevs.listIterator(index);
 
                     tmp = it.previous();
-                    if(!tmp.isEmpty())
+                    if (!tmp.isEmpty()) {
                         inputField.setText(tmp);
+                    }
                     index--;
                 } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
                     index = 0;
@@ -95,19 +101,20 @@ public class InterfacciaController implements Initializable {
             quello in cui si sta iterando. Se non ci sono comandi successivi, si inserisce la
             stringa vuota nella casella di testo.*/
             if (event.getCode().equals(KeyCode.DOWN)) {
-                    try {
+                try {
                     it = prevs.listIterator(index);
 
                     tmp = it.next();
-                    if(!tmp.isEmpty())
+                    if (!tmp.isEmpty()) {
                         inputField.setText(tmp);
+                    }
                     index++;
                 } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
                     inputField.setText("");
                     index = prevs.size();
 
                 }
-                
+
             }
 
         });
@@ -117,14 +124,57 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException {
-
         String text = inputField.getText();
         if (!text.isEmpty()) {
             prevs.addLast(text);
             index = prevs.size();
         }
-       
-        String code = decoratorParserOperation.parserString(text);
+        if (decoratorParserOperation.getNames() != null && decoratorParserOperation.getNames().contains(text)) {
+            inputField.clear();
+            LinkedList<String> operations = decoratorParserOperation.getOperations(text);
+            operations.forEach((op) -> {
+                try {
+                    if (decoratorParserOperation.getNames().contains(op)) {
+                        LinkedList<String> execute = decoratorParserOperation.getOperations(op);
+
+                        for (String s : execute) {
+                            if (s.equals("square root") || s.equals("sqrt")) {
+                                observableList.addAll(solver.squareRoot());
+
+                            } else {
+                                observableList.add(solver.resolveOperation(s));
+                            }
+                        }
+                        return;
+                    }
+                    if (op.equals("square root") || op.equals("sqrt")) {
+                        observableList.addAll(solver.squareRoot());
+
+                    } else {
+                        observableList.add(solver.resolveOperation(op));
+                        System.out.println("ciao");
+                    }
+
+                } catch (DivisionByZeroException ex) {
+                    this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+
+                } catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
+                    this.Alert("Errore!", "Operazione non ammissibile", " ");
+                }
+            });
+            return;
+
+        }
+        String code = invalid_insert;
+        try {
+             code = decoratorParserOperation.parserString(text);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            this.Alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+            inputField.clear();
+            return;
+        }
+        
+
         ComplexNumber n;
         if (code.equals(complex_number)) {
             n = decoratorParserOperation.recognizeComplexNumber(text);
@@ -144,83 +194,131 @@ public class InterfacciaController implements Initializable {
                 }
 
             } catch (DivisionByZeroException ex) {
-              this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+                this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
             }
         }
-   if(code.equals(invalid_insert))
+        if (code.equals(invalid_insert)) {
             this.Alert("Inserimento non valido", "L'elemento inserito non è corretto , riprovare", text + " --> L'inserimento non è valido");
-        if(decoratorParserOperation.getNames().contains(code)){
-            MenuItem choice = new MenuItem(code);
-            splitMenuButton.getItems().add(choice);
-            choice.setOnAction((e)-> {
-            inputField.clear();
-            LinkedList<String> operations = decoratorParserOperation.getOperations(code);
-            operations.forEach((op) -> {
-                try {
-                    if(op.equals("square root") || op.equals("sqrt")) {
-                        observableList.addAll(solver.squareRoot());
-                    } else
-                        observableList.add(solver.resolveOperation(op));
-                    
-                    
-                } catch (DivisionByZeroException ex) {
-                    this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
-                    
-                }   catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
-                    this.Alert("Errore!", "Operazione non ammissibile", " ");
+        }
+        if (decoratorParserOperation.getNames().contains(code)) {
+            this.inizializeMenuButton(code);
+
+        }
+        if (code.equals(still_name_inserted)) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Operazione già inserita");
+            alert.setHeaderText("L'operazione è già stata inserita");
+            alert.setContentText("Vuoi sovrascriverla?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                String textString = decoratorParserOperation.clearStringOperation(text);
+                String[] string = textString.split("\\$");
+                String possible_name = string[0];
+                possible_name = possible_name.replaceAll(" ", "");
+                decoratorParserOperation.removeOperation(possible_name);
+                Iterator<MenuItem> iterator = splitMenuButton.getItems().iterator();
+                MenuItem menuItemDelete = new MenuItem();
+                while (iterator.hasNext()) {
+                    MenuItem menuItem = iterator.next();
+                    System.out.println(menuItem.getText());
+                    if (menuItem.getText().equals(possible_name)) {
+                        menuItemDelete = menuItem;
+                    }
                 }
-                });
-            
-});
-            
+                splitMenuButton.getItems().remove(menuItemDelete);
+                decoratorParserOperation.parserString(text);
+                this.inizializeMenuButton(possible_name);
+
+            } else;
         }
 
         listView.itemsProperty().bind(listProperty);
         inputField.clear();
     }
-    
+
     @FXML
-    public void numberOnText(ActionEvent ae){
-        String no = ((Button)ae.getSource()).getText();
-        inputField.setText(inputField.getText()+no);
+    public void numberOnText(ActionEvent ae) {
+        String no = ((Button) ae.getSource()).getText();
+        inputField.setText(inputField.getText() + no);
     }
-    
+
     @FXML
-    public void operationOnText(ActionEvent ae){
-        String no = ((Button)ae.getSource()).getText();
-        inputField.setText(inputField.getText()+no);
+    public void operationOnText(ActionEvent ae) {
+        String no = ((Button) ae.getSource()).getText();
+        inputField.setText(inputField.getText() + no);
     }
-    
+
     @FXML
     void divisionOnText(ActionEvent event) {
-        inputField.setText(inputField.getText()+"/");
+        inputField.setText(inputField.getText() + "/");
     }
 
     @FXML
     void multiplicationOnText(ActionEvent event) {
-        inputField.setText(inputField.getText()+"*");
+        inputField.setText(inputField.getText() + "*");
     }
-    
-     @FXML
-    void sqrtOnText(ActionEvent event) {
-        inputField.setText(inputField.getText()+"sqrt");
-    }
-    
-     @FXML
-    void invertedOnText(ActionEvent event) {
-        inputField.setText(inputField.getText()+"+-");
-    }
-    
-      public void Alert(String title , String headerText, String contentText){
-        Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle(title);
-            alert.setHeaderText(headerText);
-            alert.setContentText(contentText);
-            alert.showAndWait().ifPresent(rs -> {
-                if (rs == ButtonType.OK);      
-            });
-    
-}
 
-   
+    @FXML
+    void sqrtOnText(ActionEvent event) {
+        inputField.setText(inputField.getText() + "sqrt");
+    }
+
+    @FXML
+    void invertedOnText(ActionEvent event) {
+        inputField.setText(inputField.getText() + "+-");
+    }
+
+    public void Alert(String title, String headerText, String contentText) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK);
+        });
+
+    }
+
+    @FXML
+    private void ActionPush(KeyEvent event) {
+    }
+
+    public void inizializeMenuButton(String code) {
+        MenuItem choice = new MenuItem(code);
+        splitMenuButton.getItems().add(choice);
+        choice.setOnAction((e) -> {
+            inputField.clear();
+            LinkedList<String> operations = decoratorParserOperation.getOperations(code);
+            operations.forEach((op) -> {
+                try {
+                    if (decoratorParserOperation.getNames().contains(op)) {
+                        LinkedList<String> execute = decoratorParserOperation.getOperations(op);
+                        System.out.println(execute);
+                        for (String s : execute) {
+                            if (s.equals("square root") || s.equals("sqrt")) {
+                                observableList.addAll(solver.squareRoot());
+
+                            } else {
+                                observableList.add(solver.resolveOperation(s));
+                            }
+                        }
+                        return;
+                    }
+                    if (op.equals("square root") || op.equals("sqrt")) {
+                        observableList.addAll(solver.squareRoot());
+
+                    } else {
+                        observableList.add(solver.resolveOperation(op));
+                    }
+
+                } catch (DivisionByZeroException ex) {
+                    this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+
+                } catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
+                    this.Alert("Errore!", "Operazione non ammissibile", " ");
+                }
+            });
+
+        });
+    }
 }
