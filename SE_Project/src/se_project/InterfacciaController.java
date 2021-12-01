@@ -333,10 +333,13 @@ public class InterfacciaController implements Initializable {
 
                         for (String s : execute) {
                             if (s.equals("square root") || s.equals("sqrt")) {
-                                observableList.addAll(solver.squareRoot());
+                                LinkedList<ComplexNumber> list = solver.squareRoot();
+                                list.forEach(c -> {
+                                    this.solver.getStructureStack().push(c);
+                                });
 
                             } else {
-                                observableList.add(solver.resolveOperation(s));
+                                this.solver.getStructureStack().push(solver.resolveOperation(s));
                             }
                         }
                         observableList.clear();
@@ -344,10 +347,13 @@ public class InterfacciaController implements Initializable {
                         return;
                     }
                     if (op.equals("square root") || op.equals("sqrt")) {
-                        observableList.addAll(solver.squareRoot());
+                        LinkedList<ComplexNumber> list = solver.squareRoot();
+                        list.forEach(c -> {
+                            this.solver.getStructureStack().push(c);
+                        });
 
                     } else {
-                        observableList.add(solver.resolveOperation(op));
+                        this.solver.getStructureStack().push(solver.resolveOperation(op));
                     }
 
                 } catch (DivisionByZeroException ex) {
