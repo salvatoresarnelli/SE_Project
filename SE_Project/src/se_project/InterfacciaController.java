@@ -152,7 +152,7 @@ public class InterfacciaController implements Initializable {
 
                     } else {
                         observableList.add(solver.resolveOperation(op));
-                        System.out.println("ciao");
+                        
                     }
 
                 } catch (DivisionByZeroException ex) {
@@ -279,10 +279,6 @@ public class InterfacciaController implements Initializable {
 
     }
 
-    @FXML
-    private void ActionPush(KeyEvent event) {
-    }
-
     public void inizializeMenuButton(String code) {
         MenuItem choice = new MenuItem(code);
         splitMenuButton.getItems().add(choice);
@@ -293,7 +289,7 @@ public class InterfacciaController implements Initializable {
                 try {
                     if (decoratorParserOperation.getNames().contains(op)) {
                         LinkedList<String> execute = decoratorParserOperation.getOperations(op);
-                        System.out.println(execute);
+                        //System.out.println(execute);
                         for (String s : execute) {
                             if (s.equals("square root") || s.equals("sqrt")) {
                                 observableList.addAll(solver.squareRoot());
