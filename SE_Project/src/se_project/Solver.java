@@ -68,7 +68,7 @@ public class Solver {
         switch(text) {
             case "clear":
                 return this.clear();
-            case "duplicate":
+            case "dup":
                 return this.duplicate();
             case "drop":
                 return this.drop();
