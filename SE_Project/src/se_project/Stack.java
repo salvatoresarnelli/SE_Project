@@ -90,7 +90,7 @@ public class Stack {
     * @author Salvatore Sarnelli
     * @param 
     * @return numero complesso letto dallo stack. 
-    * @throws EmptyStackException se si senta di rimuovere un elemento 
+    * @throws EmptyStackException se si tenta di rimuovere un elemento 
     *         dallo stack vuoto.
     */
     
@@ -139,11 +139,27 @@ public class Stack {
 
     }
     
+    /**
+    * Il metodo si occupa di rimuovere tutti gli elementi dallo stack.
+    * @author Salvatore Sarnelli
+    * @param 
+    * @return true se l'operazione di clear viene effettuata con successo.
+    * @throws EmptyStackException se lo stack è vuoto.
+    */
+    
     public boolean clear() throws EmptyStackException{
         if(this.isEmpty()) throw new EmptyStackException();
         this.stack.clear();
         return true;
     }
+    
+    /**
+    * Il metodo si occupa di duplicare l'ultimo elemento dello stack.
+    * @author Salvatore Sarnelli
+    * @param 
+    * @return true se l'operazione di duplicazione viene effettuata con successo.
+    * @throws EmptyStackException se lo stack è vuoto.
+    */    
     
     public boolean duplicate() throws EmptyStackException{
         if(this.isEmpty()) throw new EmptyStackException();
@@ -151,10 +167,27 @@ public class Stack {
         return true;
     }
     
+    /**
+    * Il metodo si occupa di rimuovere l'ultimo elemento dallo stack.
+    * @author Salvatore Sarnelli
+    * @param 
+    * @return true se l'operazione di rimozione viene effettuata con successo.
+    * @throws EmptyStackException se lo stack è vuoto.
+    */
+    
     public boolean drop() throws EmptyStackException{
         this.pop();
         return true;
     }
+    
+    /**
+    * Il metodo si occupa di scambiare gli ultimi due elementi dello stack.
+    * @author Salvatore Sarnelli
+    * @param 
+    * @return true se l'operazione di scambio viene effettuata con successo.
+    * @throws EmptyStackException se lo stack è vuoto; InvalidOperationException se 
+    *         nello stack è presente un solo elemento.
+    */
     
     public boolean swap() throws InvalidOperationException, EmptyStackException{
         if(this.isEmpty() || this.size() == 1) throw new InvalidOperationException();
@@ -165,8 +198,16 @@ public class Stack {
         return true;
     }
     
+    /**
+    * Il metodo si occupa di copiare il valore del penultimo elemento dello stack e di inserirlo alla fine dello stack.
+    * @author Salvatore Sarnelli
+    * @param 
+    * @return true se l'operazione di over viene effettuata con successo.
+    * @throws EmptyStackException se lo stack è vuoto; EmptyStackException se nello stack è presente un solo elemento.
+    */
+    
     public boolean over() throws EmptyStackException, InvalidOperationException{
-        if(this.isEmpty() || this.size() == 1) throw new InvalidOperationException();
+        if(this.size() == 1) throw new InvalidOperationException();
         ComplexNumber last = this.pop();
         ComplexNumber before_last = this.peek();
         this.push(last);
