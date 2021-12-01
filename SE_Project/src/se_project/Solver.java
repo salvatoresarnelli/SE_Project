@@ -143,7 +143,7 @@ public class Solver {
         return stack.clear();
     }
     
-    public boolean swap() throws EmptyStackException {
+    public boolean swap() throws EmptyStackException, InvalidOperationException {
         return stack.swap();
     }
     
@@ -151,7 +151,7 @@ public class Solver {
         return stack.drop();
     }
     
-    public boolean over() throws EmptyStackException {
+    public boolean over() throws EmptyStackException, InvalidOperationException {
         return stack.over();
     }
     

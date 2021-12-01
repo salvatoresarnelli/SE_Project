@@ -387,14 +387,14 @@ public class InterfacciaController implements Initializable {
     }
 
     @FXML
-    private void ActionSwap(ActionEvent event) throws EmptyStackException {
+    private void ActionSwap(ActionEvent event) throws EmptyStackException, InvalidOperationException {
         this.solver.getStructureStack().swap();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
 
     @FXML
-    private void ActionOver(ActionEvent event) throws EmptyStackException {
+    private void ActionOver(ActionEvent event) throws EmptyStackException, InvalidOperationException {
         this.solver.getStructureStack().over();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
