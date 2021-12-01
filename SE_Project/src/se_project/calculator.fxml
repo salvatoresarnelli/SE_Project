@@ -61,10 +61,11 @@
          <children>
             <MenuButton layoutX="136.0" layoutY="78.0" mnemonicParsing="false" text="Stack Operation" textAlignment="CENTER">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Clear" />
-                  <MenuItem mnemonicParsing="false" text="Duplicate" />
-                  <MenuItem mnemonicParsing="false" text="Over" />
-                  <MenuItem mnemonicParsing="false" text="Drop" />
+                  <MenuItem fx:id="buttonClear" mnemonicParsing="false" onAction="#ActionClear" text="Clear" />
+                  <MenuItem fx:id="buttonDrop" mnemonicParsing="false" onAction="#ActionDrop" text="Drop" />
+                  <MenuItem fx:id="buttonDuplicate" mnemonicParsing="false" onAction="#ActionDuplicate" text="Duplicate" />
+                  <MenuItem fx:id="buttonSwap" mnemonicParsing="false" onAction="#ActionSwap" text="Swap" />
+                  <MenuItem fx:id="buttonOver" mnemonicParsing="false" onAction="#ActionOver" text="Over" />
                </items>
             </MenuButton>
             <ListView fx:id="listView" editable="true" layoutX="94.0" layoutY="138.0" prefHeight="376.0" prefWidth="200.0" />

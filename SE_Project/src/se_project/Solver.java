@@ -7,14 +7,10 @@ package se_project;
 
 import java.util.LinkedList;
 import se_project.*;
-import se_project.commands.ColonsCommand;
-import se_project.commands.DotCommand;
-import se_project.commands.MinusCommand;
-import se_project.commands.PlusCommand;
-import se_project.commands.SignCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
+import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
 
@@ -41,32 +37,49 @@ public class Solver {
     public Stack getStructureStack(){
         return this.stack;
     }
-    public ComplexNumber  resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
+    public ComplexNumber resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
         switch(text){
             case "addition":
-                return new PlusCommand(stack).execute();
+                return this.sum();
             case "+":
-                return new PlusCommand(stack).execute();
+                return this.sum();
             case "substraction":
-                return new MinusCommand(stack).execute();
+                return this.difference();
             case "-":
-                return  new MinusCommand(stack).execute();
+                return  this.difference();
             case "multiplication":
-                return new DotCommand(stack).execute();
+                return this.dot();
             case "*":
-                return  new DotCommand(stack).execute();
+                return  this.dot();
             case "division":
-                return new ColonsCommand(stack).execute();
+                return this.division();
             case ":":
-                return new ColonsCommand(stack).execute();
+                return this.division();
             case "invert sign":
-                return new SignCommand(stack).execute();
+                return this.sign();
             case "+-":
-                return new SignCommand(stack).execute();         
+                return this.sign();         
                 
             }
         throw new InvalidNumberException();
     }
+    
+    public boolean resolveOperationStack(String text) throws  InvalidOperationException, EmptyStackException {
+        switch(text) {
+            case "clear":
+                return this.clear();
+            case "duplicate":
+                return this.duplicate();
+            case "drop":
+                return this.drop();
+            case "swap":
+                return this.swap();
+            case "over":
+                return this.over();
+        }
+        throw new InvalidOperationException();
+    }
+    
     public ComplexNumber sum() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
         if (stack.size() >= 2) {
             ComplexNumber c1 = stack.pop();
@@ -126,5 +139,24 @@ public class Solver {
         
     }
     
+    public boolean clear() throws EmptyStackException {
+        return stack.clear();
+    }
     
+    public boolean swap() throws EmptyStackException {
+        return stack.swap();
+    }
+    
+    public boolean drop() throws EmptyStackException {
+        return stack.drop();
+    }
+    
+    public boolean over() throws EmptyStackException {
+        return stack.over();
+    }
+    
+    public boolean duplicate() throws EmptyStackException {
+        return stack.duplicate();
+    }
+
 }

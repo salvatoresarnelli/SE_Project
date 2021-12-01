@@ -9,6 +9,7 @@ import se_project.exceptions.EmptyStackException;
 import java.util.LinkedList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import se_project.exceptions.InvalidOperationException;
 
 /**
  *
@@ -136,6 +137,41 @@ public class Stack {
         }
         return true;
 
+    }
+    
+    public boolean clear() throws EmptyStackException{
+        if(this.isEmpty()) throw new EmptyStackException();
+        this.stack.clear();
+        return true;
+    }
+    
+    public boolean duplicate() throws EmptyStackException{
+        if(this.isEmpty()) throw new EmptyStackException();
+        this.push(this.peek());
+        return true;
+    }
+    
+    public boolean drop() throws EmptyStackException{
+        this.pop();
+        return true;
+    }
+    
+    public boolean swap() throws InvalidOperationException, EmptyStackException{
+        if(this.isEmpty() || this.size() == 1) throw new InvalidOperationException();
+        ComplexNumber last = this.pop();
+        ComplexNumber before_last = this.pop();
+        this.push(last);
+        this.push(before_last);
+        return true;
+    }
+    
+    public boolean over() throws EmptyStackException, InvalidOperationException{
+        if(this.isEmpty() || this.size() == 1) throw new InvalidOperationException();
+        ComplexNumber last = this.pop();
+        ComplexNumber before_last = this.peek();
+        this.push(last);
+        this.push(before_last);
+        return true;
     }
     
 }

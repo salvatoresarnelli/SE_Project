@@ -14,6 +14,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Spliterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -33,6 +35,7 @@ import javafx.scene.input.KeyEvent;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
+import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
 
@@ -60,6 +63,7 @@ public class InterfacciaController implements Initializable {
     private final ParserString parser = new ParserString();
     private final DecoratorParserOperation decoratorParserOperation = new DecoratorParserOperation(parser);
     private final String operation = "__OPERATION__";
+    private final String operation_stack = "__OPERATION_STACK__";
     private final String complex_number = "__COMPLEX__NUMBER__";
     private final String single_number = "__SINGLENUMBER__";
     private final String invalid_insert = "__INVALID__";
@@ -68,9 +72,20 @@ public class InterfacciaController implements Initializable {
     protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
     @FXML
     private SplitMenuButton splitMenuButton;
+    @FXML
+    private MenuItem buttonClear;
+    @FXML
+    private MenuItem buttonDrop;
+    @FXML
+    private MenuItem buttonDuplicate;
+    @FXML
+    private MenuItem buttonSwap;
+    @FXML
+    private MenuItem buttonOver;
 
     public void initialize(URL url, ResourceBundle rb) {
-        observableList = FXCollections.observableList(solver.getStructureStack().getStack());
+        observableList = FXCollections.observableArrayList();
+
         /*si inizilizzano lista e iteratore*/
         prevs = new LinkedList<>();
         it = prevs.listIterator();
@@ -119,7 +134,9 @@ public class InterfacciaController implements Initializable {
 
         });
 
-        listProperty.set(observableList);
+        observableList.addAll(solver.getStructureStack().getStack());
+        listView.setItems(observableList);
+
     }
 
     @FXML
@@ -139,20 +156,28 @@ public class InterfacciaController implements Initializable {
 
                         for (String s : execute) {
                             if (s.equals("square root") || s.equals("sqrt")) {
-                                observableList.addAll(solver.squareRoot());
+                                LinkedList<ComplexNumber> list = solver.squareRoot();
+                                list.forEach(c -> {
+                                    this.solver.getStructureStack().push(c);
+                                });
 
                             } else {
-                                observableList.add(solver.resolveOperation(s));
+                                this.solver.getStructureStack().push(solver.resolveOperation(s));
                             }
                         }
+                        observableList.clear();
+                        observableList.addAll(solver.getStructureStack().getStack());
                         return;
                     }
                     if (op.equals("square root") || op.equals("sqrt")) {
-                        observableList.addAll(solver.squareRoot());
+                        LinkedList<ComplexNumber> list = solver.squareRoot();
+                        list.forEach(c -> {
+                            this.solver.getStructureStack().push(c);
+                        });
 
                     } else {
-                        observableList.add(solver.resolveOperation(op));
-                        
+                        this.solver.getStructureStack().push(solver.resolveOperation(op));
+
                     }
 
                 } catch (DivisionByZeroException ex) {
@@ -162,39 +187,54 @@ public class InterfacciaController implements Initializable {
                     this.Alert("Errore!", "Operazione non ammissibile", " ");
                 }
             });
+            observableList.clear();
+            observableList.addAll(solver.getStructureStack().getStack());
             return;
 
         }
         String code = invalid_insert;
         try {
-             code = decoratorParserOperation.parserString(text);
+            code = decoratorParserOperation.parserString(text);
         } catch (ArrayIndexOutOfBoundsException e) {
             this.Alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             inputField.clear();
             return;
         }
-        
 
         ComplexNumber n;
         if (code.equals(complex_number)) {
             n = decoratorParserOperation.recognizeComplexNumber(text);
-            observableList.add(n);
+            //observableList.add(n);
+            solver.getStructureStack().push(n);
         }
         if (code.equals(single_number)) {
             n = decoratorParserOperation.recognizeNumber(text);
-            observableList.add(n);
+            //observableList.add(n);
+            solver.getStructureStack().push(n);
         }
         if (code.equals(operation)) {
             try {
                 if (text.equals("square root") || text.equals("sqrt")) {
-                    observableList.addAll(solver.squareRoot());
+                    LinkedList<ComplexNumber> list = solver.squareRoot();
+                    list.forEach(c -> {
+                        this.solver.getStructureStack().push(c);
+                    });
                 } else {
                     n = solver.resolveOperation(text);
-                    observableList.add(n);
+                    //observableList.add(n);
+                    solver.getStructureStack().push(n);
                 }
 
             } catch (DivisionByZeroException ex) {
                 this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+            }
+        }
+
+        if (code.equals(operation_stack)) {
+            try {
+                solver.resolveOperationStack(text);
+            } catch (InvalidOperationException ex) {
+                Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (code.equals(invalid_insert)) {
@@ -220,7 +260,7 @@ public class InterfacciaController implements Initializable {
                 MenuItem menuItemDelete = new MenuItem();
                 while (iterator.hasNext()) {
                     MenuItem menuItem = iterator.next();
-                    System.out.println(menuItem.getText());
+                    //System.out.println(menuItem.getText());
                     if (menuItem.getText().equals(possible_name)) {
                         menuItemDelete = menuItem;
                     }
@@ -232,7 +272,8 @@ public class InterfacciaController implements Initializable {
             } else;
         }
 
-        listView.itemsProperty().bind(listProperty);
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
         inputField.clear();
     }
 
@@ -289,7 +330,7 @@ public class InterfacciaController implements Initializable {
                 try {
                     if (decoratorParserOperation.getNames().contains(op)) {
                         LinkedList<String> execute = decoratorParserOperation.getOperations(op);
-                        //System.out.println(execute);
+
                         for (String s : execute) {
                             if (s.equals("square root") || s.equals("sqrt")) {
                                 observableList.addAll(solver.squareRoot());
@@ -298,6 +339,8 @@ public class InterfacciaController implements Initializable {
                                 observableList.add(solver.resolveOperation(s));
                             }
                         }
+                        observableList.clear();
+                        observableList.addAll(solver.getStructureStack().getStack());
                         return;
                     }
                     if (op.equals("square root") || op.equals("sqrt")) {
@@ -316,5 +359,44 @@ public class InterfacciaController implements Initializable {
             });
 
         });
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
+    }
+
+    @FXML
+    private void ActionClear(ActionEvent event) throws EmptyStackException {
+
+        this.solver.getStructureStack().clear();
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
+
+    }
+
+    @FXML
+    private void ActionDrop(ActionEvent event) throws EmptyStackException {
+        this.solver.getStructureStack().drop();
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
+    }
+
+    @FXML
+    private void ActionDuplicate(ActionEvent event) throws EmptyStackException {
+        this.solver.getStructureStack().duplicate();
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
+    }
+
+    @FXML
+    private void ActionSwap(ActionEvent event) throws EmptyStackException {
+        this.solver.getStructureStack().swap();
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
+    }
+
+    @FXML
+    private void ActionOver(ActionEvent event) throws EmptyStackException {
+        this.solver.getStructureStack().over();
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
     }
 }
