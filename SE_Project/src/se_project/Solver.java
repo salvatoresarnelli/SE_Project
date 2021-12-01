@@ -38,6 +38,7 @@ public class Solver {
         return this.stack;
     }
     public ComplexNumber resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
+        
         switch(text){
             case "addition":
                 return this.sum();

@@ -147,50 +147,8 @@ public class InterfacciaController implements Initializable {
             index = prevs.size();
         }
         if (decoratorParserOperation.getNames() != null && decoratorParserOperation.getNames().contains(text)) {
-            inputField.clear();
-            LinkedList<String> operations = decoratorParserOperation.getOperations(text);
-            operations.forEach((op) -> {
-                try {
-                    if (decoratorParserOperation.getNames().contains(op)) {
-                        LinkedList<String> execute = decoratorParserOperation.getOperations(op);
-
-                        for (String s : execute) {
-                            if (s.equals("square root") || s.equals("sqrt")) {
-                                LinkedList<ComplexNumber> list = solver.squareRoot();
-                                list.forEach(c -> {
-                                    this.solver.getStructureStack().push(c);
-                                });
-
-                            } else {
-                                this.solver.getStructureStack().push(solver.resolveOperation(s));
-                            }
-                        }
-                        observableList.clear();
-                        observableList.addAll(solver.getStructureStack().getStack());
-                        return;
-                    }
-                    if (op.equals("square root") || op.equals("sqrt")) {
-                        LinkedList<ComplexNumber> list = solver.squareRoot();
-                        list.forEach(c -> {
-                            this.solver.getStructureStack().push(c);
-                        });
-
-                    } else {
-                        this.solver.getStructureStack().push(solver.resolveOperation(op));
-
-                    }
-
-                } catch (DivisionByZeroException ex) {
-                    this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
-
-                } catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
-                    this.Alert("Errore!", "Operazione non ammissibile", " ");
-                }
-            });
-            observableList.clear();
-            observableList.addAll(solver.getStructureStack().getStack());
+            this.userOperation(text);
             return;
-
         }
         String code = invalid_insert;
         try {
@@ -324,46 +282,7 @@ public class InterfacciaController implements Initializable {
         MenuItem choice = new MenuItem(code);
         splitMenuButton.getItems().add(choice);
         choice.setOnAction((e) -> {
-            inputField.clear();
-            LinkedList<String> operations = decoratorParserOperation.getOperations(code);
-            operations.forEach((op) -> {
-                try {
-                    if (decoratorParserOperation.getNames().contains(op)) {
-                        LinkedList<String> execute = decoratorParserOperation.getOperations(op);
-
-                        for (String s : execute) {
-                            if (s.equals("square root") || s.equals("sqrt")) {
-                                LinkedList<ComplexNumber> list = solver.squareRoot();
-                                list.forEach(c -> {
-                                    this.solver.getStructureStack().push(c);
-                                });
-
-                            } else {
-                                this.solver.getStructureStack().push(solver.resolveOperation(s));
-                            }
-                        }
-                        observableList.clear();
-                        observableList.addAll(solver.getStructureStack().getStack());
-                        return;
-                    }
-                    if (op.equals("square root") || op.equals("sqrt")) {
-                        LinkedList<ComplexNumber> list = solver.squareRoot();
-                        list.forEach(c -> {
-                            this.solver.getStructureStack().push(c);
-                        });
-
-                    } else {
-                        this.solver.getStructureStack().push(solver.resolveOperation(op));
-                    }
-
-                } catch (DivisionByZeroException ex) {
-                    this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
-
-                } catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
-                    this.Alert("Errore!", "Operazione non ammissibile", " ");
-                }
-            });
-
+            this.userOperation(code);
         });
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
@@ -404,5 +323,62 @@ public class InterfacciaController implements Initializable {
         this.solver.getStructureStack().over();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
+    }
+
+    public void userOperation(String text) {
+        inputField.clear();
+        LinkedList<String> operations = decoratorParserOperation.getOperations(text);
+        operations.forEach((op) -> {
+            try {
+                if (decoratorParserOperation.getNames().contains(op)) {
+                    LinkedList<String> execute = decoratorParserOperation.getOperations(op);
+
+                    for (String s : execute) {
+                        if (s.equals("square root") || s.equals("sqrt")) {
+                            LinkedList<ComplexNumber> list = solver.squareRoot();
+                            list.forEach(c -> {
+                                this.solver.getStructureStack().push(c);
+                            });
+
+                        }
+                        if (decoratorParserOperation.checkOperationStack(s).equals(operation_stack))
+                            this.solver.resolveOperationStack(s);
+                      
+                        if(decoratorParserOperation.checkOperation(op).equals(operation) && !(s.equals("square root") && !(s.equals("sqrt"))) )
+                            this.solver.getStructureStack().push(solver.resolveOperation(op));
+                        
+
+                    }
+                    observableList.clear();
+                    observableList.addAll(solver.getStructureStack().getStack());
+                    
+
+                }
+                if (op.equals("square root") || op.equals("sqrt")) {
+                    LinkedList<ComplexNumber> list = solver.squareRoot();
+                    list.forEach(c -> {
+                        this.solver.getStructureStack().push(c);
+                    });
+                    
+                }
+                if (decoratorParserOperation.checkOperationStack(op).equals(operation_stack))
+                    this.solver.resolveOperationStack(op);
+
+                if(decoratorParserOperation.checkOperation(op).equals(operation) && !(op.equals("square root") && !(op.equals("sqrt"))) )
+                            this.solver.getStructureStack().push(solver.resolveOperation(op));
+                
+
+            } catch (DivisionByZeroException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+
+            } catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", op);
+            } catch (InvalidOperationException ex) {
+                this.Alert("Errore|", "operazione non valida", text);
+            }
+        });
+        observableList.clear();
+        observableList.addAll(solver.getStructureStack().getStack());
+
     }
 }
