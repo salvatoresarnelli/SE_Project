@@ -184,6 +184,7 @@ public class Stack {
     */
     
     public boolean drop() throws EmptyStackException{
+        if(this.isEmpty()) throw new EmptyStackException();
         this.pop();
         return true;
     }

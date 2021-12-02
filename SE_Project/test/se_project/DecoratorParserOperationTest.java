@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package se_project;
+
 import java.lang.StringIndexOutOfBoundsException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,35 +27,36 @@ import se_project.exceptions.InvalidNameException;
  * @author emanu
  */
 public class DecoratorParserOperationTest {
+
     private final String invalid_insert = "__INVALID__";
     private DecoratorParserOperation decoratorParserOperation;
     private ParserString parserString;
-    
+
     public DecoratorParserOperationTest() {
     }
-      @Rule
+    @Rule
     public ExpectedException exceptionStringException = ExpectedException.none();
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         parserString = new ParserString();
         HashMap<String, LinkedList<String>> map = new HashMap<>();
         LinkedList<String> linkedList = new LinkedList<>();
-        Collections.addAll(linkedList, "+" , "-" , "*");
-        map.put("prova",linkedList);
+        Collections.addAll(linkedList, "+", "-", "*");
+        map.put("prova", linkedList);
         map.put("provadue", linkedList);
         decoratorParserOperation = new DecoratorParserOperation(parserString, map);
-   
+
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -72,10 +74,10 @@ public class DecoratorParserOperationTest {
         text = "c";
         exceptionStringException.expect(StringIndexOutOfBoundsException.class);
         result = decoratorParserOperation.clearStringOperation(text);
-        
-        
+
     }
-        /**
+
+    /**
      * Test of checkName method, of class DecoratorParserOperation.
      */
     @Test
@@ -108,7 +110,8 @@ public class DecoratorParserOperationTest {
         result = decoratorParserOperation.clearStringOperation(text);
         assertEquals(expResult, result);
     }
-  /**
+
+    /**
      * Test of getNames method, of class DecoratorParserOperation.
      */
     @Test
@@ -119,9 +122,8 @@ public class DecoratorParserOperationTest {
         expResult.add("provadue");
         Set<String> result = decoratorParserOperation.getNames();
         assertEquals(expResult, result);
-       
+
     }
-   
 
     /**
      * Test of getOperations method, of class DecoratorParserOperation.
@@ -135,13 +137,14 @@ public class DecoratorParserOperationTest {
         expResult.add("-");
         expResult.add("*");
         LinkedList<String> result = decoratorParserOperation.getOperations(name);
-        for(int i = 0; i < result.size(); i++)
+        for (int i = 0; i < result.size(); i++) {
             assertEquals(expResult.get(i), result.get(i));
+        }
 
         name = "invalid_insert";
         result = decoratorParserOperation.getOperations(name);
         assertEquals(null, result);
-     
+
     }
 
     /**
@@ -161,9 +164,8 @@ public class DecoratorParserOperationTest {
         assertEquals(null, result);
        
     }
-*/
-  
-     /**
+     */
+    /**
      * Test of parserString method, of class DecoratorParserOperation.
      */
     @Test
@@ -193,9 +195,7 @@ public class DecoratorParserOperationTest {
         textString = ">>somma$ + - provatre  ";
         exceptionStringException.expect(InvalidNameException.class);
         result = decoratorParserOperation.parserString(textString);
-        
 
     }
-
 
 }
