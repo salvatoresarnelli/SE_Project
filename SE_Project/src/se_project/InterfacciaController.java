@@ -39,6 +39,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import se_project.DecoratorParserOperation;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
@@ -182,29 +183,30 @@ public class InterfacciaController implements Initializable {
             solver.getStructureStack().push(n);
         }
         if (code.equals(operation)) {
-            try {
-                if (text.equals("square root") || text.equals("sqrt")) {
-                    LinkedList<ComplexNumber> list = solver.squareRoot();
-                    list.forEach(c -> {
-                        this.solver.getStructureStack().push(c);
-                    });
-                } else {
-                    n = solver.resolveOperation(text);
-                    //observableList.add(n);
-                    solver.getStructureStack().push(n);
-                }
-
-            } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException ex) {
-                this.Alert("errore", "Operazione non valida ", text);
-
+              try {
+                solver.resolveOperation(text);
+            } catch (DivisionByZeroException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+            } catch (NotApplicableOperation ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "Mancano gli operandi");
+            } catch (InvalidNumberException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "");
+            } catch (EmptyStackException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "Lo stack è vuoto!");
+            } catch (UndefinedPhaseException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "La fase non è definita.");
             }
         }
 
         if (code.equals(operation_stack)) {
             try {
-                solver.resolveOperationStack(text);
-            } catch (InvalidOperationException | EmptyStackException ex) {
-                this.Alert("errore", "Operazione non valida ", text);
+                try {
+                    solver.resolveOperationStack(text);
+                } catch (EmptyStackException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "Lo stack è vuoto!");
+                }
+            } catch (InvalidOperationException ex) {
+                this.Alert("Errore!", "Operazione non ammissibile", "");
             }
         }
         if (code.equals(invalid_insert)) {
@@ -350,15 +352,8 @@ public class InterfacciaController implements Initializable {
             return;
         }
         for (String op : operations) {
-            if (op.equals("square root") || op.equals("sqrt")) {
-                LinkedList<ComplexNumber> squareRoot = this.solver.squareRoot();
-                for (ComplexNumber result : squareRoot) {
-                    this.solver.getStructureStack().push(result);
-                }
-
-            } else if (decoratorParserOperation.checkOperation(op).equals(operation)) {
-                this.solver.getStructureStack().push(solver.resolveOperation(op));
-
+           if (decoratorParserOperation.checkOperation(op).equals(operation)) {
+                this.solver.resolveOperation(op);
             } else if (decoratorParserOperation.checkOperationStack(op).equals(operation_stack)) {
                 this.solver.resolveOperationStack(op);
             } else if (decoratorParserOperation.getNames().contains(op)) {
@@ -377,13 +372,8 @@ public class InterfacciaController implements Initializable {
     public void ricorsion(String op) throws EmptyStackException, NotApplicableOperation, InvalidNumberException, DivisionByZeroException, UndefinedPhaseException, InvalidOperationException {
         if(decoratorParserOperation.getOperations(op) == null)return;
         for (String opUser : decoratorParserOperation.getOperations(op)) {
-            if (opUser.equals("square root") || opUser.equals("sqrt")) {
-                LinkedList<ComplexNumber> squareRoot = this.solver.squareRoot();
-                for (ComplexNumber result : squareRoot) {
-                    this.solver.getStructureStack().push(result);
-                }
-            } else if (decoratorParserOperation.checkOperation(opUser).equals(operation)) {
-                this.solver.getStructureStack().push(solver.resolveOperation(opUser));
+             if (decoratorParserOperation.checkOperation(opUser).equals(operation)) {
+                solver.resolveOperation(opUser);
 
             } else if (decoratorParserOperation.checkOperationStack(opUser).equals(operation_stack)) {
                 this.solver.resolveOperationStack(opUser);
@@ -404,12 +394,12 @@ public class InterfacciaController implements Initializable {
         try {
             ParserString parserString = new ParserString();
             DecoratorParserOperation decoratorParserOperation = null;
-            /*HashMap<String, LinkedList<String>> map = new HashMap<>();
+            HashMap<String, LinkedList<String>> map = new HashMap<>();
             LinkedList<String> linkedList = new LinkedList<>();
             Collections.addAll(linkedList, "+" , "-" , "*");
             map.put("prova",linkedList);
             map.put("provadue", linkedList);
-            decoratorParserOperation = new DecoratorParserOperation(parserString, map);*/
+            decoratorParserOperation = new DecoratorParserOperation(parserString, map);
             FileChooser fc = new FileChooser();
             fc.setTitle("Save functions ...");
             fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));

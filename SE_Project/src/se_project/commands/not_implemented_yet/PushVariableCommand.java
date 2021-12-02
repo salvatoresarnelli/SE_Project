@@ -10,5 +10,9 @@ package se_project.commands.not_implemented_yet;
  * @author aless
  */
 public class PushVariableCommand {
+
+    PushVariableCommand(Character variable, VariableCommand command) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

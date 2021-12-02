@@ -9,6 +9,16 @@ package se_project.commands.not_implemented_yet;
  *
  * @author aless
  */
-public class NewVariableCommand {
-    
+public class NewVariableCommand{
+
+    public Object execute() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
+/*
+    NewVariableCommand(Character variable, VariableCommand command) {
+        
+    }
+    */
 }

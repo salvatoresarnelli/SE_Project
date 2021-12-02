@@ -57,6 +57,14 @@ public class Stack {
         return true;
     }
     
+    
+        public boolean push(LinkedList<ComplexNumber> c) {
+        if(c == null) return false;
+        for (ComplexNumber number : c)
+            push(number);
+        return true;
+    }
+    
     /**
     * Il metodo si occupa di restituire la dimensione dello stack.
     * @author Salvatore Sarnelli
