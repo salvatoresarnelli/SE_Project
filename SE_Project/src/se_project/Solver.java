@@ -37,7 +37,7 @@ public class Solver {
     public Stack getStructureStack(){
         return this.stack;
     }
-    public ComplexNumber resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException{
+    public ComplexNumber resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
         
         switch(text){
             case "addition":
@@ -130,8 +130,9 @@ public class Solver {
         }
     }
 
-    public LinkedList<ComplexNumber> squareRoot() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException{
+    public LinkedList<ComplexNumber> squareRoot() throws EmptyStackException, NotApplicableOperation, InvalidNumberException{
         if (stack.size() >= 1) {
+            System.out.println("ciao sono nella radice");
             ComplexNumber c1 = stack.pop();
             return Operations.squareRoot(c1);
         } else {

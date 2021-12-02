@@ -140,14 +140,18 @@ public class InterfacciaController implements Initializable {
     }
 
     @FXML
-    private void ActionPush(ActionEvent event) throws NotApplicableOperation, InvalidNumberException, EmptyStackException, UndefinedPhaseException {
+    private void ActionPush(ActionEvent event) {
         String text = inputField.getText();
         if (!text.isEmpty()) {
             prevs.addLast(text);
             index = prevs.size();
         }
         if (decoratorParserOperation.getNames() != null && decoratorParserOperation.getNames().contains(text)) {
-            this.userOperation(text);
+            try {
+                this.userOperation(text);
+            } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException | InvalidOperationException ex) {
+                this.Alert("errore", "Operazione non valida ", text);
+            }
             return;
         }
         String code = invalid_insert;
@@ -183,16 +187,17 @@ public class InterfacciaController implements Initializable {
                     solver.getStructureStack().push(n);
                 }
 
-            } catch (DivisionByZeroException ex) {
-                this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+            } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException ex) {
+                this.Alert("errore", "Operazione non valida ", text);
+
             }
         }
 
         if (code.equals(operation_stack)) {
             try {
                 solver.resolveOperationStack(text);
-            } catch (InvalidOperationException ex) {
-                Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvalidOperationException | EmptyStackException ex) {
+                this.Alert("errore", "Operazione non valida ", text);
             }
         }
         if (code.equals(invalid_insert)) {
@@ -233,6 +238,7 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
         inputField.clear();
+        System.out.println(decoratorParserOperation.toString());
     }
 
     @FXML
@@ -282,7 +288,11 @@ public class InterfacciaController implements Initializable {
         MenuItem choice = new MenuItem(code);
         splitMenuButton.getItems().add(choice);
         choice.setOnAction((e) -> {
-            this.userOperation(code);
+            try {
+                this.userOperation(code);
+            } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException | InvalidOperationException ex) {
+                this.Alert("errore", "Operazione non valida ", code);
+            }
         });
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
@@ -325,60 +335,61 @@ public class InterfacciaController implements Initializable {
         observableList.addAll(solver.getStructureStack().getStack());
     }
 
-    public void userOperation(String text) {
+  
+    public void userOperation(String text) throws EmptyStackException, NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException, InvalidOperationException {
         inputField.clear();
         LinkedList<String> operations = decoratorParserOperation.getOperations(text);
-        operations.forEach((op) -> {
-            try {
-                if (decoratorParserOperation.getNames().contains(op)) {
-                    LinkedList<String> execute = decoratorParserOperation.getOperations(op);
-
-                    for (String s : execute) {
-                        if (s.equals("square root") || s.equals("sqrt")) {
-                            LinkedList<ComplexNumber> list = solver.squareRoot();
-                            list.forEach(c -> {
-                                this.solver.getStructureStack().push(c);
-                            });
-
-                        }
-                        if (decoratorParserOperation.checkOperationStack(s).equals(operation_stack))
-                            this.solver.resolveOperationStack(s);
-                      
-                        if(decoratorParserOperation.checkOperation(op).equals(operation) && !(s.equals("square root") && !(s.equals("sqrt"))) )
-                            this.solver.getStructureStack().push(solver.resolveOperation(op));
-                        
-
-                    }
-                    observableList.clear();
-                    observableList.addAll(solver.getStructureStack().getStack());
-                    
-
+        if (operations == null) {
+            return;
+        }
+        for (String op : operations) {
+            if (op.equals("square root") || op.equals("sqrt")) {
+                LinkedList<ComplexNumber> squareRoot = this.solver.squareRoot();
+                for (ComplexNumber result : squareRoot) {
+                    this.solver.getStructureStack().push(result);
                 }
-                if (op.equals("square root") || op.equals("sqrt")) {
-                    LinkedList<ComplexNumber> list = solver.squareRoot();
-                    list.forEach(c -> {
-                        this.solver.getStructureStack().push(c);
-                    });
-                    
-                }
-                if (decoratorParserOperation.checkOperationStack(op).equals(operation_stack))
-                    this.solver.resolveOperationStack(op);
 
-                if(decoratorParserOperation.checkOperation(op).equals(operation) && !(op.equals("square root") && !(op.equals("sqrt"))) )
-                            this.solver.getStructureStack().push(solver.resolveOperation(op));
-                
+            } else if (decoratorParserOperation.checkOperation(op).equals(operation)) {
+                this.solver.getStructureStack().push(solver.resolveOperation(op));
 
-            } catch (DivisionByZeroException ex) {
-                this.Alert("Errore!", "Operazione non ammissibile", "Non si può dividere per 0");
+            } else if (decoratorParserOperation.checkOperationStack(op).equals(operation_stack)) {
+                this.solver.resolveOperationStack(op);
+            } else if (decoratorParserOperation.getNames().contains(op)) {
+                    this.ricorsion(op);
+          
+                observableList.clear();
+                observableList.addAll(solver.getStructureStack().getStack());
 
-            } catch (NotApplicableOperation | InvalidNumberException | EmptyStackException | UndefinedPhaseException ex) {
-                this.Alert("Errore!", "Operazione non ammissibile", op);
-            } catch (InvalidOperationException ex) {
-                this.Alert("Errore|", "operazione non valida", text);
             }
-        });
+            observableList.clear();
+            observableList.addAll(solver.getStructureStack().getStack());
+
+        }
+    }
+
+    public void ricorsion(String op) throws EmptyStackException, NotApplicableOperation, InvalidNumberException, DivisionByZeroException, UndefinedPhaseException, InvalidOperationException {
+        if(decoratorParserOperation.getOperations(op) == null)return;
+        for (String opUser : decoratorParserOperation.getOperations(op)) {
+            if (opUser.equals("square root") || opUser.equals("sqrt")) {
+                LinkedList<ComplexNumber> squareRoot = this.solver.squareRoot();
+                for (ComplexNumber result : squareRoot) {
+                    this.solver.getStructureStack().push(result);
+                }
+            } else if (decoratorParserOperation.checkOperation(opUser).equals(operation)) {
+                this.solver.getStructureStack().push(solver.resolveOperation(opUser));
+
+            } else if (decoratorParserOperation.checkOperationStack(opUser).equals(operation_stack)) {
+                this.solver.resolveOperationStack(opUser);
+            } else if (decoratorParserOperation.getNames().contains(opUser)) {
+                ricorsion(opUser);
+            }
+            observableList.clear();
+            observableList.addAll(solver.getStructureStack().getStack());
+
+        }
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
 
     }
+
 }
