@@ -196,9 +196,8 @@ public class DecoratorParserOperation extends ParserString {
 
     @Override
     public String toString() {
-        String s = "";
-        s = hashMap.keySet().stream().map((key) -> key + ":" + this.getOperationString(key) + "\n").reduce(s, String::concat);
-        return s;
+        
+        return this.hashMap.toString();
     }
     
     

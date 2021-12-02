@@ -5,8 +5,13 @@
  */
 package se_project;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import javafx.scene.control.ListView;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -32,6 +37,8 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
@@ -390,6 +397,31 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
 
+    }
+    
+    public void saveFunctions(){
+        PrintWriter pw = null;
+        try {
+            ParserString parserString = new ParserString();
+            DecoratorParserOperation decoratorParserOperation = null;
+            /*HashMap<String, LinkedList<String>> map = new HashMap<>();
+            LinkedList<String> linkedList = new LinkedList<>();
+            Collections.addAll(linkedList, "+" , "-" , "*");
+            map.put("prova",linkedList);
+            map.put("provadue", linkedList);
+            decoratorParserOperation = new DecoratorParserOperation(parserString, map);*/
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Save functions ...");
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+            File file = fc.showSaveDialog(new Stage());
+            pw = new PrintWriter(file);
+            pw.write(decoratorParserOperation.toString());
+            pw.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            pw.close();
+        }
     }
 
 }
