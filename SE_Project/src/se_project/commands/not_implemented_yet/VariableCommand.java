@@ -9,25 +9,27 @@ import se_project.ComplexNumber;
 import se_project.Stack;
 import se_project.commands.Command;
 import se_project.VariablesDict;
+import se_project.commands.OperationCommand;
 
 /**
  *
  * @author aless
  */
-public abstract class VariableCommand implements Command{
-    private final Stack stack;
-    private final VariablesDict dictionary;
-    
-    public VariableCommand(Stack stack,VariablesDict dictionary) {
-        this.stack = stack;
+public abstract class VariableCommand extends OperationCommand{
+    private VariablesDict dictionary;
+
+    public void setDictionary(VariablesDict dictionary) {
         this.dictionary = dictionary;
     }
     
-
-   
-
-    public Stack getStack() {
-        return stack;
+    public VariableCommand(Stack stack,VariablesDict dictionary) {
+        super(stack);
+        this.dictionary = dictionary;
+    }
+    
+public VariableCommand() {
+    super();
+    dictionary = new VariablesDict();
     }
 
     public VariablesDict getDictionary() {

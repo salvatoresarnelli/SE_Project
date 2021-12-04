@@ -5,6 +5,8 @@
  */
 package se_project;
 
+import se_project.parser.UserDefinedOperationParser;
+import se_project.parser.ParserString;
 import java.lang.StringIndexOutOfBoundsException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +31,7 @@ import se_project.exceptions.InvalidNameException;
 public class DecoratorParserOperationTest {
 
     private final String invalid_insert = "__INVALID__";
-    private DecoratorParserOperation decoratorParserOperation;
+    private UserDefinedOperationParser decoratorParserOperation;
     private ParserString parserString;
 
     public DecoratorParserOperationTest() {
@@ -53,7 +55,7 @@ public class DecoratorParserOperationTest {
         Collections.addAll(linkedList, "+", "-", "*");
         map.put("prova", linkedList);
         map.put("provadue", linkedList);
-        decoratorParserOperation = new DecoratorParserOperation(parserString, map);
+        decoratorParserOperation = new UserDefinedOperationParser(parserString, map);
 
     }
 

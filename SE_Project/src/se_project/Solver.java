@@ -7,6 +7,8 @@ package se_project;
 
 import java.util.LinkedList;
 import se_project.*;
+import se_project.commands.Command;
+import se_project.commands.OperationCommand;
 import se_project.commands.operationsCommands.ColonsCommand;
 import se_project.commands.operationsCommands.DotCommand;
 import se_project.commands.operationsCommands.MinusCommand;
@@ -23,8 +25,10 @@ import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidOperationException;
+import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
+import se_project.exceptions.VariableExistingException;
 
 /**
  *
@@ -51,10 +55,13 @@ public class Solver {
         return this.stack;
     }
  
-    public void resolveOperation(String text) throws NotApplicableOperation, InvalidNumberException,
-            EmptyStackException, UndefinedPhaseException, DivisionByZeroException {
-
-        switch (text) {
+    public void resolveOperation(Command text) throws NotApplicableOperation, InvalidNumberException,
+            EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InvalidVariableNameException,VariableExistingException, Exception{
+            ((OperationCommand)text).setTarget(stack);
+            text.execute();
+       /* switch (text) {
+           
+           
             case "addition":
                 stack.push(new PlusCommand(this.stack).execute());
                                 break;
@@ -98,7 +105,7 @@ public class Solver {
                 stack.push(new SqrtCommand(this.stack).execute());
                 break;
             default: throw new InvalidNumberException();
-        }
+        }*/
     }
 
     public boolean resolveOperationStack(String text) throws InvalidOperationException, EmptyStackException {

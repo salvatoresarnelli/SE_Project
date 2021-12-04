@@ -5,14 +5,33 @@
  */
 package se_project.commands.not_implemented_yet;
 
+import se_project.ComplexNumber;
+import se_project.Stack;
+import se_project.VariablesDict;
+
 /**
  *
  * @author aless
  */
-public class PushVariableCommand {
+public class PushVariableCommand extends VariableCommand{
+    private Character variable;
+    public PushVariableCommand(Character variable, VariableCommand command) {
+    }
+    public PushVariableCommand() {
+    super();
+    }
 
-    PushVariableCommand(Character variable, VariableCommand command) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setVariable(Character variable) {
+        this.variable = variable;
+    }
+
+    @Override
+    public ComplexNumber execute() throws Exception {
+        VariablesDict dict = super.getDictionary();
+        ComplexNumber c = dict.getVariableValue(variable);
+        Stack stack = super.getTarget();
+        stack.push(c);
+        return c;
     }
     
 }

@@ -19,22 +19,33 @@ import se_project.exceptions.UndefinedPhaseException;
  *
  * @author aless
  */
-public class SqrtCommand implements Command {
+public class SqrtCommand extends OperationCommand {
+        private final String name ="sqrt";
 
-    private final Stack stack;
-
-    public SqrtCommand(Stack stack) {
-        this.stack = stack;
+public SqrtCommand() {
+        super(null);
     }
-
+    public SqrtCommand(Stack stack) {
+        super(stack);
+    }
     @Override
     public LinkedList<ComplexNumber> execute() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException {
-        if (stack.size() >= 1) {
-            ComplexNumber c1 = stack.pop();
-            return Operations.squareRoot(c1);
+        if (super.getTarget().size() >= 1) {
+            ComplexNumber c1 = super.getTarget().pop();
+            LinkedList<ComplexNumber> result = Operations.squareRoot(c1);
+            for(ComplexNumber c: result)
+                 super.getTarget().push(c);
+            return result;
         } else {
             throw new NotApplicableOperation();
         }
 
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+    
+    
 }

@@ -19,19 +19,18 @@ import se_project.commands.not_implemented_yet.NewVariableCommand;
  * @author aless
  */
 public class OverrideVariableCommand extends NewVariableCommand {
-/*
 
     public OverrideVariableCommand(NewVariableCommand command) {
-        super(command.getVariable(), command.getStack(), command.getDictionary());
+        super(command.getVariable(), command.getTarget(), command.getDictionary());
     }
 
     @Override
     public ComplexNumber execute() throws EmptyStackException, InvalidVariableNameException {
         ComplexNumber c;
-        c = super.getStack().pop();
+        c = super.getTarget().pop();
         super.getDictionary().forceSettingVariable(super.getVariable(), c);
-        super.getStack().push(c);
+        super.getTarget().push(c);
         return c;
     }
-*/
+
 }

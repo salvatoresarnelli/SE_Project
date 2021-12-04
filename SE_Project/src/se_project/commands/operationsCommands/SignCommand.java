@@ -17,20 +17,28 @@ import se_project.exceptions.NotApplicableOperation;
  *
  * @author aless
  */
-public class SignCommand implements Command{
-     private final Stack stack;
-    
-    public SignCommand(Stack stack){
-        this.stack=stack;
-    }
+public class SignCommand extends OperationCommand {
+        private final String name ="+-";
 
+    public SignCommand() {
+        super(null);
+    }
+    public SignCommand(Stack stack) {
+        super(stack);
+    }
     @Override
     public ComplexNumber execute() throws InvalidNumberException, EmptyStackException, NotApplicableOperation {
-       if (stack.size() >= 1) {
-            ComplexNumber c1 = stack.pop();
-            return Operations.signOperation(c1);
+       if (super.getTarget().size() >= 1) {
+            ComplexNumber c1 = super.getTarget().pop();
+            ComplexNumber result = Operations.signOperation(c1);
+             super.getTarget().push(result);
+             return result;
         } else {
             throw new NotApplicableOperation();
         }
+    }
+     @Override
+    public String toString() {
+        return name;
     }
 }

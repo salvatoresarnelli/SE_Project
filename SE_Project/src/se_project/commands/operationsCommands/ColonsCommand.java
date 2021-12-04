@@ -9,6 +9,7 @@ import se_project.ComplexNumber;
 import se_project.Operations;
 import se_project.Stack;
 import se_project.commands.Command;
+import se_project.commands.OperationCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
@@ -19,12 +20,14 @@ import se_project.exceptions.UndefinedPhaseException;
  *
  * @author aless
  */
-public class ColonsCommand implements Command {
-
-    private final Stack stack;
+public class ColonsCommand extends OperationCommand {
+    private final String name =":";
+public ColonsCommand() {
+        super(null);
+    }
 
     public ColonsCommand(Stack stack) {
-        this.stack = stack;
+        super(stack);
     }
 
     /**
@@ -38,20 +41,26 @@ public class ColonsCommand implements Command {
     @Override
     public ComplexNumber execute() throws NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException, EmptyStackException {
 
-        if (stack.size() >= 2) {
-            ComplexNumber c1 = stack.pop();
-            ComplexNumber c2 = stack.pop();
+        if (super.getTarget().size() >= 2) {
+            ComplexNumber c1 = super.getTarget().pop();
+            ComplexNumber c2 = super.getTarget().pop();
+            ComplexNumber result;
             try {
-                return Operations.divisionOperation(c1, c2);
+                result = Operations.divisionOperation(c1, c2);
+                super.getTarget().push(result);
+                return result;
             } catch (DivisionByZeroException ex) {
 
-                stack.push(c2);
-                stack.push(c1);
+                super.getTarget().push(c2);
+                super.getTarget().push(c1);
                 throw new DivisionByZeroException();
             }
         } else {
             throw new NotApplicableOperation();
         }
     }
-
+ @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -17,20 +17,29 @@ import se_project.exceptions.NotApplicableOperation;
  *
  * @author aless
  */
-public class MinusCommand implements Command {
-    private final Stack stack;
+public class MinusCommand extends OperationCommand {
+    private final String name ="-";
 
+     public MinusCommand() {
+        super(null);
+    }
     public MinusCommand(Stack stack) {
-        this.stack = stack;
+        super(stack);
     }
     @Override
     public ComplexNumber execute() throws EmptyStackException, InvalidNumberException, NotApplicableOperation {
-              if (stack.size() >= 2) {
-            ComplexNumber c1 = stack.pop();
-            ComplexNumber c2 = stack.pop();
-            return Operations.differenceOperation(c1, c2);
+              if (super.getTarget().size() >= 2) {
+            ComplexNumber c1 = super.getTarget().pop();
+            ComplexNumber c2 = super.getTarget().pop();
+            ComplexNumber result = Operations.differenceOperation(c1, c2);
+            super.getTarget().push(result);
+            return result;
         } else {
             throw new NotApplicableOperation();
         }
+    }
+     @Override
+    public String toString() {
+        return name;
     }
 }
