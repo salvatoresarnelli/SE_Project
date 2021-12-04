@@ -7,8 +7,10 @@ package se_project.commands;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import se_project.commands.not_implemented_yet.DiffVariableCommand;
 import se_project.commands.not_implemented_yet.NewVariableCommand;
 import se_project.commands.not_implemented_yet.PushVariableCommand;
+import se_project.commands.not_implemented_yet.SumVariableCommand;
 import se_project.commands.operationsCommands.ColonsCommand;
 import se_project.commands.operationsCommands.DotCommand;
 import se_project.commands.operationsCommands.MinusCommand;
@@ -43,6 +45,10 @@ public class OperationsFactory {
             type="NewVariableCommand";
         if(type.startsWith("<") && type.length()==2)
             type="PushVariableCommand";
+        if(type.startsWith("+") && type.length()==2)
+            type="SumVariableCommand";
+        if(type.startsWith("-") && type.length()==2)
+            type="DiffVariableCommand";
         switch (type) {
             case "+":
                 return new PlusCommand();
@@ -69,6 +75,10 @@ public class OperationsFactory {
                 return new NewVariableCommand();
             case "PushVariableCommand":
                 return new PushVariableCommand();
+            case "SumVariableCommand":
+                return new SumVariableCommand();
+            case "DiffVariableCommand":
+                return new DiffVariableCommand();
         }
         throw new OperationNotFoundException();
     }
