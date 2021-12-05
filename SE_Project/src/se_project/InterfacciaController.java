@@ -83,14 +83,11 @@ public class InterfacciaController implements Initializable {
     @FXML
     private ListView<ComplexNumber> listView;
     private final Solver solver = Solver.getInstance();
-    private final ParserString parser = new ParserString();
     private final UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(
             new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(
                     new ParserString())))));
 
-    private final String still_name_inserted = "__NAME__";
     private ObservableList<ComplexNumber> observableList;
-    protected ListProperty<ComplexNumber> listProperty = new SimpleListProperty<>();
     @FXML
     private SplitMenuButton splitMenuButton;
     @FXML
@@ -184,13 +181,13 @@ public class InterfacciaController implements Initializable {
                 code = decoratorParserOperation.parse(text);
 
             } catch (ArrayIndexOutOfBoundsException e) {
-                this.Alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
                 inputField.clear();
                 return;
             } catch (OperationNotFoundException ex) {
-                this.Alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             } catch (NullPointerException ex) {
-                this.Alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             } catch (ExistingNameException ex) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Operazione già inserita");
@@ -219,24 +216,24 @@ public class InterfacciaController implements Initializable {
                 }
 
             } catch (Exception ex) {
-                this.Alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             }
 
             if (code != null) {
                 try {
                     solver.resolveOperation(code);
                 } catch (EmptyStackException ex) {
-                    Alert("Errore!", "Operazione non valida", "Lo stack è vuoto!");
+                    alert("Errore!", "Operazione non valida", "Lo stack è vuoto!");
                 } catch (NotApplicableOperation ex) {
-                    Alert("Errore!", "Operazione non valida", "");
+                    alert("Errore!", "Operazione non valida", "");
                 } catch (InvalidNumberException ex) {
-                    Alert("Errore!", "Inserito un numero non valido", text);
+                    alert("Errore!", "Inserito un numero non valido", text);
                 } catch (InvalidVariableNameException ex) {
-                    Alert("Errore!", "Inserito una variabile non valida", text);
+                    alert("Errore!", "Inserito una variabile non valida", text);
                 } catch (UndefinedPhaseException ex) {
-                    Alert("Errore!", "Fase non definita", text);
+                    alert("Errore!", "Fase non definita", text);
                 } catch (DivisionByZeroException ex) {
-                    Alert("Errore!", "Divisione per zero.", "");
+                    alert("Errore!", "Divisione per zero.", "");
                 } catch (VariableExistingException ex) {
                     Alert alert = new Alert(AlertType.WARNING, "Variabile" + ((NewVariableCommand) code).getVariable() + " esistente, sovrascriverne il valore? ", ButtonType.YES, ButtonType.NO);
                     alert.showAndWait();
@@ -253,7 +250,7 @@ public class InterfacciaController implements Initializable {
                         
                     }
                     if (alert.getResult() == ButtonType.NO) {
-                        solver.rollBack(ex.getRollBackList());
+                        //solver.rollBack(ex.getRollBackList());
                     }
                 } 
                 if (code instanceof InsertUserDefinedOperationCommand) {
@@ -314,7 +311,7 @@ public class InterfacciaController implements Initializable {
         inputField.setText(inputField.getText() + "+-");
     }
 
-    public void Alert(String title, String headerText, String contentText) {
+    public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
@@ -333,7 +330,7 @@ public class InterfacciaController implements Initializable {
                 //this.userOperation(code);
                 decoratorParserOperation.parse(code);
             } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException | InvalidOperationException ex) {
-                this.Alert("errore", "Operazione non valida ", code);
+                alert("errore", "Operazione non valida ", code);
 
             } catch (ExistingNameException ex) {
                 Logger.getLogger(InterfacciaController.class
@@ -387,95 +384,29 @@ public class InterfacciaController implements Initializable {
         observableList.addAll(solver.getStructureStack().getStack());
     }
 
-    /*
-    public void userOperation(String text) throws EmptyStackException, NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException, InvalidOperationException {
-        inputField.clear();
-        ExecuteUserDefinedOperationCommand operations = decoratorParserOperation.getOperations(text);
-        if (operations == null) {
-            return;
-        }
-        try {
-            solver.resolveOperation(operations);
-        } catch (Exception ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        /*
-        for (Command op : operations) {
-           if (decoratorParserOperation.checkOperation(op.toString()).equals(operation)) {
-               try {
-                   this.solver.resolveOperation(op);
-               } catch (Exception ex) {
-                   Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
-               }
-            } else if (decoratorParserOperation.checkOperationStack(op.toString()).equals(operation_stack)) {
-               try {
-                   this.solver.resolveOperation(op);
-               } catch (Exception ex) {
-                   Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
-               }
-            } else if (decoratorParserOperation.getNames().contains(op.toString())) {
-                    this.ricorsion(op.toString());
-          
-                observableList.clear();
-                observableList.addAll(solver.getStructureStack().getStack());
-
-            }*//*
-            observableList.clear();
-            observableList.addAll(solver.getStructureStack().getStack());
-
-        //}
-    }
-/*
-    public void ricorsion(String op) throws EmptyStackException, NotApplicableOperation, InvalidNumberException, DivisionByZeroException, UndefinedPhaseException, InvalidOperationException {
-        if(decoratorParserOperation.getOperations(op) == null)return;
-        for (String opUser : decoratorParserOperation.getNames()) {
-            OperationCommand command = decoratorParserOperation.checkOperation(opUser);
-             if ( command!= null) {
-                try {
-                    solver.resolveOperation(command);
-                } catch (Exception ex) {
-                    Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }else if (decoratorParserOperation.getNames().contains(opUser)) {
-                ricorsion(opUser);
-            }
-            observableList.clear();
-            observableList.addAll(solver.getStructureStack().getStack());
-
-        }
-        observableList.clear();
-        observableList.addAll(solver.getStructureStack().getStack());
-
-    }
-     */
+        
 
     public void saveFunctions() {
-        PrintWriter pw = null;
-        try {
-            ParserString parserString = new ParserString();
-            UserDefinedOperationParser decoratorParserOperation = null;
-            HashMap<String, OperationCommand> map = new HashMap<>();
-            LinkedList<String> linkedList = new LinkedList<>();
-            Collections.addAll(linkedList, "+", "-", "*");
-            /*map.put("prova",linkedList);
-            map.put("provadue", linkedList);
-             */
-            decoratorParserOperation = new UserDefinedOperationParser(parserString, map);
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Save functions ...");
-            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
-            File file = fc.showSaveDialog(new Stage());
-            pw = new PrintWriter(file);
-            pw.write(decoratorParserOperation.toString());
-            pw.close();
+PrintWriter pw = null;
+try {
+FileChooser fc = new FileChooser();
+fc.setTitle("Save functions ...");
+fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+File file = fc.showSaveDialog(new Stage());
+pw = new PrintWriter(file);
+String s = "";
+s = decoratorParserOperation.getNames().stream().map((name) -> name + " " + decoratorParserOperation.getOperationString(name) + " \n").reduce(s, String::concat);
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(InterfacciaController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            pw.close();
-        }
-    }
+pw.write(s);
+pw.close();
+
+
+
+} catch (FileNotFoundException ex) {
+this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
+} finally {
+pw.close();
+}
+}
 
 }

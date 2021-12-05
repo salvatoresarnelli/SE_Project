@@ -66,7 +66,8 @@ public class Solver {
             text.execute();
        
     }
-    public void rollBack(LinkedList<ComplexNumber> list){
+    
+    /*public void rollBack(LinkedList<ComplexNumber> list){
         try {
             stack.clear();
         } catch (EmptyStackException ex) {
@@ -76,5 +77,5 @@ public class Solver {
         }
         
     }
-
+    */
 }

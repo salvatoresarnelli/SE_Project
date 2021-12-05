@@ -73,11 +73,11 @@ public class VariableParser extends ParserString {
     }
 
     private boolean checkVariableIns(String txtString) {
-        return txtString.charAt(0) == '>' && txtString.length() == 2;
+        return txtString.charAt(0) == '>' && txtString.length() == 2 && Character.isAlphabetic(txtString.charAt(1));
     }
 
     private boolean checkVariablePushed(String txtString) {
-        return txtString.charAt(0) == '<' && txtString.length() == 2;
+        return txtString.charAt(0) == '<' && txtString.length() == 2 && Character.isAlphabetic(txtString.charAt(1));
     }
     
     private boolean checkVariableSum(String txtString){

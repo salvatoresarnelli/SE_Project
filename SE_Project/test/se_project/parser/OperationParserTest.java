@@ -26,7 +26,7 @@ import se_project.commands.operationsCommands.SqrtCommand;
  * @author aless
  */
 public class OperationParserTest {
-       private ParserString parser;
+    private ParserString parser;
     private OperationCommand result;
     private String input;
     
