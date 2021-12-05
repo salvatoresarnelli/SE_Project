@@ -41,12 +41,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
-import se_project.commands.ExecuteUserDefinedOperationCommand;
-import se_project.commands.InsertUserDefinedOperationCommand;
+import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
+import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
-import se_project.commands.OperationNotFoundException;
-import se_project.commands.variables_commands.NewVariableCommand;
-import se_project.commands.variables_commands.OverrideVariableCommand;
+import se_project.exceptions.OperationNotFoundException;
+import se_project.commands.variablesCommands.NewVariableCommand;
+import se_project.commands.variablesCommands.OverrideVariableCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.ExistingNameException;
@@ -261,21 +261,22 @@ public class InterfacciaController implements Initializable {
                     }
                 }
             }
+            else alert("Attenzione!","impossibile eseguire l'operazione richiesta.","operazione sconosciuta.");
 
             observableList.clear();
             observableList.addAll(solver.getStructureStack().getStack());
             inputField.clear();
 
         } catch (InvalidNumberException ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+            alert("Errore!", "Operazione non valida", "L'inserimento non è valido");
         } catch (EmptyStackException ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+            alert("Errore!", "Operazione non valida", "Stack vuoto");
         } catch (UndefinedPhaseException ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+                alert("Errore!", "Operazione non valida", "fase non definita");
         } catch (DivisionByZeroException ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+                alert("Errore!", "Operazione non valida", "Divisione per zero");
         } catch (Exception ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+                alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
         }
     }
 

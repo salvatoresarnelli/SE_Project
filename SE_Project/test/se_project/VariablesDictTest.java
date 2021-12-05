@@ -90,36 +90,5 @@ public class VariablesDictTest {
         ComplexNumber result = dict.getVariableValue(input);
         assertEquals(expected, result);
     }
-   
-
-    /*
-    private void checkName(char var) throws InvalidVariableNameException {
-        if (!((var >= 'a') && (var <= 'z'))) {
-            throw new InvalidVariableNameException();
-        }
-    }
-
-    public void setVariable(char var, ComplexNumber value) throws VariableExistingException, InvalidVariableNameException {
-        checkName(var);
-        if (table.containsKey(var)) {
-            throw new VariableExistingException();
-        } else {
-            table.put(var, value);
-        }
-    }
-
-    public void forceSettingVariable(char var, ComplexNumber value) throws InvalidVariableNameException {
-        checkName(var);
-        table.put(var, value);
-    }
-
-    public ComplexNumber getVariableValue(char var) throws InvalidVariableNameException, NonExistingVariable {
-        checkName(var);
-        if(!table.containsKey(var))
-            throw new NonExistingVariable();
-        return table.get(var);
-    }
-     */
-   
 
 }

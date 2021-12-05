@@ -15,17 +15,17 @@ import se_project.ComplexNumber;
 import se_project.Solver;
 import se_project.commands.InsertNumberCommand;
 import se_project.commands.OperationCommand;
-import se_project.commands.OperationNotFoundException;
+import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.operationsCommands.ColonsCommand;
 import se_project.commands.operationsCommands.DotCommand;
 import se_project.commands.operationsCommands.MinusCommand;
 import se_project.commands.operationsCommands.PlusCommand;
 import se_project.commands.operationsCommands.SignCommand;
 import se_project.commands.operationsCommands.SqrtCommand;
-import se_project.commands.variables_commands.DiffVariableCommand;
-import se_project.commands.variables_commands.NewVariableCommand;
-import se_project.commands.variables_commands.PushVariableCommand;
-import se_project.commands.variables_commands.SumVariableCommand;
+import se_project.commands.variablesCommands.DiffVariableCommand;
+import se_project.commands.variablesCommands.NewVariableCommand;
+import se_project.commands.variablesCommands.PushVariableCommand;
+import se_project.commands.variablesCommands.SumVariableCommand;
 import se_project.exceptions.InvalidVariableNameException;
 
 /**

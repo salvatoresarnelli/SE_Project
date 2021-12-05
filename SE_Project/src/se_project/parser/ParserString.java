@@ -11,7 +11,7 @@ import se_project.ComplexNumber;
 import se_project.commands.Command;
 import se_project.commands.InsertNumberCommand;
 import se_project.commands.OperationCommand;
-import se_project.commands.OperationNotFoundException;
+import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.OperationsFactory;
 import se_project.commands.operationsCommands.ColonsCommand;
 import se_project.commands.operationsCommands.DotCommand;

@@ -7,7 +7,7 @@ package se_project.exceptions;
 
 import java.util.LinkedList;
 import se_project.ComplexNumber;
-import se_project.commands.ExecuteUserDefinedOperationCommand;
+import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 
 /**
  *

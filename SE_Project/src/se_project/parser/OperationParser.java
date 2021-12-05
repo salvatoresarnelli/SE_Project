@@ -6,7 +6,7 @@
 package se_project.parser;
 
 import se_project.commands.OperationCommand;
-import se_project.commands.OperationNotFoundException;
+import se_project.exceptions.OperationNotFoundException;
 
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package se_project.commands.variables_commands;
+package se_project.commands.variablesCommands;
 
 import se_project.ComplexNumber;
 import se_project.Stack;

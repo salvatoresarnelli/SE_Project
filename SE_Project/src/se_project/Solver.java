@@ -62,8 +62,20 @@ public class Solver {
             EmptyStackException, UndefinedPhaseException, DivisionByZeroException, 
             InvalidVariableNameException,VariableExistingException, InterruptedExecutionException,
             Exception{
+            LinkedList<ComplexNumber> actualStack = getStructureStack().getStack();
             ((OperationCommand)text).setTarget(stack);
+            try{
             text.execute();
+            }catch(NotApplicableOperation | InvalidNumberException|EmptyStackException|UndefinedPhaseException|
+                    DivisionByZeroException | InvalidVariableNameException | VariableExistingException | 
+                    InterruptedExecutionException ex){
+                /*ROLLBACK
+                stack.getStack().clear();
+                stack.getStack().addAll(actualStack);
+                throw ex;
+                */
+                
+            }
        
     }
     

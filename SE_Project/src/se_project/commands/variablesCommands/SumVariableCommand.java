@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package se_project.commands.variables_commands;
+package se_project.commands.variablesCommands;
 
 import se_project.ComplexNumber;
 import se_project.Stack;

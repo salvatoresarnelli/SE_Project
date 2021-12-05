@@ -9,12 +9,12 @@ import se_project.VariablesDict;
 import se_project.parser.ParserString;
 import se_project.commands.Command;
 import se_project.commands.OperationCommand;
-import se_project.commands.OperationNotFoundException;
-import se_project.commands.variables_commands.DiffVariableCommand;
-import se_project.commands.variables_commands.NewVariableCommand;
-import se_project.commands.variables_commands.PushVariableCommand;
-import se_project.commands.variables_commands.SumVariableCommand;
-import se_project.commands.variables_commands.VariableCommand;
+import se_project.exceptions.OperationNotFoundException;
+import se_project.commands.variablesCommands.DiffVariableCommand;
+import se_project.commands.variablesCommands.NewVariableCommand;
+import se_project.commands.variablesCommands.PushVariableCommand;
+import se_project.commands.variablesCommands.SumVariableCommand;
+import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
 

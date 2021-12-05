@@ -5,12 +5,14 @@
  */
 package se_project.commands;
 
+import se_project.exceptions.OperationNotFoundException;
+import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import java.util.HashMap;
 import java.util.LinkedList;
-import se_project.commands.variables_commands.DiffVariableCommand;
-import se_project.commands.variables_commands.NewVariableCommand;
-import se_project.commands.variables_commands.PushVariableCommand;
-import se_project.commands.variables_commands.SumVariableCommand;
+import se_project.commands.variablesCommands.DiffVariableCommand;
+import se_project.commands.variablesCommands.NewVariableCommand;
+import se_project.commands.variablesCommands.PushVariableCommand;
+import se_project.commands.variablesCommands.SumVariableCommand;
 import se_project.commands.operationsCommands.ColonsCommand;
 import se_project.commands.operationsCommands.DotCommand;
 import se_project.commands.operationsCommands.MinusCommand;
