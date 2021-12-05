@@ -81,12 +81,20 @@ public class VariableParser extends ParserString {
         return txtString.charAt(0) == '<' && txtString.length() == 2;
     }
     
-    private boolean checkVariableSum(String txtString) throws NonExistingVariable, InvalidVariableNameException{
+    private boolean checkVariableSum(String txtString){
+        try{
         return txtString.charAt(0) == '+' && txtString.length() == 2 && dict.getVariableValue(txtString.charAt(1)) != null;
+        }catch(NonExistingVariable | InvalidVariableNameException ex){
+            return false;
+        }
     }
     
     private boolean checkVariableDiff(String txtString) throws NonExistingVariable, InvalidVariableNameException{
-        return txtString.charAt(0) == '-' && txtString.length() == 2 && dict.getVariableValue(txtString.charAt(1)) != null;
+        try{
+            return txtString.charAt(0) == '-' && txtString.length() == 2 && dict.getVariableValue(txtString.charAt(1)) != null;
+        }catch(NonExistingVariable ex){
+            return false;
+        }
     }
 
 }

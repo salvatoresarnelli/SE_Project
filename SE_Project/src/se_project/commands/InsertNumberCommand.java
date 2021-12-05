@@ -27,5 +27,9 @@ public class InsertNumberCommand extends OperationCommand{
     public Object execute() throws Exception {
         return super.getTarget().push(number);
     }
+
+    public ComplexNumber getNumber() {
+        return number;
+    }
     
 }

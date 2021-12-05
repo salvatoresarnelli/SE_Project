@@ -6,6 +6,7 @@
 package se_project;
 
 import java.util.HashMap;
+import se_project.exceptions.InvalidValueException;
 import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
 import se_project.exceptions.VariableExistingException;
@@ -27,9 +28,15 @@ public class VariablesDict {
             throw new InvalidVariableNameException();
         }
     }
+    private void checkValue(ComplexNumber value)  throws InvalidValueException{
+    if(value==null)
+        throw new InvalidValueException();
+    }
 
-    public void setVariable(char var, ComplexNumber value) throws VariableExistingException, InvalidVariableNameException {
+
+    public void setVariable(char var, ComplexNumber value) throws InvalidValueException,VariableExistingException, InvalidVariableNameException {
         checkName(var);
+        checkValue(value);
         if (table.containsKey(var)) {
             throw new VariableExistingException();
         } else {

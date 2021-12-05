@@ -29,7 +29,7 @@ public abstract class OperationCommand implements Command {
     }
 
     public Stack getTarget() {
-        return target;
+            return target;
     }
 
     public void setTarget(Stack target) {

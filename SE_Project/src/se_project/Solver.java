@@ -6,6 +6,8 @@
 package se_project;
 
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import se_project.*;
 import se_project.commands.Command;
 import se_project.commands.OperationCommand;
@@ -23,6 +25,7 @@ import se_project.commands.stackCommands.SwapCommand;
 
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
+import se_project.exceptions.InterruptedExecutionException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.InvalidVariableNameException;
@@ -56,152 +59,22 @@ public class Solver {
     }
  
     public void resolveOperation(Command text) throws NotApplicableOperation, InvalidNumberException,
-            EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InvalidVariableNameException,VariableExistingException, Exception{
+            EmptyStackException, UndefinedPhaseException, DivisionByZeroException, 
+            InvalidVariableNameException,VariableExistingException, InterruptedExecutionException,
+            Exception{
             ((OperationCommand)text).setTarget(stack);
             text.execute();
-       /* switch (text) {
-           
-           
-            case "addition":
-                stack.push(new PlusCommand(this.stack).execute());
-                                break;
-
-            case "+":
-                stack.push(new PlusCommand(this.stack).execute());                break;
-
-            case "substraction":
-                stack.push(new MinusCommand(this.stack).execute());
-                                break;
-
-            case "-":
-                stack.push(new MinusCommand(this.stack).execute());
-                                break;
-
-            case "multiplication":
-                stack.push((new DotCommand(this.stack)).execute());
-                                break;
-
-            case "*":
-                stack.push((new DotCommand(this.stack)).execute());
-                                break;
-
-            case "division":
-                stack.push(new ColonsCommand(this.stack).execute());
-            case ":":
-                stack.push(new ColonsCommand(this.stack).execute());
-            case "invert sign":
-                stack.push(new SignCommand(this.stack).execute());
-                                break;
-
-            case "+-":
-                stack.push(new SignCommand(this.stack).execute());
-                                break;
-
-            case "sqrt":
-                stack.push(new SqrtCommand(this.stack).execute());
-                                break;
-
-            case "square root":
-                stack.push(new SqrtCommand(this.stack).execute());
-                break;
-            default: throw new InvalidNumberException();
-        }*/
+       
     }
-
-    public boolean resolveOperationStack(String text) throws InvalidOperationException, EmptyStackException {
-        switch (text) {
-            case "clear":
-                return new ClearCommand(stack).execute();
-            case "dup":
-                return new DuplicateCommand(stack).execute();
-            case "drop":
-                return new DropCommand(stack).execute();
-            case "swap":
-                return new SwapCommand(stack).execute();
-            case "over":
-                return new OverCommand(stack).execute();
+    public void rollBack(LinkedList<ComplexNumber> list){
+        try {
+            stack.clear();
+        } catch (EmptyStackException ex) {
         }
-        throw new InvalidOperationException();
-    }
-    
-    public ComplexNumber sum() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
-        if (stack.size() >= 2) {
-            ComplexNumber c1 = stack.pop();
-            ComplexNumber c2 = stack.pop();
-            return Operations.addOperation(c1, c2);
-        } else {
-            throw new NotApplicableOperation();
-}
-    }
-
-    public ComplexNumber dot() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
-        if (stack.size() >= 2) {
-            ComplexNumber c1 = stack.pop();
-            ComplexNumber c2 = stack.pop();
-            return Operations.dotOperation(c1, c2);
-        } else {
-            throw new NotApplicableOperation();
-        }
-    }
-
-    public ComplexNumber difference() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
-        if (stack.size() >= 2) {
-            ComplexNumber c1 = stack.pop();
-            ComplexNumber c2 = stack.pop();
-            return Operations.differenceOperation(c1, c2);
-        } else {
-            throw new NotApplicableOperation();
-        }
-    }
-
-    public ComplexNumber division() throws NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException, EmptyStackException {
-        if (stack.size() >= 2) {
-            ComplexNumber c1 = stack.pop();
-            ComplexNumber c2 = stack.pop();
-            return Operations.divisionOperation(c1, c2);
-        } else {
-            throw new NotApplicableOperation();
-        }
-    }
-
-    public ComplexNumber sign() throws NotApplicableOperation, InvalidNumberException, EmptyStackException {
-        if (stack.size() >= 1) {
-            ComplexNumber c1 = stack.pop();
-            return Operations.signOperation(c1);
-        } else {
-            throw new NotApplicableOperation();
-        }
-    }
-
-    public LinkedList<ComplexNumber> squareRoot() throws EmptyStackException, NotApplicableOperation, InvalidNumberException{
-        if (stack.size() >= 1) {
-            System.out.println("ciao sono nella radice");
-            ComplexNumber c1 = stack.pop();
-            return Operations.squareRoot(c1);
-        } else {
-            throw new NotApplicableOperation();
+        for( ComplexNumber complex : list){
+            stack.push(complex);
         }
         
-    }
-    
-    public boolean clear() throws EmptyStackException {
-        return stack.clear();
-}
-    
-    public boolean swap() throws EmptyStackException, InvalidOperationException {
-        return stack.swap();
-    }
-    
-    public boolean drop() throws EmptyStackException {
-        return stack.drop();
-    }
-    
-    public boolean over() throws EmptyStackException, InvalidOperationException {
-        return stack.over();
-    }
-    
-    public boolean duplicate() throws EmptyStackException {
-        return stack.duplicate();
     }
 
 }

@@ -20,6 +20,7 @@ import se_project.commands.operationsCommands.SqrtCommand;
 import se_project.commands.stackCommands.ClearCommand;
 import se_project.commands.stackCommands.DropCommand;
 import se_project.commands.stackCommands.DuplicateCommand;
+import se_project.commands.stackCommands.OverCommand;
 import se_project.commands.stackCommands.SwapCommand;
 
 /**
@@ -45,41 +46,41 @@ public class OperationsFactory {
             type="NewVariableCommand";
         if(type.startsWith("<") && type.length()==2)
             type="PushVariableCommand";
-        if(type.startsWith("+") && type.length()==2)
+        if(type.startsWith("+") && type.length()==2 && type.charAt(1)!='-')
             type="SumVariableCommand";
         if(type.startsWith("-") && type.length()==2)
             type="DiffVariableCommand";
-        switch (type) {
-            case "+":
+        if(type.equals("+"))
                 return new PlusCommand();
-            case "-":
+        if(type.equals("-"))
                 return new MinusCommand();
-
-            case "*":
+        if(type.equals("*"))
                 return new DotCommand();
-            case ":":
+        if(type.equals(":"))
                 return new ColonsCommand();
-            case "+-":
+        if(type.equals("+-"))
                 return new SignCommand();
-            case "sqrt":
+        if(type.equals("sqrt"))
                 return new SqrtCommand();
-            case "swap":
+        if(type.equals("swap"))
                 return new SwapCommand();
-            case "drop":
+        if(type.equals("drop"))
                 return new DropCommand();
-            case "dup":
+        if(type.equals("dup"))
                 return new DuplicateCommand();
-            case "clear":
+        if(type.equals("clear"))
                 return new ClearCommand();
-            case "NewVariableCommand":
+        if(type.equals("over"))
+                return new OverCommand();
+        if(type.equals("NewVariableCommand"))
                 return new NewVariableCommand();
-            case "PushVariableCommand":
+        if(type.equals("PushVariableCommand"))
                 return new PushVariableCommand();
-            case "SumVariableCommand":
+        if(type.equals("SumVariableCommand"))
                 return new SumVariableCommand();
-            case "DiffVariableCommand":
+        if(type.equals("DiffVariableCommand"))
                 return new DiffVariableCommand();
-        }
+        
         throw new OperationNotFoundException();
     }
 

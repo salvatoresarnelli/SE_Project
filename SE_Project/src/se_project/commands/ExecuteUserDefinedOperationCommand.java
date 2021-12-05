@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import se_project.ComplexNumber;
 import se_project.Stack;
+import se_project.exceptions.InterruptedExecutionException;
 
 /**
  *
@@ -43,14 +44,20 @@ public class ExecuteUserDefinedOperationCommand extends OperationCommand {
     @Override
     public Object execute() throws Exception {
         LinkedList<ComplexNumber> rollBackList = new LinkedList<>();
+        LinkedList<OperationCommand> remaining = commandList;
         Stack stack = super.getTarget();
-       
+        rollBackList.addAll(stack.getStack());
         /*if(getWeight()>stack.size())
             return false;
         */
         for (OperationCommand i : commandList) {
             i.setTarget(stack);
+            //remaining.removeFirst();
+            //try{
             i.execute();
+            /*}catch(Exception ex){
+                throw new InterruptedExecutionException(new ExecuteUserDefinedOperationCommand(name+"Remaining",remaining),rollBackList,ex.get());
+            }*/
         }
         return true;
     }

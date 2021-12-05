@@ -50,6 +50,7 @@ import se_project.commands.not_implemented_yet.OverrideVariableCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.ExistingNameException;
+import se_project.exceptions.InterruptedExecutionException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.InvalidVariableNameException;
@@ -244,10 +245,17 @@ public class InterfacciaController implements Initializable {
                         solver.resolveOperation(ovc);
                     }
 
-                } catch (Exception ex) {
-                    Alert("Errore!", "Si è verificato un errore...", "");
-                }
-
+                }catch(InterruptedExecutionException ex){
+                     Alert alert = new Alert(AlertType.WARNING, "L'esecuzione della funzione è stata interrotta a causa del seguente errore:" + ex.getExceptionCause() +
+                             "\nContinuare? ", ButtonType.YES, ButtonType.NO);
+                    alert.showAndWait();
+                    if (alert.getResult() == ButtonType.YES) {
+                        
+                    }
+                    if (alert.getResult() == ButtonType.NO) {
+                        solver.rollBack(ex.getRollBackList());
+                    }
+                } 
                 if (code instanceof InsertUserDefinedOperationCommand) {
                     if (decoratorParserOperation.getNames().contains(
                             ((InsertUserDefinedOperationCommand) code).getName())) {

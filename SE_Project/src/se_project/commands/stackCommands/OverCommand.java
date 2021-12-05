@@ -17,6 +17,9 @@ import se_project.exceptions.InvalidOperationException;
  */
 public class OverCommand extends OperationCommand{
 
+    public OverCommand() {
+    }
+
     
     public OverCommand(Stack stack) {
        super(stack);
