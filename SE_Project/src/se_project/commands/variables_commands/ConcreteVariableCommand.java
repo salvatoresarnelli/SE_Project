@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package se_project.commands.not_implemented_yet;
+package se_project.commands.variables_commands;
 
 import se_project.Stack;
 import se_project.VariablesDict;

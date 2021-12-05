@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package se_project.commands.not_implemented_yet;
+package se_project.commands.variables_commands;
 
 import se_project.ComplexNumber;
 import se_project.Stack;
 import se_project.VariablesDict;
 import se_project.exceptions.EmptyStackException;
+import se_project.exceptions.InvalidValueException;
 import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.VariableExistingException;
 
@@ -53,7 +54,7 @@ public class NewVariableCommand extends VariableCommand {
         return variable;
     }
 
-    public ComplexNumber execute() throws EmptyStackException, InvalidVariableNameException, VariableExistingException {
+    public ComplexNumber execute() throws EmptyStackException, InvalidVariableNameException, VariableExistingException, InvalidValueException {
         Stack stack = super.getTarget();
         ComplexNumber complex = stack.pop();
         try {

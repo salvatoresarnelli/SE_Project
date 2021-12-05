@@ -10,12 +10,11 @@ import se_project.parser.ParserString;
 import se_project.commands.Command;
 import se_project.commands.OperationCommand;
 import se_project.commands.OperationNotFoundException;
-import se_project.commands.not_implemented_yet.CommandFactory;
-import se_project.commands.not_implemented_yet.DiffVariableCommand;
-import se_project.commands.not_implemented_yet.NewVariableCommand;
-import se_project.commands.not_implemented_yet.PushVariableCommand;
-import se_project.commands.not_implemented_yet.SumVariableCommand;
-import se_project.commands.not_implemented_yet.VariableCommand;
+import se_project.commands.variables_commands.DiffVariableCommand;
+import se_project.commands.variables_commands.NewVariableCommand;
+import se_project.commands.variables_commands.PushVariableCommand;
+import se_project.commands.variables_commands.SumVariableCommand;
+import se_project.commands.variables_commands.VariableCommand;
 import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
 
