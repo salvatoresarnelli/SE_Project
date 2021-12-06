@@ -29,6 +29,8 @@ public class SE_Project extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setFullScreen(false);
+        stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
+        stage.setTitle("Math Solver");
         stage.show();
     }
 

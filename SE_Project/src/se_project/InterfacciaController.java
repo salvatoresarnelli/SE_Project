@@ -387,6 +387,7 @@ public class InterfacciaController implements Initializable {
 
         
 
+    @FXML
     public void saveFunctions() {
 PrintWriter pw = null;
 try {
@@ -409,5 +410,9 @@ this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
 pw.close();
 }
 }
+
+    @FXML
+    private void ActionPush(KeyEvent event) {
+    }
 
 }

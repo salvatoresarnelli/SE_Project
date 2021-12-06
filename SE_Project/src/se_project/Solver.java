@@ -71,9 +71,12 @@ public class Solver {
                     InterruptedExecutionException ex){
                 /*ROLLBACK
                 stack.getStack().clear();
+                
                 stack.getStack().addAll(actualStack);
-                throw ex;
                 */
+                
+                throw ex;
+                
                 
             }
        
