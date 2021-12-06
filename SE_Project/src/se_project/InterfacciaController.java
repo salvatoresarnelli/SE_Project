@@ -323,15 +323,63 @@ public class InterfacciaController implements Initializable {
 
     }
 
-    public void inizializeMenuButton(String code) {
-        MenuItem choice = new MenuItem(code);
+    public void inizializeMenuButton(String text) {
+        MenuItem choice = new MenuItem(text);
         splitMenuButton.getItems().add(choice);
+
         choice.setOnAction((e) -> {
             try {
                 //this.userOperation(code);
-                decoratorParserOperation.parse(code);
+                OperationCommand code = decoratorParserOperation.parse(text);
+                if (code != null) {
+                    try {
+                        solver.resolveOperation(code);
+                        observableList.clear();
+                        observableList.addAll(solver.getStructureStack().getStack());
+                    } catch (EmptyStackException ex) {
+                        alert("Errore!", "Operazione non valida", "Lo stack è vuoto!");
+                    } catch (NotApplicableOperation ex) {
+                        alert("Errore!", "Operazione non valida", "");
+                    } catch (InvalidNumberException ex) {
+                        alert("Errore!", "Inserito un numero non valido", text);
+                    } catch (InvalidVariableNameException ex) {
+                        alert("Errore!", "Inserito una variabile non valida", text);
+                    } catch (UndefinedPhaseException ex) {
+                        alert("Errore!", "Fase non definita", text);
+                    } catch (DivisionByZeroException ex) {
+                        alert("Errore!", "Divisione per zero.", "");
+                    } catch (VariableExistingException ex) {
+                        Alert alert = new Alert(AlertType.WARNING, "Variabile" + ((NewVariableCommand) code).getVariable() + " esistente, sovrascriverne il valore? ", ButtonType.YES, ButtonType.NO);
+                        alert.showAndWait();
+                        if (alert.getResult() == ButtonType.YES) {
+                            OverrideVariableCommand ovc = new OverrideVariableCommand((NewVariableCommand) code);
+                            solver.resolveOperation(ovc);
+                        }
+                        observableList.clear();
+                        observableList.addAll(solver.getStructureStack().getStack());
+
+                    } catch (InterruptedExecutionException ex) {
+                        Alert alert = new Alert(AlertType.WARNING, "L'esecuzione della funzione è stata interrotta a causa del seguente errore:" + ex.getExceptionCause()
+                                + "\nContinuare? ", ButtonType.YES, ButtonType.NO);
+                        alert.showAndWait();
+                        if (alert.getResult() == ButtonType.YES) {
+
+                        }
+                        if (alert.getResult() == ButtonType.NO) {
+                            // solver.rollBack(ex.getRollBackList());
+                        }
+                    }
+                    if (code instanceof InsertUserDefinedOperationCommand) {
+                        if (decoratorParserOperation.getNames().contains(
+                                ((InsertUserDefinedOperationCommand) code).getName())) {
+                            this.inizializeMenuButton(((InsertUserDefinedOperationCommand) code).getName());
+
+                        }
+                    }
+                }
+
             } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException | InvalidOperationException ex) {
-                alert("errore", "Operazione non valida ", code);
+                this.alert("errore", "Operazione non valida ", text);
 
             } catch (ExistingNameException ex) {
                 Logger.getLogger(InterfacciaController.class
@@ -344,6 +392,7 @@ public class InterfacciaController implements Initializable {
                         .getName()).log(Level.SEVERE, null, ex);
             }
         });
+
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
@@ -387,32 +436,25 @@ public class InterfacciaController implements Initializable {
 
         
 
+
     @FXML
     public void saveFunctions() {
-PrintWriter pw = null;
-try {
-FileChooser fc = new FileChooser();
-fc.setTitle("Save functions ...");
-fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
-File file = fc.showSaveDialog(new Stage());
-pw = new PrintWriter(file);
-String s = "";
-s = decoratorParserOperation.getNames().stream().map((name) -> name + " " + decoratorParserOperation.getOperationString(name) + " \n").reduce(s, String::concat);
+        PrintWriter pw = null;
+        try {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Save functions ...");
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+            File file = fc.showSaveDialog(new Stage());
+            pw = new PrintWriter(file);
+            pw.print(decoratorParserOperation.getHashMap());
+            pw.close();
 
-pw.write(s);
-pw.close();
-
-
-
-} catch (FileNotFoundException ex) {
-this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
-} finally {
-pw.close();
-}
-}
-
-    @FXML
-    private void ActionPush(KeyEvent event) {
+        } catch (FileNotFoundException ex) {
+            this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
+        } finally {
+            pw.close();
+        }
     }
+
 
 }

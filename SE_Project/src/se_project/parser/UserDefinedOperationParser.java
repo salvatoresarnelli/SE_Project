@@ -293,6 +293,9 @@ public class UserDefinedOperationParser extends ParserString {
         Command remove = hashMap.remove(name);
         return (remove != null);
     }
+    public HashMap<String, OperationCommand> getHashMap(){
+        return hashMap;
+    }
 
     /*
     @Override
