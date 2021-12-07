@@ -322,8 +322,8 @@ public interface Operations {
         ComplexNumber sin2 = new ComplexNumber(0,Math.sin(c2.getImaginaryPart()));
         ComplexNumber cos2 = new ComplexNumber(Math.cos(c2.getImaginaryPart()),0);
         k2 = Operations.dotOperation(k2, Operations.addOperation(sin2, cos2));
-        ComplexNumber k = Operations.differenceOperation(k1, k2);
-        ComplexNumber sin = Operations.dotOperation(k, new ComplexNumber(0,0.5));
+        ComplexNumber k = Operations.differenceOperation(k1, k2);       
+        ComplexNumber sin = Operations.divisionOperation(k, new ComplexNumber(0,2));
         ret.addLast(sin);     
         return ret;
     }
@@ -343,7 +343,7 @@ public interface Operations {
         ComplexNumber cos2 = new ComplexNumber(Math.cos(c2.getImaginaryPart()),0);
         k2 = Operations.dotOperation(k2, Operations.addOperation(sin2, cos2));
         ComplexNumber k = Operations.addOperation(k1, k2);
-        ComplexNumber cos = Operations.dotOperation(k, new ComplexNumber(0.5,0));
+        ComplexNumber cos = Operations.divisionOperation(k, new ComplexNumber(2,0));
         ret.addLast(cos); 
         return ret;
     }

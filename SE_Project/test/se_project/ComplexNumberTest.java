@@ -126,7 +126,7 @@ public class ComplexNumberTest {
         ComplexNumber n = new ComplexNumber(4, -5);
         String result = n.conjugated(n).toString();
         System.out.println(result);
-        String expResult = "4.0+5.0j";
+        String expResult = "4+5j";
         assertEquals(expResult, result);
     }
 
@@ -136,8 +136,8 @@ public class ComplexNumberTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        ComplexNumber instance = new ComplexNumber(4, -5);
-        String expResult = "4.0-5.0j";
+        ComplexNumber instance = new ComplexNumber(4.0, -5.0);
+        String expResult = "4-5j";
         String result = instance.toString();
         System.out.println(result);
         assertEquals(expResult, result);
