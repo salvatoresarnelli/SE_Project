@@ -64,7 +64,7 @@ public class ExecuteUserDefinedOperationCommand extends OperationCommand {
 
     @Override
     public String toString() {
-        return commandList.toString().replaceAll("[", "").replaceAll("]", "").replaceAll(",", "");
+        return commandList.toString();
     }
 
 }
