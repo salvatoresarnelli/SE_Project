@@ -24,6 +24,8 @@ import se_project.commands.stackCommands.DropCommand;
 import se_project.commands.stackCommands.DuplicateCommand;
 import se_project.commands.stackCommands.OverCommand;
 import se_project.commands.stackCommands.SwapCommand;
+import se_project.commands.trascendental.CosCommand;
+import se_project.commands.trascendental.SinCommand;
 
 /**
  *
@@ -82,6 +84,10 @@ public class OperationsFactory {
                 return new SumVariableCommand();
         if(type.equals("DiffVariableCommand"))
                 return new DiffVariableCommand();
+        if(type.equals("sin"))
+                return new SinCommand();
+        if(type.equals("cos"))
+                return new CosCommand();
         
         throw new OperationNotFoundException();
     }

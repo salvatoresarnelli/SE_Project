@@ -83,7 +83,7 @@ public interface Operations {
         }
         double a = number1.getRealPart() - number2.getRealPart();
         double b = number1.getImaginaryPart() - number2.getImaginaryPart();
-        return new ComplexNumber(Math.round(a),Math.round(b));
+        return new ComplexNumber(a,b);
     }
 
     /**
@@ -125,7 +125,7 @@ public interface Operations {
 
         double a = number1.getRealPart() * number2.getRealPart() - number1.getImaginaryPart() * number2.getImaginaryPart();
         double b = number1.getRealPart() * number2.getImaginaryPart() + number2.getRealPart() * number1.getImaginaryPart();
-        return new ComplexNumber(Math.round(a), Math.round(b));
+        return new ComplexNumber(a, b);
     }
 
     /**
@@ -299,12 +299,52 @@ public interface Operations {
         double sinPart,cosPart;
         double shift;
         for(int i=0;i<2;i++){
-            shift = (phase+2*i*Math.PI);
+        shift = (phase+2*i*Math.PI);
         cosPart = Utilities.round(Math.cos(0.5 * shift),4);
         sinPart = Utilities.round((Math.sin(0.5 * shift)),4);
       
         ret.addLast(new ComplexNumber(Utilities.round(retMod*cosPart,4),Utilities.round(retMod*sinPart,4)));
         }
+        return ret;
+    }
+    
+    public static LinkedList<ComplexNumber> sin(ComplexNumber number) throws InvalidNumberException, DivisionByZeroException{
+        LinkedList<ComplexNumber> ret = new LinkedList<>();
+        if(number==null)
+            throw new InvalidNumberException();
+        ComplexNumber c1 = Operations.dotOperation(number, new ComplexNumber(0,1.0));
+        ComplexNumber c2 = Operations.dotOperation(number, new ComplexNumber(0,-1.0));
+        ComplexNumber k1 = new ComplexNumber(Math.exp(c1.getRealPart()),0);
+        ComplexNumber k2 = new ComplexNumber(Math.exp(c2.getRealPart()),0);
+        ComplexNumber sin1 = new ComplexNumber(0,Math.sin(c1.getImaginaryPart()));
+        ComplexNumber cos1 = new ComplexNumber(Math.cos(c1.getImaginaryPart()),0);
+        k1 = Operations.dotOperation(k1, Operations.addOperation(sin1, cos1));
+        ComplexNumber sin2 = new ComplexNumber(0,Math.sin(c2.getImaginaryPart()));
+        ComplexNumber cos2 = new ComplexNumber(Math.cos(c2.getImaginaryPart()),0);
+        k2 = Operations.dotOperation(k2, Operations.addOperation(sin2, cos2));
+        ComplexNumber k = Operations.differenceOperation(k1, k2);
+        ComplexNumber sin = Operations.dotOperation(k, new ComplexNumber(0,0.5));
+        ret.addLast(sin);     
+        return ret;
+    }
+    
+    public static LinkedList<ComplexNumber> cos(ComplexNumber number) throws InvalidNumberException, DivisionByZeroException{
+        LinkedList<ComplexNumber> ret = new LinkedList<>();
+        if(number==null)
+            throw new InvalidNumberException();
+        ComplexNumber c1 = Operations.dotOperation(number, new ComplexNumber(0,1));
+        ComplexNumber c2 = Operations.dotOperation(number, new ComplexNumber(0,-1));
+        ComplexNumber k1 = new ComplexNumber(Math.exp(c1.getRealPart()),0);
+        ComplexNumber k2 = new ComplexNumber(Math.exp(c2.getRealPart()),0);
+        ComplexNumber sin1 = new ComplexNumber(0,Math.sin(c1.getImaginaryPart()));
+        ComplexNumber cos1 = new ComplexNumber(Math.cos(c1.getImaginaryPart()),0);
+        k1 = Operations.dotOperation(k1, Operations.addOperation(sin1, cos1));
+        ComplexNumber sin2 = new ComplexNumber(0,Math.sin(c2.getImaginaryPart()));
+        ComplexNumber cos2 = new ComplexNumber(Math.cos(c2.getImaginaryPart()),0);
+        k2 = Operations.dotOperation(k2, Operations.addOperation(sin2, cos2));
+        ComplexNumber k = Operations.addOperation(k1, k2);
+        ComplexNumber cos = Operations.dotOperation(k, new ComplexNumber(0.5,0));
+        ret.addLast(cos); 
         return ret;
     }
 }

@@ -54,16 +54,11 @@ public class NewVariableCommand extends VariableCommand {
         return variable;
     }
 
+    @Override
     public ComplexNumber execute() throws EmptyStackException, InvalidVariableNameException, VariableExistingException, InvalidValueException {
         Stack stack = super.getTarget();
         ComplexNumber complex = stack.pop();
-        try {
-            super.getDictionary().setVariable(variable, complex);
-        } catch (VariableExistingException ex) {
-            stack.push(complex);
-
-            throw new VariableExistingException();
-        }
+        super.getDictionary().forceSettingVariable(variable, complex);
         stack.push(complex);
 
         return complex;
