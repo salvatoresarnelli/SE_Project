@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package se_project;
-
 import java.lang.Math;
 import other.Utilities;
 import se_project.exceptions.InvalidNumberException;

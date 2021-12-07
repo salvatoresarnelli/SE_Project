@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -12,11 +14,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="628.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.InterfacciaController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="550.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.InterfacciaController">
    <children>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="491.0" style="-fx-background-color: 1d3557; -fx-border-color: white;">
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="590.0" style="-fx-background-color: 1d3557; -fx-border-color: white;">
          <children>
-            <MenuBar layoutY="-2.0">
+            <MenuBar layoutX="61.0" layoutY="375.0">
                <menus>
                   <Menu mnemonicParsing="false" text="File">
                      <items>
@@ -30,38 +32,40 @@
                   <Menu mnemonicParsing="false" text="Edit" />
                </menus>
             </MenuBar>
-            <Button layoutX="115.0" layoutY="317.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="0" />
-            <Button layoutX="183.0" layoutY="317.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="." />
-            <Button fx:id="buttonPush" layoutX="246.0" layoutY="317.0" mnemonicParsing="false" onAction="#ActionPush" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: orange;" text="Push" />
-            <Button layoutX="316.0" layoutY="317.0" mnemonicParsing="false" onAction="#operationOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873;" text="+" />
-            <Button layoutX="316.0" layoutY="278.0" mnemonicParsing="false" onAction="#operationOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="-" />
-            <Button layoutX="316.0" layoutY="239.0" mnemonicParsing="false" onAction="#multiplicationOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="x" />
-            <Button layoutX="316.0" layoutY="202.0" mnemonicParsing="false" onAction="#divisionOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="÷" />
-            <Button layoutX="316.0" layoutY="167.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: orange;" text="CE" />
-            <Button layoutX="115.0" layoutY="278.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="1" />
-            <Button layoutX="183.0" layoutY="278.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="2" />
-            <Button layoutX="246.0" layoutY="278.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="3" />
-            <Button layoutX="115.0" layoutY="239.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="4" />
-            <Button layoutX="183.0" layoutY="239.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="5" />
-            <Button layoutX="246.0" layoutY="239.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="6" />
-            <Button layoutX="115.0" layoutY="202.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="7" />
-            <Button layoutX="183.0" layoutY="202.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="8" />
-            <Button layoutX="246.0" layoutY="202.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="9" />
-            <Button layoutX="246.0" layoutY="167.0" mnemonicParsing="false" onAction="#sqrtOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="√" />
-            <Button layoutX="183.0" layoutY="167.0" mnemonicParsing="false" onAction="#invertedOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="+-" />
-            <Button layoutX="115.0" layoutY="167.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-text-fill: #ffffff; -fx-background-color: #626873;" text="sin" />
-            <Button layoutX="45.0" layoutY="167.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: #ffffff;" text="cos" />
-            <Button layoutX="45.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="tan" />
-            <Button layoutX="45.0" layoutY="239.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="arcsin" />
-            <Button layoutX="45.0" layoutY="278.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="arccos" />
-            <Button layoutX="45.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="arctan" />
-            <TextField fx:id="inputField" layoutX="34.0" layoutY="43.0" onKeyPressed="#ActionPush" prefHeight="48.0" prefWidth="325.0" style="-fx-background-color: FCFCDA;" />
-            <SplitMenuButton fx:id="splitMenuButton" layoutX="34.0" layoutY="110.0" mnemonicParsing="false" prefWidth="98.0" text="Operazioni" />
+            <Button layoutX="137.0" layoutY="323.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="0" />
+            <Button layoutX="205.0" layoutY="323.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="." />
+            <Button fx:id="buttonPush" layoutX="268.0" layoutY="323.0" mnemonicParsing="false" onAction="#ActionPush" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: orange;" text="Push" />
+            <Button layoutX="338.0" layoutY="323.0" mnemonicParsing="false" onAction="#operationOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873;" text="+" />
+            <Button layoutX="338.0" layoutY="284.0" mnemonicParsing="false" onAction="#operationOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="-" />
+            <Button layoutX="338.0" layoutY="245.0" mnemonicParsing="false" onAction="#multiplicationOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="x" />
+            <Button layoutX="338.0" layoutY="208.0" mnemonicParsing="false" onAction="#divisionOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="÷" />
+            <Button layoutX="338.0" layoutY="173.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: orange;" text="CE" />
+            <Button layoutX="137.0" layoutY="284.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="1" />
+            <Button layoutX="205.0" layoutY="284.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="2" />
+            <Button layoutX="268.0" layoutY="284.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="3" />
+            <Button layoutX="137.0" layoutY="245.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="4" />
+            <Button layoutX="205.0" layoutY="245.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="5" />
+            <Button layoutX="268.0" layoutY="245.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="6" />
+            <Button layoutX="137.0" layoutY="208.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="7" />
+            <Button layoutX="205.0" layoutY="208.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="8" />
+            <Button layoutX="268.0" layoutY="208.0" mnemonicParsing="false" onAction="#numberOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="9" />
+            <Button layoutX="268.0" layoutY="173.0" mnemonicParsing="false" onAction="#sqrtOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="√" />
+            <Button layoutX="205.0" layoutY="173.0" mnemonicParsing="false" onAction="#invertedOnText" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="+-" />
+            <Button layoutX="137.0" layoutY="173.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-text-fill: #ffffff; -fx-background-color: #626873;" text="sin" />
+            <Button layoutX="67.0" layoutY="173.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: #ffffff;" text="cos" />
+            <Button layoutX="67.0" layoutY="208.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="tan" />
+            <Button layoutX="67.0" layoutY="245.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="arcsin" />
+            <Button layoutX="67.0" layoutY="284.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="arccos" />
+            <Button layoutX="67.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="52.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="arctan" />
+            <TextField fx:id="inputField" layoutX="56.0" layoutY="20.0" onKeyPressed="#ActionPush" prefHeight="48.0" prefWidth="325.0" style="-fx-background-color: FCFCDA;" />
+            <SplitMenuButton fx:id="splitMenuButton" layoutX="56.0" layoutY="116.0" mnemonicParsing="false" prefWidth="98.0" text="Operazioni" />
+            <JFXHamburger fx:id="hamburger" layoutX="5.0" layoutY="375.0" stylesheets="@hamburgerStyle.css" />
+            <JFXDrawer fx:id="drawer" prefHeight="366.0" prefWidth="89.0" />
          </children>
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="574.0" prefWidth="336.0">
          <children>
-            <MenuButton layoutX="60.0" layoutY="27.0" mnemonicParsing="false" text="Stack Operation" textAlignment="CENTER">
+            <MenuButton layoutX="16.0" layoutY="22.0" mnemonicParsing="false" text="Stack Operation" textAlignment="CENTER">
                <items>
                   <MenuItem fx:id="buttonClear" mnemonicParsing="false" onAction="#ActionClear" text="Clear" />
                   <MenuItem fx:id="buttonDrop" mnemonicParsing="false" onAction="#ActionDrop" text="Drop" />
@@ -70,7 +74,7 @@
                   <MenuItem fx:id="buttonOver" mnemonicParsing="false" onAction="#ActionOver" text="Over" />
                </items>
             </MenuButton>
-            <ListView fx:id="listView" editable="true" layoutX="19.0" layoutY="69.0" prefHeight="292.0" prefWidth="200.0" style="-fx-background-color: FCFCDA;" />
+            <ListView fx:id="listView" editable="true" layoutX="16.0" layoutY="77.0" prefHeight="292.0" prefWidth="117.0" style="-fx-background-color: FCFCDA;" />
          </children>
       </AnchorPane>
    </children>

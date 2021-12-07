@@ -5,10 +5,17 @@
  */
 package se_project;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import static java.awt.SystemColor.menu;
 import se_project.parser.UserDefinedOperationParser;
 import se_project.parser.ParserString;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import javafx.scene.control.ListView;
 import java.net.URL;
@@ -24,10 +31,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,8 +46,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
@@ -100,61 +114,88 @@ public class InterfacciaController implements Initializable {
     private MenuItem buttonSwap;
     @FXML
     private MenuItem buttonOver;
+    @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer ;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        observableList = FXCollections.observableArrayList();
+        try {
+            VBox box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
+            HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
+            transition.setRate(-1);
+            drawer.setSidePane(box);
+            drawer.setMinWidth(0);
+            hamburger.setOnMouseClicked(event -> {
+                transition.setRate(transition.getRate() * -1);
+                transition.play();
+                if(!drawer.isOpened()){
+                    drawer.setMinWidth(220);
 
-        /*si inizilizzano lista e iteratore*/
-        prevs = new LinkedList<>();
-        it = prevs.listIterator();
-        inputField.setOnKeyPressed((KeyEvent event) -> {
-            String tmp;
-            /*se è stato premuto enter, si passa la stringa scritta nella casella 
-            di testo al parser*/
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                buttonPush.fire();
-            }
-            /*se è stata premuta freccia su, si prende il comando passato precedentemente a 
-            quello in cui si sta iterando. Se non ci sono comandi precedenti, non fa nulla.*/
-            if (event.getCode().equals(KeyCode.UP)) {
-                try {
-                    it = prevs.listIterator(index);
+                    drawer.open();
+                }else{
+                    drawer.setMinWidth(0);
 
-                    tmp = it.previous();
-                    if (!tmp.isEmpty()) {
-                        inputField.setText(tmp);
+                    drawer.close();
+                }
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            /*si inizilizzano lista e iteratore*/
+            prevs = new LinkedList<>();
+            it = prevs.listIterator();
+            observableList = FXCollections.observableArrayList();
+
+            inputField.setOnKeyPressed((KeyEvent event) -> {
+                String tmp;
+                /*se è stato premuto enter, si passa la stringa scritta nella casella
+                di testo al parser*/
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    buttonPush.fire();
+                }
+                /*se è stata premuta freccia su, si prende il comando passato precedentemente a
+                quello in cui si sta iterando. Se non ci sono comandi precedenti, non fa nulla.*/
+                if (event.getCode().equals(KeyCode.UP)) {
+                    try {
+                        it = prevs.listIterator(index);
+                        
+                        tmp = it.previous();
+                        if (!tmp.isEmpty()) {
+                            inputField.setText(tmp);
+                        }
+                        index--;
+                    } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
+                        index = 0;
+                        
                     }
-                    index--;
-                } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
-                    index = 0;
+                }
+                /*se è stata premuta freccia giù, si prende il comando passato successivamente a
+                quello in cui si sta iterando. Se non ci sono comandi successivi, si inserisce la
+                stringa vuota nella casella di testo.*/
+                if (event.getCode().equals(KeyCode.DOWN)) {
+                    try {
+                        it = prevs.listIterator(index);
+                        
+                        tmp = it.next();
+                        if (!tmp.isEmpty()) {
+                            inputField.setText(tmp);
+                        }
+                        index++;
+                    } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
+                        inputField.setText("");
+                        index = prevs.size();
+                        
+                    }
 
                 }
-            }
-            /*se è stata premuta freccia giù, si prende il comando passato successivamente a 
-            quello in cui si sta iterando. Se non ci sono comandi successivi, si inserisce la
-            stringa vuota nella casella di testo.*/
-            if (event.getCode().equals(KeyCode.DOWN)) {
-                try {
-                    it = prevs.listIterator(index);
-
-                    tmp = it.next();
-                    if (!tmp.isEmpty()) {
-                        inputField.setText(tmp);
-                    }
-                    index++;
-                } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
-                    inputField.setText("");
-                    index = prevs.size();
-
-                }
-
-            }
-
-        });
-
-        observableList.addAll(solver.getStructureStack().getStack());
-        listView.setItems(observableList);
+                
+            });
+            
+            observableList.addAll(solver.getStructureStack().getStack());
+            listView.setItems(observableList);
+            
 
     }
 
@@ -242,17 +283,17 @@ public class InterfacciaController implements Initializable {
                         solver.resolveOperation(ovc);
                     }
 
-                }catch(InterruptedExecutionException ex){
-                     Alert alert = new Alert(AlertType.WARNING, "L'esecuzione della funzione è stata interrotta a causa del seguente errore:" + ex.getExceptionCause() +
-                             "\nContinuare? ", ButtonType.YES, ButtonType.NO);
+                } catch (InterruptedExecutionException ex) {
+                    Alert alert = new Alert(AlertType.WARNING, "L'esecuzione della funzione è stata interrotta a causa del seguente errore:" + ex.getExceptionCause()
+                            + "\nContinuare? ", ButtonType.YES, ButtonType.NO);
                     alert.showAndWait();
                     if (alert.getResult() == ButtonType.YES) {
-                        
+
                     }
                     if (alert.getResult() == ButtonType.NO) {
                         //solver.rollBack(ex.getRollBackList());
                     }
-                } 
+                }
                 if (code instanceof InsertUserDefinedOperationCommand) {
                     if (decoratorParserOperation.getNames().contains(
                             ((InsertUserDefinedOperationCommand) code).getName())) {
@@ -260,8 +301,9 @@ public class InterfacciaController implements Initializable {
 
                     }
                 }
+            } else {
+                alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
             }
-            else alert("Attenzione!","impossibile eseguire l'operazione richiesta.","operazione sconosciuta.");
 
             observableList.clear();
             observableList.addAll(solver.getStructureStack().getStack());
@@ -272,11 +314,11 @@ public class InterfacciaController implements Initializable {
         } catch (EmptyStackException ex) {
             alert("Errore!", "Operazione non valida", "Stack vuoto");
         } catch (UndefinedPhaseException ex) {
-                alert("Errore!", "Operazione non valida", "fase non definita");
+            alert("Errore!", "Operazione non valida", "fase non definita");
         } catch (DivisionByZeroException ex) {
-                alert("Errore!", "Operazione non valida", "Divisione per zero");
+            alert("Errore!", "Operazione non valida", "Divisione per zero");
         } catch (Exception ex) {
-                alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
+            alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
         }
     }
 
@@ -385,34 +427,33 @@ public class InterfacciaController implements Initializable {
         observableList.addAll(solver.getStructureStack().getStack());
     }
 
-        
-
     @FXML
     public void saveFunctions() {
-PrintWriter pw = null;
-try {
-FileChooser fc = new FileChooser();
-fc.setTitle("Save functions ...");
-fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
-File file = fc.showSaveDialog(new Stage());
-pw = new PrintWriter(file);
-String s = "";
-s = decoratorParserOperation.getNames().stream().map((name) -> name + " " + decoratorParserOperation.getOperationString(name) + " \n").reduce(s, String::concat);
+        PrintWriter pw = null;
+        try {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Save functions ...");
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+            File file = fc.showSaveDialog(new Stage());
+            pw = new PrintWriter(file);
+            String s = "";
+            s = decoratorParserOperation.getNames().stream().map((name) -> name + " " + decoratorParserOperation.getOperationString(name) + " \n").reduce(s, String::concat);
 
-pw.write(s);
-pw.close();
+            pw.write(s);
+            pw.close();
 
-
-
-} catch (FileNotFoundException ex) {
-this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
-} finally {
-pw.close();
-}
-}
+        } catch (FileNotFoundException ex) {
+            this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
+        } finally {
+            pw.close();
+        }
+    }
 
     @FXML
     private void ActionPush(KeyEvent event) {
     }
+    
+            
+    
 
 }
