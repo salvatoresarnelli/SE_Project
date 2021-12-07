@@ -5,6 +5,7 @@
  */
 package se_project;
 
+import com.sun.javafx.runtime.VersionInfo;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +27,7 @@ public class SE_Project extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("calculator.fxml"));
         
         Scene scene = new Scene(root); 
+        
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setFullScreen(false);

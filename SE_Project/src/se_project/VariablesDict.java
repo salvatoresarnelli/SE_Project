@@ -47,6 +47,7 @@ public class VariablesDict {
     public void forceSettingVariable(char var, ComplexNumber value) throws InvalidVariableNameException {
         checkName(var);
         table.put(var, value);
+        System.out.println("oo");
     }
 
     public ComplexNumber getVariableValue(char var) throws InvalidVariableNameException, NonExistingVariable {

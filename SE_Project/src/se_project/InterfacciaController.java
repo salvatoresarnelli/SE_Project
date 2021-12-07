@@ -8,19 +8,13 @@ package se_project;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
-import static java.awt.SystemColor.menu;
 import se_project.parser.UserDefinedOperationParser;
 import se_project.parser.ParserString;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import javafx.scene.control.ListView;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -29,15 +23,12 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.application.Platform;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -46,16 +37,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
-import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
 import se_project.exceptions.OperationNotFoundException;
@@ -118,31 +103,48 @@ public class InterfacciaController implements Initializable {
     private JFXHamburger hamburger;
     @FXML
     private JFXDrawer drawer ;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button uploadButton;
+    @FXML
+    private Button OperationsHandler;
+    @FXML
+    private Button variablesHandler;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            VBox box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
+      //  try {
+      //      VBox box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
+            
             HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
             transition.setRate(-1);
-            drawer.setSidePane(box);
-            drawer.setMinWidth(0);
+      //      drawer.setSidePane(box);
+              drawer.setVisible(false);
+            //drawer.setMinWidth(0);
             hamburger.setOnMouseClicked(event -> {
                 transition.setRate(transition.getRate() * -1);
                 transition.play();
                 if(!drawer.isOpened()){
-                    drawer.setMinWidth(220);
-
+                   // drawer.setMinWidth(220);
+                   // drawer.setVisible(true);
                     drawer.open();
+                    
+                    drawer.setVisible(true);
                 }else{
-                    drawer.setMinWidth(0);
-
+                  //  drawer.setMinWidth(0);
                     drawer.close();
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            drawer.setVisible(false);
+                        }
+                    });
+
+
+                    
                 }
             });
-        } catch (IOException ex) {
-            Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
-        }
             /*si inizilizzano lista e iteratore*/
             prevs = new LinkedList<>();
             it = prevs.listIterator();
@@ -501,11 +503,18 @@ public class InterfacciaController implements Initializable {
         }
     }
 
-   
-        
-    
-            
-    
+
+    @FXML
+    private void uploadFunctions(ActionEvent event) {
+    }
+
+    @FXML
+    private void operationHandlerAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void variablesHandlerAction(ActionEvent event) {
+    }
 
 
 }
