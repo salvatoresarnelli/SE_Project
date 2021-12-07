@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="550.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.InterfacciaController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="532.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.InterfacciaController">
    <children>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="389.0" prefWidth="590.0" style="-fx-background-color: 1d3557; -fx-border-color: white;">
          <children>
@@ -47,30 +47,30 @@
             <TextField fx:id="inputField" layoutX="56.0" layoutY="20.0" prefHeight="48.0" prefWidth="325.0" style="-fx-background-color: FCFCDA;" />
             <SplitMenuButton fx:id="splitMenuButton" layoutX="56.0" layoutY="116.0" mnemonicParsing="false" prefWidth="98.0" style="-fx-background-color: #626873;" text="Operazioni" textFill="WHITE" />
             <JFXHamburger fx:id="hamburger" layoutX="5.0" layoutY="375.0" stylesheets="@hamburgerStyle.css" />
-            <JFXDrawer fx:id="drawer" prefHeight="337.0" prefWidth="89.0">
+            <JFXDrawer fx:id="drawer" layoutY="75.0" prefHeight="292.0" prefWidth="155.0" style="-fx-background-color: 1d3557;">
                <children>
-                  <VBox prefHeight="337.0" prefWidth="114.0">
+                  <VBox fx:id="vbox" prefHeight="320.0" prefWidth="157.0" style="-fx-background-radius: 18px; -fx-border-color: black; -fx-background-color: 1d3557;">
                      <children>
-                        <ImageView fitHeight="124.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="128.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@MathSolver.JPG" />
                            </image>
                         </ImageView>
-                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveFunctions" prefHeight="59.0" prefWidth="158.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Salva Funzione">
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveFunctions" prefHeight="40.0" prefWidth="174.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Salva Funzione">
                            <graphic>
                               <FontAwesomeIconView fill="#e1e1e1" glyphName="SAVE" />
                            </graphic>
                         </Button>
-                        <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadFunctions" prefHeight="56.0" prefWidth="171.0" style="-fx-background-color: #757c8a; -fx-text-fill: white;" text="Carica Funzione">
+                        <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadFunctions" prefHeight="51.0" prefWidth="155.0" style="-fx-background-color: #757c8a; -fx-text-fill: white;" text="Carica Funzione">
                            <graphic>
                               <FontAwesomeIconView fill="#e4e4e4" glyphName="UPLOAD" />
                            </graphic>
                         </Button>
-                        <Button fx:id="OperationsHandler" mnemonicParsing="false" onAction="#operationHandlerAction" prefHeight="59.0" prefWidth="171.0" style="-fx-background-color: #626873;" text="Gestione Operazioni" textFill="WHITE">
+                        <Button fx:id="OperationsHandler" mnemonicParsing="false" onAction="#operationHandlerAction" prefHeight="42.0" prefWidth="155.0" style="-fx-background-color: #626873;" text="Gestione Operazioni" textFill="WHITE">
                            <graphic>
                               <FontAwesomeIconView fill="#e4e4e4" glyphName="PLUS" />
                            </graphic></Button>
-                        <Button fx:id="variablesHandler" mnemonicParsing="false" onAction="#variablesHandlerAction" prefHeight="60.0" prefWidth="184.0" style="-fx-background-color: #757c8a;" text="Gestione Variabili" textFill="WHITE">
+                        <Button fx:id="variablesHandler" mnemonicParsing="false" onAction="#variablesHandlerAction" prefHeight="44.0" prefWidth="155.0" style="-fx-background-color: #757c8a;" text="Gestione Variabili" textFill="WHITE">
                            <graphic>
                               <FontAwesomeIconView fill="#e4e4e4" glyphName="ITALIC" />
                            </graphic></Button>

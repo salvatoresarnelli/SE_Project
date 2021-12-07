@@ -39,6 +39,7 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
@@ -111,6 +112,8 @@ public class InterfacciaController implements Initializable {
     private Button OperationsHandler;
     @FXML
     private Button variablesHandler;
+    @FXML
+    private VBox vbox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -119,27 +122,22 @@ public class InterfacciaController implements Initializable {
             
             HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
             transition.setRate(-1);
-      //      drawer.setSidePane(box);
-              drawer.setVisible(false);
-            //drawer.setMinWidth(0);
+            drawer.setSidePane(vbox);
+            drawer.setVisible(false);
+            drawer.setMinWidth(0);
             hamburger.setOnMouseClicked(event -> {
                 transition.setRate(transition.getRate() * -1);
                 transition.play();
                 if(!drawer.isOpened()){
-                   // drawer.setMinWidth(220);
-                   // drawer.setVisible(true);
+                    drawer.setVisible(true);           
+
                     drawer.open();
                     
-                    drawer.setVisible(true);
                 }else{
-                  //  drawer.setMinWidth(0);
                     drawer.close();
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {
-                            drawer.setVisible(false);
-                        }
-                    });
+                    drawer.setVisible(false);           
+
+                    
 
 
                     
