@@ -33,6 +33,12 @@ public class VariableParser extends ParserString {
 
     }
 
+    public VariablesDict getDict() {
+        return dict;
+    }
+    
+    
+    
     @Override
     public OperationCommand parse(String textString) throws ArrayIndexOutOfBoundsException, OperationNotFoundException, Exception {
         if (checkVariableIns(textString)) {

@@ -304,4 +304,8 @@ public class UserDefinedOperationParser extends ParserString {
         return this.hashMap.toString();
     }
      */
+
+    public ParserString getParserString() {
+        return parserString;
+    }
 }

@@ -28,8 +28,9 @@ public class VariablesDict {
             throw new InvalidVariableNameException();
         }
     }
+    
     private void checkValue(ComplexNumber value)  throws InvalidValueException{
-    if(value==null)
+    if(value == null)
         throw new InvalidValueException();
     }
 
@@ -47,7 +48,6 @@ public class VariablesDict {
     public void forceSettingVariable(char var, ComplexNumber value) throws InvalidVariableNameException {
         checkName(var);
         table.put(var, value);
-        System.out.println("oo");
     }
 
     public ComplexNumber getVariableValue(char var) throws InvalidVariableNameException, NonExistingVariable {
@@ -57,4 +57,7 @@ public class VariablesDict {
         return table.get(var);
     }
 
+    public HashMap<Character, ComplexNumber> getTable() {
+        return table;
+    }
 }

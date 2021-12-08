@@ -12,24 +12,28 @@ import se_project.parser.UserDefinedOperationParser;
 import se_project.parser.ParserString;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import javafx.scene.control.ListView;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -37,8 +41,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
@@ -53,6 +60,7 @@ import se_project.exceptions.InterruptedExecutionException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.InvalidVariableNameException;
+import se_project.exceptions.NonExistingVariable;
 import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
 import se_project.exceptions.VariableExistingException;
@@ -82,9 +90,8 @@ public class InterfacciaController implements Initializable {
     @FXML
     private ListView<ComplexNumber> listView;
     private final Solver solver = Solver.getInstance();
-    private final UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(
-            new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(
-                    new ParserString())))));
+    private final VariableParser variableParser = new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(new ParserString())))) ;
+    private final UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(variableParser);
 
     private ObservableList<ComplexNumber> observableList;
     @FXML
@@ -111,7 +118,8 @@ public class InterfacciaController implements Initializable {
     private Button OperationsHandler;
     @FXML
     private Button variablesHandler;
-
+    
+    private ObservableList<String> variablesList;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       //  try {
@@ -197,12 +205,12 @@ public class InterfacciaController implements Initializable {
             
             observableList.addAll(solver.getStructureStack().getStack());
             listView.setItems(observableList);
-            
+            variablesList = FXCollections.observableArrayList();  
 
     }
 
     @FXML
-    private void ActionPush(ActionEvent event) {
+    private void ActionPush(ActionEvent event) throws InvalidVariableNameException, NonExistingVariable {
         try {
             String text = inputField.getText();
             if (!text.isEmpty()) {
@@ -321,7 +329,19 @@ public class InterfacciaController implements Initializable {
             alert("Errore!", "Operazione non valida", "Divisione per zero");
         } catch (Exception ex) {
             alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
+        } 
+        this.setVariablesList();
+    }
+    
+    public void setVariablesList() throws InvalidVariableNameException, NonExistingVariable {
+        String s = "";
+        variablesList.clear();
+        for(Character ch : variableParser.getDict().getTable().keySet()) {
+            ComplexNumber value = variableParser.getDict().getVariableValue(ch);
+            s = "Variabile: " + ch + "\t\t\t\t\t\t\t\t " + "Valore: " + value.toString();
+            variablesList.add(s);
         }
+        
     }
 
     @FXML
@@ -462,7 +482,7 @@ public class InterfacciaController implements Initializable {
         this.solver.getStructureStack().duplicate();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
-    }
+    } 
 
     @FXML
     private void ActionSwap(ActionEvent event) throws EmptyStackException, InvalidOperationException {
@@ -514,7 +534,26 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void variablesHandlerAction(ActionEvent event) {
+        if(event.getSource() == variablesHandler) {
+            LoadStages("VariablesManager.fxml");
+        } 
     }
-
-
+    
+    private void LoadStages(String fxml) {
+        try {
+            Parent root;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+            root = fxmlLoader.load();
+            VariablesManagerController variableHandlerPaneController = fxmlLoader.getController();
+            variableHandlerPaneController.setObservableList(variablesList);   
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
+            stage.setTitle("Variabili Definite");
+            stage.show();
+            
+        } catch (IOException e) {
+            System.err.println("Error while opening new window.");
+        }
+    }
 }
