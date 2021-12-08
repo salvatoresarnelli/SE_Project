@@ -5,12 +5,9 @@
  */
 package se_project.commands.userDefinedOperations;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import se_project.ComplexNumber;
 import se_project.Stack;
 import se_project.commands.OperationCommand;
-import se_project.exceptions.InterruptedExecutionException;
 
 /**
  *
@@ -20,6 +17,7 @@ public class ExecuteUserDefinedOperationCommand extends OperationCommand {
 
     private LinkedList<OperationCommand> commandList;
     private String name;
+   
 
     public String getName() {
         return name;

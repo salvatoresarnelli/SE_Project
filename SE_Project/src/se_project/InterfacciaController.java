@@ -8,14 +8,18 @@ package se_project;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import java.io.BufferedInputStream;
 import se_project.parser.UserDefinedOperationParser;
 import se_project.parser.ParserString;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import javafx.scene.control.ListView;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -23,8 +27,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.PatternSyntaxException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,6 +56,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
+import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.OverrideVariableCommand;
@@ -57,6 +64,7 @@ import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.ExistingNameException;
 import se_project.exceptions.InterruptedExecutionException;
+import se_project.exceptions.InvalidNameException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.InvalidVariableNameException;
@@ -90,7 +98,7 @@ public class InterfacciaController implements Initializable {
     @FXML
     private ListView<ComplexNumber> listView;
     private final Solver solver = Solver.getInstance();
-    private final VariableParser variableParser = new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(new ParserString())))) ;
+    private final VariableParser variableParser = new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(new ParserString()))));
     private final UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(variableParser);
 
     private ObservableList<ComplexNumber> observableList;
@@ -109,7 +117,7 @@ public class InterfacciaController implements Initializable {
     @FXML
     private JFXHamburger hamburger;
     @FXML
-    private JFXDrawer drawer ;
+    private JFXDrawer drawer;
     @FXML
     private Button saveButton;
     @FXML
@@ -118,94 +126,95 @@ public class InterfacciaController implements Initializable {
     private Button OperationsHandler;
     @FXML
     private Button variablesHandler;
-    
+
     private ObservableList<String> variablesList;
+    private ObservableList<String> operationsList;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      //  try {
-      //      VBox box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
-            
-            HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
-            transition.setRate(-1);
-      //      drawer.setSidePane(box);
-              drawer.setVisible(false);
-            //drawer.setMinWidth(0);
-            hamburger.setOnMouseClicked(event -> {
-                transition.setRate(transition.getRate() * -1);
-                transition.play();
-                if(!drawer.isOpened()){
-                   // drawer.setMinWidth(220);
-                   // drawer.setVisible(true);
-                    drawer.open();
-                    
-                    drawer.setVisible(true);
-                }else{
-                  //  drawer.setMinWidth(0);
-                    drawer.close();
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {
-                            drawer.setVisible(false);
-                        }
-                    });
+        //  try {
+        //      VBox box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
 
+        HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
+        transition.setRate(-1);
+        //      drawer.setSidePane(box);
+        drawer.setVisible(false);
+        //drawer.setMinWidth(0);
+        hamburger.setOnMouseClicked(event -> {
+            transition.setRate(transition.getRate() * -1);
+            transition.play();
+            if (!drawer.isOpened()) {
+                // drawer.setMinWidth(220);
+                // drawer.setVisible(true);
+                drawer.open();
 
-                    
-                }
-            });
-            /*si inizilizzano lista e iteratore*/
-            prevs = new LinkedList<>();
-            it = prevs.listIterator();
-            observableList = FXCollections.observableArrayList();
-
-            inputField.setOnKeyPressed((KeyEvent event) -> {
-                String tmp;
-                /*se è stato premuto enter, si passa la stringa scritta nella casella
-                di testo al parser*/
-                if (event.getCode().equals(KeyCode.ENTER)) {
-                    buttonPush.fire();
-                }
-                /*se è stata premuta freccia su, si prende il comando passato precedentemente a
-                quello in cui si sta iterando. Se non ci sono comandi precedenti, non fa nulla.*/
-                if (event.getCode().equals(KeyCode.UP)) {
-                    try {
-                        it = prevs.listIterator(index);
-                        
-                        tmp = it.previous();
-                        if (!tmp.isEmpty()) {
-                            inputField.setText(tmp);
-                        }
-                        index--;
-                    } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
-                        index = 0;
-                        
+                drawer.setVisible(true);
+            } else {
+                //  drawer.setMinWidth(0);
+                drawer.close();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawer.setVisible(false);
                     }
+                });
+
+            }
+        });
+        /*si inizilizzano lista e iteratore*/
+        prevs = new LinkedList<>();
+        it = prevs.listIterator();
+        observableList = FXCollections.observableArrayList();
+
+        inputField.setOnKeyPressed((KeyEvent event) -> {
+            String tmp;
+            /*se è stato premuto enter, si passa la stringa scritta nella casella
+                di testo al parser*/
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                buttonPush.fire();
+            }
+            /*se è stata premuta freccia su, si prende il comando passato precedentemente a
+                quello in cui si sta iterando. Se non ci sono comandi precedenti, non fa nulla.*/
+            if (event.getCode().equals(KeyCode.UP)) {
+                try {
+                    it = prevs.listIterator(index);
+
+                    tmp = it.previous();
+                    if (!tmp.isEmpty()) {
+                        inputField.setText(tmp);
+                    }
+                    index--;
+                } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
+                    index = 0;
+
                 }
-                /*se è stata premuta freccia giù, si prende il comando passato successivamente a
+            }
+            /*se è stata premuta freccia giù, si prende il comando passato successivamente a
                 quello in cui si sta iterando. Se non ci sono comandi successivi, si inserisce la
                 stringa vuota nella casella di testo.*/
-                if (event.getCode().equals(KeyCode.DOWN)) {
-                    try {
-                        it = prevs.listIterator(index);
-                        
-                        tmp = it.next();
-                        if (!tmp.isEmpty()) {
-                            inputField.setText(tmp);
-                        }
-                        index++;
-                    } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
-                        inputField.setText("");
-                        index = prevs.size();
-                        
+            if (event.getCode().equals(KeyCode.DOWN)) {
+                try {
+                    it = prevs.listIterator(index);
+
+                    tmp = it.next();
+                    if (!tmp.isEmpty()) {
+                        inputField.setText(tmp);
                     }
+                    index++;
+                } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
+                    inputField.setText("");
+                    index = prevs.size();
 
                 }
-                
-            });
-            
-            observableList.addAll(solver.getStructureStack().getStack());
-            listView.setItems(observableList);
-            variablesList = FXCollections.observableArrayList();  
+
+            }
+
+        });
+
+        observableList.addAll(solver.getStructureStack().getStack());
+        listView.setItems(observableList);
+        variablesList = FXCollections.observableArrayList();
+        operationsList = FXCollections.observableArrayList();
 
     }
 
@@ -251,6 +260,8 @@ public class InterfacciaController implements Initializable {
                     String possible_name = string[0];
                     possible_name = possible_name.replaceAll(" ", "");
                     decoratorParserOperation.removeOperation(possible_name);
+                    decoratorParserOperation.parse(text);
+                    /*
                     Iterator<MenuItem> iterator = splitMenuButton.getItems().iterator();
                     MenuItem menuItemDelete = new MenuItem();
                     while (iterator.hasNext()) {
@@ -265,6 +276,7 @@ public class InterfacciaController implements Initializable {
                     this.inizializeMenuButton(possible_name);
 
                 }
+                     */                }
 
             } catch (Exception ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
@@ -304,13 +316,15 @@ public class InterfacciaController implements Initializable {
                         //solver.rollBack(ex.getRollBackList());
                     }
                 }
+                /*
                 if (code instanceof InsertUserDefinedOperationCommand) {
                     if (decoratorParserOperation.getNames().contains(
                             ((InsertUserDefinedOperationCommand) code).getName())) {
                         this.inizializeMenuButton(((InsertUserDefinedOperationCommand) code).getName());
 
                     }
-                }
+                }*/
+
             } else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
             }
@@ -329,19 +343,38 @@ public class InterfacciaController implements Initializable {
             alert("Errore!", "Operazione non valida", "Divisione per zero");
         } catch (Exception ex) {
             alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
-        } 
+        }
         this.setVariablesList();
+        this.setOperationsList();
     }
-    
+
     public void setVariablesList() throws InvalidVariableNameException, NonExistingVariable {
         String s = "";
         variablesList.clear();
-        for(Character ch : variableParser.getDict().getTable().keySet()) {
+        for (Character ch : variableParser.getDict().getTable().keySet()) {
             ComplexNumber value = variableParser.getDict().getVariableValue(ch);
             s = "Variabile: " + ch + "\t\t\t\t\t\t\t\t " + "Valore: " + value.toString();
             variablesList.add(s);
         }
-        
+
+    }
+
+    public void setOperationsList() {
+        operationsList.clear();
+        String s = "";
+        for (String name : decoratorParserOperation.getNames()) {
+            s += "Nome: " + name + "\t\t\t\t\t\t " + "Operazioni associate: ";
+            LinkedList<OperationCommand> supportList = decoratorParserOperation.getOperations(name).getCommandList();
+            for (OperationCommand command : supportList) {
+                if (command instanceof ExecuteUserDefinedOperationCommand) {
+                    s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
+                } else {
+                    s += " " + command.toString();
+                }
+            }
+            s += "\n";
+        }
+        operationsList.add(s);
     }
 
     @FXML
@@ -482,7 +515,7 @@ public class InterfacciaController implements Initializable {
         this.solver.getStructureStack().duplicate();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
-    } 
+    }
 
     @FXML
     private void ActionSwap(ActionEvent event) throws EmptyStackException, InvalidOperationException {
@@ -498,8 +531,6 @@ public class InterfacciaController implements Initializable {
         observableList.addAll(solver.getStructureStack().getStack());
     }
 
-
-
     @FXML
     public void saveFunctions() {
         PrintWriter pw = null;
@@ -510,11 +541,20 @@ public class InterfacciaController implements Initializable {
             File file = fc.showSaveDialog(new Stage());
             pw = new PrintWriter(file);
             String s = "";
-            s = decoratorParserOperation.getNames().stream().map((name) -> name + " " + decoratorParserOperation.getOperationString(name) + " \n").reduce(s, String::concat);
-            pw.print(decoratorParserOperation.getHashMap());
+            for (String name : decoratorParserOperation.getNames()) {
+                s += name + " :";
+                LinkedList<OperationCommand> supportList = decoratorParserOperation.getOperations(name).getCommandList();
+                for (OperationCommand command : supportList) {
+                    if (command instanceof ExecuteUserDefinedOperationCommand) {
+                        s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
+                    } else {
+                        s += " " + command.toString();
+                    }
+                }
+                s += "\n";
+            }
+            pw.print(s);
             pw.close();
-
-            pw.write(s);
 
         } catch (FileNotFoundException ex) {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
@@ -523,35 +563,113 @@ public class InterfacciaController implements Initializable {
         }
     }
 
-
     @FXML
-    private void uploadFunctions(ActionEvent event) {
-    }
+    private void uploadFunctions(ActionEvent event) throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open file ...");
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {
+            String text = "";
+            try {
+                Scanner sc = new Scanner(file);
 
-    @FXML
-    private void operationHandlerAction(ActionEvent event) {
+                while (sc.hasNext()) {
+                    String line = sc.nextLine();
+                    String name = line.split(":")[0];
+                    String operations = line.split(":")[1];
+                    text = ">>" + name + "$" + operations;
+                    decoratorParserOperation.parse(text);
+                    //this.inizializeMenuButton(name);
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                alert("Errore!", "Operazione non valida", " L'inserimento non è valido");
+                inputField.clear();
+                return;
+            } catch (OperationNotFoundException ex) {
+                alert("Errore!", "Operazione non valida", "--> L'inserimento non è valido");
+            } catch (NullPointerException ex) {
+                alert("Errore!", "Operazione non valida", "--> L'inserimento non è valido");
+            } catch (ExistingNameException ex) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Operazione già inserita");
+                alert.setHeaderText("L'operazione è già stata inserita");
+                alert.setContentText("Vuoi sovrascriverla?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    String textString = decoratorParserOperation.clearStringOperation(text);
+                    String[] string = textString.split("\\$");
+                    String possible_name = string[0];
+                    possible_name = possible_name.replaceAll(" ", "");
+                    decoratorParserOperation.removeOperation(possible_name);
+                    Iterator<MenuItem> iterator = splitMenuButton.getItems().iterator();
+                    MenuItem menuItemDelete = new MenuItem();
+                    while (iterator.hasNext()) {
+                        MenuItem menuItem = iterator.next();
+                        //System.out.println(menuItem.getText());
+                        if (menuItem.getText().equals(possible_name)) {
+                            menuItemDelete = menuItem;
+                        }
+                    }
+                    splitMenuButton.getItems().remove(menuItemDelete);
+                    try {
+                        decoratorParserOperation.parse(text);
+                    } catch (ExistingNameException ex1) {
+                        Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex1);
+                    } catch (OperationNotFoundException | InvalidNameException ex1) {
+                        Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex1);
+                    } catch (Exception ex1) {
+                        Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                    this.inizializeMenuButton(possible_name);
+
+                }
+
+            } catch (Exception ex) {
+                alert("Errore!", "Operazione non valida", "--> L'inserimento non è valido");
+            }
+        }
+        this.setOperationsList();
     }
 
     @FXML
     private void variablesHandlerAction(ActionEvent event) {
-        if(event.getSource() == variablesHandler) {
+        if (event.getSource() == variablesHandler) {
             LoadStages("VariablesManager.fxml");
-        } 
+        }
     }
-    
+
     private void LoadStages(String fxml) {
         try {
             Parent root;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
             root = fxmlLoader.load();
             VariablesManagerController variableHandlerPaneController = fxmlLoader.getController();
-            variableHandlerPaneController.setObservableList(variablesList);   
+            variableHandlerPaneController.setObservableList(variablesList);
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
             stage.setTitle("Variabili Definite");
             stage.show();
-            
+
+        } catch (IOException e) {
+            System.err.println("Error while opening new window.");
+        }
+    }
+
+    @FXML
+    private void operationHandlerAction(ActionEvent event) {
+        try {
+            Parent root;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OperationsManager.fxml"));
+            root = fxmlLoader.load();
+            OperationsManagerController operationsManagerController = fxmlLoader.getController();
+            operationsManagerController.setObservableListOperations(operationsList);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
+            stage.setTitle("Operazioni  Definite");
+            stage.show();
+
         } catch (IOException e) {
             System.err.println("Error while opening new window.");
         }
