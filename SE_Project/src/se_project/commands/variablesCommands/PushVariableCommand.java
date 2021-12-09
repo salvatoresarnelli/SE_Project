@@ -8,6 +8,8 @@ package se_project.commands.variablesCommands;
 import se_project.ComplexNumber;
 import se_project.Stack;
 import se_project.VariablesDict;
+import se_project.exceptions.InvalidVariableNameException;
+import se_project.exceptions.NonExistingVariable;
 
 /**
  *
@@ -26,7 +28,7 @@ public class PushVariableCommand extends VariableCommand{
     }
 
     @Override
-    public ComplexNumber execute() throws Exception {
+    public ComplexNumber execute() throws InvalidVariableNameException, NonExistingVariable  {
         VariablesDict dict = super.getDictionary();
         ComplexNumber c = dict.getVariableValue(variable);
         Stack stack = super.getTarget();
