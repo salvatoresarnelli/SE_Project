@@ -244,7 +244,6 @@ public class InterfacciaController implements Initializable {
              */
             try {
                 code = decoratorParserOperation.parse(text);
-              
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
@@ -270,12 +269,10 @@ public class InterfacciaController implements Initializable {
                     inputField.clear();
                     this.setOperationsList();
                     return;
-                }
-                else{
+                } else {
                     inputField.clear();
-                     return;
+                    return;
                 }
-                   
 
             } catch (Exception ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
@@ -289,39 +286,39 @@ public class InterfacciaController implements Initializable {
                 } catch (EmptyStackException ex) {
                     alert("Errore!", "Operazione non valida", "Lo stack è vuoto!");
                     this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack()); 
+                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
                     return;
                 } catch (NotApplicableOperation ex) {
                     alert("Errore!", "Operazione non valida", "");
                     this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack());  
+                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
-                     return;
+                    return;
                 } catch (InvalidNumberException ex) {
                     alert("Errore!", "Inserito un numero non valido", text);
                     this.solver.getStructureStack().clear();
                     this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
-                     return;
+                    return;
                 } catch (InvalidVariableNameException ex) {
                     alert("Errore!", "Inserito una variabile non valida", text);
                     this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack()); 
+                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
-                     return;
+                    return;
                 } catch (UndefinedPhaseException ex) {
                     alert("Errore!", "Fase non definita", text);
                     this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack()); 
+                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
-                     return;
+                    return;
                 } catch (DivisionByZeroException ex) {
                     alert("Errore!", "Divisione per zero.", "");
                     this.solver.getStructureStack().clear();
                     this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
-                     return;
+                    return;
                 } catch (VariableExistingException ex) {
                     Alert alert = new Alert(AlertType.WARNING, "Variabile" + ((NewVariableCommand) code).getVariable() + " esistente, sovrascriverne il valore? ", ButtonType.YES, ButtonType.NO);
                     alert.showAndWait();
@@ -331,7 +328,7 @@ public class InterfacciaController implements Initializable {
                     }
 
                 }
-                
+
                 /*
                 if (code instanceof InsertUserDefinedOperationCommand) {
                     if (decoratorParserOperation.getNames().contains(
@@ -339,7 +336,6 @@ public class InterfacciaController implements Initializable {
                         this.inizializeMenuButton(((InsertUserDefinedOperationCommand) code).getName());
                     }
                 }*/
-
             } else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
@@ -360,7 +356,7 @@ public class InterfacciaController implements Initializable {
         } catch (Exception ex) {
             alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
         }
-         
+
         this.setVariablesList();
         this.setOperationsList();
     }
@@ -375,8 +371,7 @@ public class InterfacciaController implements Initializable {
                 value = variableParser.getDict().getVariableValue(ch);
                 variableSet = new VariableSet(ch.toString(), value.toString());
                 variablesList.add(variableSet);
-                
-                
+
             } catch (InvalidVariableNameException | NonExistingVariable ex) {
 
             }
@@ -394,8 +389,7 @@ public class InterfacciaController implements Initializable {
             for (OperationCommand command : supportList) {
                 if (command instanceof ExecuteUserDefinedOperationCommand) {
                     s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
-                }
-                else if (command instanceof VariableCommand) {
+                } else if (command instanceof VariableCommand) {
                     s += " " + ((VariableCommand) command).toString();
                 } else {
                     s += " " + command.toString();
@@ -491,13 +485,16 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     public void saveFunctions() {
-        PrintWriter pw = null;
+
         try {
             FileChooser fc = new FileChooser();
             fc.setTitle("Save functions ...");
             fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
             File file = fc.showSaveDialog(new Stage());
-            pw = new PrintWriter(file);
+            if (file == null) {
+                return;
+            }
+            PrintWriter pw = new PrintWriter(file);
             String s = "";
             for (String name : decoratorParserOperation.getNames()) {
                 s += name + " :";
@@ -505,8 +502,7 @@ public class InterfacciaController implements Initializable {
                 for (OperationCommand command : supportList) {
                     if (command instanceof ExecuteUserDefinedOperationCommand) {
                         s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
-                    }
-                    else if (command instanceof VariableCommand) {
+                    } else if (command instanceof VariableCommand) {
                         s += " " + ((VariableCommand) command).toString();
                     } else {
                         s += " " + command.toString();
@@ -515,19 +511,13 @@ public class InterfacciaController implements Initializable {
                 s += "\n";
             }
             pw.print(s);
-            pw.close();
-
         } catch (FileNotFoundException ex) {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
-        } finally {
-            
-            pw.close();
-            
         }
     }
 
     @FXML
-    private void uploadFunctions(ActionEvent event)  {
+    private void uploadFunctions(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
         File file = fileChooser.showOpenDialog(new Stage());
@@ -535,54 +525,51 @@ public class InterfacciaController implements Initializable {
             Scanner sc;
             try {
                 sc = new Scanner(file);
-                  while (sc.hasNext()) {
-                String line = sc.nextLine();
-                String name = line.split(":")[0];
-                String operations = line.split(":")[1];
-                String text = ">>" + name + "$" + operations;
-            
-                try {
-                    decoratorParserOperation.parse(text);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
-                    inputField.clear();
-                    return;
-                } catch (OperationNotFoundException ex) {
-                    alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
-                } catch (NullPointerException ex) {
-                    alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
-                } catch (ExistingNameException ex) {
-                    Alert alert = new Alert(AlertType.CONFIRMATION);
-                    alert.setTitle("Operazione già inserita");
-                    alert.setHeaderText("L'operazione è già stata inserita");
-                    alert.setContentText("Vuoi sovrascriverla?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK) {
-                        String textString = decoratorParserOperation.clearStringOperation(text);
-                        String[] string = textString.split("\\$");
-                        String possible_name = string[0];
-                        possible_name = possible_name.replaceAll(" ", "");
-                        decoratorParserOperation.removeOperation(possible_name);
+                while (sc.hasNext()) {
+                    String line = sc.nextLine();
+                    String name = line.split(":")[0];
+                    String operations = line.split(":")[1];
+                    String text = ">>" + name + "$" + operations;
+
+                    try {
                         decoratorParserOperation.parse(text);
-                        this.setOperationsList();
-                    }
-                    else {
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
                         inputField.clear();
                         return;
+                    } catch (OperationNotFoundException ex) {
+                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                    } catch (NullPointerException ex) {
+                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                    } catch (ExistingNameException ex) {
+                        Alert alert = new Alert(AlertType.CONFIRMATION);
+                        alert.setTitle("Operazione già inserita");
+                        alert.setHeaderText("L'operazione è già stata inserita");
+                        alert.setContentText("Vuoi sovrascriverla?");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.OK) {
+                            String textString = decoratorParserOperation.clearStringOperation(text);
+                            String[] string = textString.split("\\$");
+                            String possible_name = string[0];
+                            possible_name = possible_name.replaceAll(" ", "");
+                            decoratorParserOperation.removeOperation(possible_name);
+                            decoratorParserOperation.parse(text);
+                            this.setOperationsList();
+                        } else {
+                            inputField.clear();
+                            return;
+                        }
+
+                    } catch (Exception ex) {
+
+                    } finally {
+                        continue;
                     }
-                        
 
-                } catch (Exception ex) {
-
-                } finally {
-                    continue;
                 }
-
-            }
             } catch (FileNotFoundException ex) {
-               this.alert("Errore!", "Errore nell'apertura del file", "");
+                this.alert("Errore!", "Errore nell'apertura del file", "");
             }
-          
 
         }
 
@@ -633,6 +620,5 @@ public class InterfacciaController implements Initializable {
         }
 
     }
-
 
 }
