@@ -34,7 +34,7 @@ public class ParserString implements AbstractParserString {
     private OperationsFactory factory;
     
     public ParserString(){
-    factory = new OperationsFactory();
+        factory = new OperationsFactory();
     }
    
     /**

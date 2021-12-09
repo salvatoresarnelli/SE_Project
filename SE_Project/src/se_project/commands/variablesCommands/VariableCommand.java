@@ -17,6 +17,15 @@ import se_project.commands.OperationCommand;
  */
 public abstract class VariableCommand extends OperationCommand{
     private VariablesDict dictionary;
+    private Character variable;
+
+    public Character getVariable() {
+        return variable;
+    }
+
+    public void setVariable(Character variable) {
+        this.variable = variable;
+    }
 
     public void setDictionary(VariablesDict dictionary) {
         this.dictionary = dictionary;
@@ -29,10 +38,16 @@ public abstract class VariableCommand extends OperationCommand{
     
 public VariableCommand() {
     super();
-    dictionary = new VariablesDict();
+    dictionary = VariablesDict.getInstance();
     }
 
     public VariablesDict getDictionary() {
         return dictionary;
     }
+
+    @Override
+    public String toString() {
+        return "VariableCommand{" + "dictionary=" + dictionary + '}';
+    }
+    
 }

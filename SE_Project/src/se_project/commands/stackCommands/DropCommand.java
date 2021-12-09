@@ -15,6 +15,7 @@ import se_project.exceptions.EmptyStackException;
  * @author aless
  */
 public class DropCommand extends OperationCommand{
+    private String name = "drop";
 
     
     public DropCommand(Stack stack) {
@@ -26,6 +27,10 @@ public class DropCommand extends OperationCommand{
     @Override
     public Boolean execute() throws EmptyStackException {
         return super.getTarget().drop();
+    }
+
+    public String toString() {
+        return name;
     }
     
 }

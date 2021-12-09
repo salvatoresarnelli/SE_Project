@@ -36,7 +36,7 @@ public class NewVariableCommandTest {
 
     @Before
     public void setUp() {
-        dict = new VariablesDict();
+        dict =  VariablesDict.getInstance();
         solver = Solver.getInstance();
     }
 

@@ -15,6 +15,7 @@ import se_project.exceptions.EmptyStackException;
  * @author aless
  */
 public class DuplicateCommand extends OperationCommand{
+    private String name = "duplicate";
 
     
     public DuplicateCommand(Stack stack) {
@@ -27,6 +28,10 @@ public class DuplicateCommand extends OperationCommand{
     @Override
     public Boolean execute() throws EmptyStackException {
         return super.getTarget().duplicate();
+    }
+
+    public String toString() {
+        return name;
     }
 
    

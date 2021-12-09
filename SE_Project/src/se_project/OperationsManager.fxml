@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="562.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.OperationsManagerController">
+   <children>
+      <TableView fx:id="tableViewOperations" layoutX="10.0" layoutY="10.0" prefHeight="240.0" prefWidth="542.0">
+         <columns>
+            <TableColumn fx:id="nameColumn" prefWidth="274.39996910095215" text="Nome" />
+            <TableColumn fx:id="operationColumn" prefWidth="267.20001831054685" text="Operazione associata" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

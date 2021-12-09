@@ -16,20 +16,31 @@ import se_project.exceptions.VariableExistingException;
  * @author aless
  */
 public class VariablesDict {
-
+    private static VariablesDict instance = null;
     private HashMap<Character, ComplexNumber> table;
 
-    public VariablesDict() {
-        table = new HashMap<>();
+    // Costruttore invisibile
+    private VariablesDict() {
+            table = new HashMap<>();
+} 
+ 
+    public static VariablesDict getInstance() {
+        // Crea l'oggetto solo se NON esiste:
+        if (instance == null) {
+            instance = new VariablesDict();
+        }
+        return instance;
     }
+
 
     private void checkName(char var) throws InvalidVariableNameException {
         if (!((var >= 'a') && (var <= 'z'))) {
             throw new InvalidVariableNameException();
         }
     }
+    
     private void checkValue(ComplexNumber value)  throws InvalidValueException{
-    if(value==null)
+    if(value == null)
         throw new InvalidValueException();
     }
 
@@ -47,7 +58,6 @@ public class VariablesDict {
     public void forceSettingVariable(char var, ComplexNumber value) throws InvalidVariableNameException {
         checkName(var);
         table.put(var, value);
-        System.out.println("oo");
     }
 
     public ComplexNumber getVariableValue(char var) throws InvalidVariableNameException, NonExistingVariable {
@@ -57,4 +67,7 @@ public class VariablesDict {
         return table.get(var);
     }
 
+    public HashMap<Character, ComplexNumber> getTable() {
+        return table;
+    }
 }

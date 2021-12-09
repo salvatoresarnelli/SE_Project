@@ -29,10 +29,16 @@ public class VariableParser extends ParserString {
 
     public VariableParser(ParserString parser) {
         this.parser = parser;
-        dict = new VariablesDict();
+        dict=VariablesDict.getInstance();
 
     }
 
+    public VariablesDict getDict() {
+        return dict;
+    }
+    
+    
+    
     @Override
     public OperationCommand parse(String textString) throws ArrayIndexOutOfBoundsException, OperationNotFoundException, Exception {
         if (checkVariableIns(textString)) {

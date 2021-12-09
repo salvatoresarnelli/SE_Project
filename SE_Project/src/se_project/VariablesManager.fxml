@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="562.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.VariablesManagerController">
+   <children>
+      <TableView fx:id="variablesTableView" layoutX="181.0" layoutY="36.0" prefHeight="240.0" prefWidth="517.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="10.0">
+        <columns>
+          <TableColumn fx:id="variablesColumn" prefWidth="270.0" text="Variabile" />
+          <TableColumn fx:id="valuesColumn" minWidth="0.0" prefWidth="271.0" text="Valore" />
+        </columns>
+      </TableView>
+      <Button id="plusVar" fx:id="plusVarButton" layoutX="207.0" layoutY="289.0" mnemonicParsing="false" onAction="#plusVarButtonActionPush" text="+var" />
+      <Button id="minusVar" fx:id="minusVarButton" layoutX="312.0" layoutY="289.0" mnemonicParsing="false" onAction="#minusVarButtonActionPush" text="-var" />
+      <Button id="saveVariable" fx:id="saveButton" layoutX="207.0" layoutY="338.0" mnemonicParsing="false" onAction="#saveButtonActionPush" text="save" />
+      <Button id="loadVariable" fx:id="loadButton" layoutX="311.0" layoutY="338.0" mnemonicParsing="false" onAction="#loadButtonActionPush" text="load" />
+   </children>
+</AnchorPane>

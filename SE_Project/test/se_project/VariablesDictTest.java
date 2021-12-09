@@ -29,7 +29,7 @@ public class VariablesDictTest {
 
     @Before
     public void setUp() {
-        dict = new VariablesDict();
+        dict = VariablesDict.getInstance();
     }
 
     @After

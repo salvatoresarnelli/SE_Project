@@ -14,7 +14,6 @@ import se_project.VariablesDict;
  */
 public class DiffVariableCommand extends VariableCommand{
     
-    private Character variable;
     
     public DiffVariableCommand(Character variable, VariableCommand command) {
     }
@@ -23,18 +22,20 @@ public class DiffVariableCommand extends VariableCommand{
     super();
     }
 
-    public void setVariable(Character variable) {
-        this.variable = variable;
-    }
-
     @Override
     public ComplexNumber execute() throws Exception {
         VariablesDict dict = super.getDictionary();
-        ComplexNumber c = dict.getVariableValue(variable);
+        ComplexNumber c = dict.getVariableValue(super.getVariable());
         Stack stack = super.getTarget();
         ComplexNumber d = stack.peek();
         ComplexNumber c_1 = new ComplexNumber(c.getRealPart()-d.getRealPart(),c.getImaginaryPart()-d.getImaginaryPart());
-        dict.forceSettingVariable(variable, c_1);
+        dict.forceSettingVariable(super.getVariable(), c_1);
         return c_1;
     }
+
+    @Override
+    public String toString() {
+        return "-" + super.getVariable();
+    }
+    
 }

@@ -14,24 +14,24 @@ import se_project.VariablesDict;
  * @author aless
  */
 public class PushVariableCommand extends VariableCommand{
-    private Character variable;
     public PushVariableCommand(Character variable, VariableCommand command) {
     }
     public PushVariableCommand() {
     super();
     }
 
-    public void setVariable(Character variable) {
-        this.variable = variable;
-    }
 
     @Override
     public ComplexNumber execute() throws Exception {
         VariablesDict dict = super.getDictionary();
-        ComplexNumber c = dict.getVariableValue(variable);
+        ComplexNumber c = dict.getVariableValue(super.getVariable());
         Stack stack = super.getTarget();
         stack.push(c);
         return c;
+    }
+    @Override
+    public String toString(){
+        return ">" + super.getVariable();
     }
     
 }

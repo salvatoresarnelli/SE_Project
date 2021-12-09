@@ -19,52 +19,35 @@ import se_project.exceptions.VariableExistingException;
  */
 public class NewVariableCommand extends VariableCommand {
 
-    private Character variable;
 
     public NewVariableCommand() {
     }
 
     public NewVariableCommand(Character variable) {
-        this.variable = variable;
-    }
+        super();
+        super.setVariable(variable);}
 
     public NewVariableCommand(Character variable, Stack stack, VariablesDict dict) {
         super(stack, dict);
 
-        this.variable = variable;
+        super.setVariable(variable);
     }
 
-    public void setDictionary(VariablesDict dict) {
-        super.setDictionary(dict);
-    }
-
-    public void setVariable(Character variable) {
-        this.variable = variable;
-    }
-
-    public VariablesDict getDictionary() {
-        return super.getDictionary();
-    }
-
-    public Stack getTarget() {
-        return super.getTarget();
-    }
-
-    public Character getVariable() {
-        return variable;
-    }
-
+   
     @Override
     public ComplexNumber execute() throws EmptyStackException, InvalidVariableNameException, VariableExistingException, InvalidValueException {
         Stack stack = super.getTarget();
         ComplexNumber complex = stack.pop();
-        super.getDictionary().forceSettingVariable(variable, complex);
+        super.getDictionary().forceSettingVariable(super.getVariable(), complex);
         stack.push(complex);
 
         return complex;
     }
 
-
+    @Override
+    public String toString(){
+        return ">" + super.getVariable();
+    }
     /*
     NewVariableCommand(Character variable, VariableCommand command) {
         
