@@ -242,6 +242,7 @@ public class InterfacciaController implements Initializable {
              */
             try {
                 code = decoratorParserOperation.parse(text);
+              
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
