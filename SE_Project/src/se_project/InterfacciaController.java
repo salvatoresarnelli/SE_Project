@@ -55,6 +55,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import other.OperationSet;
+import other.VariableSet;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
@@ -129,7 +130,7 @@ public class InterfacciaController implements Initializable {
     @FXML
     private Button variablesHandler;
 
-    private ObservableList<String> variablesList;
+    private ObservableList<VariableSet> variablesList;
     private ObservableList<OperationSet> operationsList;
 
     @Override
@@ -339,13 +340,16 @@ public class InterfacciaController implements Initializable {
 
     public void setVariablesList() {
         String s = "";
+        VariableSet variableSet;
         variablesList.clear();
         for (Character ch : variableParser.getDict().getTable().keySet()) {
             ComplexNumber value;
             try {
                 value = variableParser.getDict().getVariableValue(ch);
-                s = "Variabile: " + ch + "\t\t\t\t\t\t " + "Valore: " + value.toString();
-                variablesList.add(s);
+                variableSet = new VariableSet(ch.toString(), value.toString());
+                variablesList.add(variableSet);
+                
+                
             } catch (InvalidVariableNameException | NonExistingVariable ex) {
 
             }

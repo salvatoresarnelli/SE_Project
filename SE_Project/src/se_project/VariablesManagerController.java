@@ -27,7 +27,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
+import other.VariableSet;
 
 /**
  * FXML Controller class
@@ -35,19 +37,30 @@ import javafx.util.Callback;
  * @author Salvatore Sarnelli
  */
 public class VariablesManagerController implements Initializable {
-
     @FXML
-    private ListView<String> listView;
+    private TableView<VariableSet> variablesTableView;
+    @FXML
+    private TableColumn<VariableSet, String> variablesColumn;
+    @FXML
+    private TableColumn<VariableSet, String> valuesColumn;
+    
+    private ObservableList<VariableSet> observableList;
 
 
     /**
      * Initializes the controller class.
      */
     public void initialize(URL url, ResourceBundle rb) {   
+        variablesColumn.setCellValueFactory(new PropertyValueFactory("variable"));
+        valuesColumn.setCellValueFactory(new PropertyValueFactory("value"));
+        variablesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        valuesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        observableList = FXCollections.observableArrayList();
     }   
     
-    public void setObservableList(ObservableList<String> list) {
-        listView.setItems(list);
+    public void setObservableList(ObservableList<VariableSet> list) {
+        observableList = list;
+        variablesTableView.setItems(list);
     }
 
    
