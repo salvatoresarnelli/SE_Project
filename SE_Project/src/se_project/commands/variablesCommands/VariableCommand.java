@@ -35,4 +35,10 @@ public VariableCommand() {
     public VariablesDict getDictionary() {
         return dictionary;
     }
+
+    @Override
+    public String toString() {
+        return "VariableCommand{" + "dictionary=" + dictionary + '}';
+    }
+    
 }

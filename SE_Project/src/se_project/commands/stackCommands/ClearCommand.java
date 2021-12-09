@@ -16,7 +16,7 @@ import se_project.exceptions.InvalidOperationException;
  * @author aless
  */
 public class ClearCommand extends OperationCommand{
-
+    private String name = "Clear";
     
     public ClearCommand(Stack stack) {
        super(stack);
@@ -30,6 +30,12 @@ public class ClearCommand extends OperationCommand{
         return super.getTarget().clear();
 
     }
+
+    public String toString() {
+        return name;
+    }
+    
+    
 }
     
     

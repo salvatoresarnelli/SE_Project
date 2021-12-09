@@ -16,6 +16,7 @@ import se_project.exceptions.InvalidOperationException;
  * @author aless
  */
 public class SwapCommand extends OperationCommand{
+    private String name = "swap";
 
     public SwapCommand(Stack stack) {
         super(stack);
@@ -27,6 +28,10 @@ public class SwapCommand extends OperationCommand{
     @Override
     public Boolean execute() throws EmptyStackException, InvalidOperationException {
         return super.getTarget().swap();
+    }
+
+    public String toString() {
+        return name;
     }
         
     

@@ -33,5 +33,9 @@ public class PushVariableCommand extends VariableCommand{
         stack.push(c);
         return c;
     }
+    @Override
+    public String toString(){
+        return ">" + variable;
+    }
     
 }

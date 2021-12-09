@@ -64,7 +64,10 @@ public class NewVariableCommand extends VariableCommand {
         return complex;
     }
 
-
+    @Override
+    public String toString(){
+        return ">" + variable;
+    }
     /*
     NewVariableCommand(Character variable, VariableCommand command) {
         

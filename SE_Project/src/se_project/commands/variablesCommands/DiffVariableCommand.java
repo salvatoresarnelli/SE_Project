@@ -37,4 +37,10 @@ public class DiffVariableCommand extends VariableCommand{
         dict.forceSettingVariable(variable, c_1);
         return c_1;
     }
+
+    @Override
+    public String toString() {
+        return "-" + variable;
+    }
+    
 }

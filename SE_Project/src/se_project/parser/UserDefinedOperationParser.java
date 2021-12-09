@@ -22,6 +22,7 @@ import se_project.commands.userDefinedOperations.InsertUserDefinedOperationComma
 import se_project.commands.OperationCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.OperationsFactory;
+import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.InvalidNumberException;
@@ -160,12 +161,13 @@ public class UserDefinedOperationParser extends ParserString {
             for (String possibile_operation : operations) {
                 if (!hashMap.containsKey(possibile_operation)) {
                     OperationCommand parsed = parserString.parse(possibile_operation);
-                    if(parsed == null)
+                    if (parsed == null) {
                         throw new InvalidNameException("operazione non definita " + possibile_operation);
-                    else
+                    } else {
                         finalOperations.add(parsed);
+                    }
                 } else {
-                    finalOperations.add(super.getFactory().getOperationCommand(possibile_operation,hashMap));
+                    finalOperations.add(super.getFactory().getOperationCommand(possibile_operation, hashMap));
                 }
             }
 
@@ -191,7 +193,7 @@ public class UserDefinedOperationParser extends ParserString {
      */
     @Override
     public OperationCommand parse(String textString) throws ArrayIndexOutOfBoundsException,
-            ExistingNameException, OperationNotFoundException,InvalidNameException, Exception {
+            ExistingNameException, OperationNotFoundException, InvalidNameException, Exception {
         if (textString.startsWith(">>")) {
             return parseInsert(textString);
         }
@@ -258,6 +260,26 @@ public class UserDefinedOperationParser extends ParserString {
      */
     public String getOperationString(String text) {
 
+        String s = "";
+        if(this.hashMap.containsKey(text)){
+              s += text + " :";
+        LinkedList<OperationCommand> supportList = this.getOperations(text).getCommandList();
+        for (OperationCommand command : supportList) {
+            if (command instanceof ExecuteUserDefinedOperationCommand) {
+                s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
+            }
+            if (command instanceof VariableCommand) {
+                s += " " + ((VariableCommand) command).toString();
+            } else {
+                s += " " + command.toString();
+            }
+        }
+        s += "\n";
+        }
+        return null;
+    }
+      
+        /*
         LinkedList<String> list;
         String[] splitted = hashMap.get(text).toString().split(" ");
         list = new LinkedList(Arrays.asList(splitted));
@@ -266,16 +288,14 @@ public class UserDefinedOperationParser extends ParserString {
         }
         String final_string = " ";
         return list.stream().map((s) -> s + " ").reduce(final_string, String::concat);
-
-    }
-
-    /**
-     **Il metodo restituisce i nomi di tutte le operazioni definite
-     * dall'utente.
-     *
-     * @return Set<String> contenente tutti i nomi delle operazioni.
-     *
-     */
+         */
+        /**
+         **Il metodo restituisce i nomi di tutte le operazioni definite
+         * dall'utente.
+         *
+         * @return Set<String> contenente tutti i nomi delle operazioni.
+         *
+         */
     public Set<String> getNames() {
         return hashMap.keySet();
     }
@@ -293,7 +313,8 @@ public class UserDefinedOperationParser extends ParserString {
         Command remove = hashMap.remove(name);
         return (remove != null);
     }
-    public HashMap<String, OperationCommand> getHashMap(){
+
+    public HashMap<String, OperationCommand> getHashMap() {
         return hashMap;
     }
 
@@ -304,7 +325,6 @@ public class UserDefinedOperationParser extends ParserString {
         return this.hashMap.toString();
     }
      */
-
     public ParserString getParserString() {
         return parserString;
     }

@@ -16,6 +16,7 @@ import se_project.exceptions.InvalidOperationException;
  * @author aless
  */
 public class OverCommand extends OperationCommand{
+    private String name = "over";
 
     public OverCommand() {
     }
@@ -28,6 +29,10 @@ public class OverCommand extends OperationCommand{
     @Override
     public Boolean execute() throws EmptyStackException, InvalidOperationException {
         return super.getTarget().over();
+    }
+
+    public String toString() {
+        return name;
     }
 
 }

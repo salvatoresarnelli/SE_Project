@@ -54,12 +54,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import other.OperationSet;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.OverrideVariableCommand;
+import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.ExistingNameException;
@@ -128,7 +130,7 @@ public class InterfacciaController implements Initializable {
     private Button variablesHandler;
 
     private ObservableList<String> variablesList;
-    private ObservableList<String> operationsList;
+    private ObservableList<OperationSet> operationsList;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -261,22 +263,10 @@ public class InterfacciaController implements Initializable {
                     possible_name = possible_name.replaceAll(" ", "");
                     decoratorParserOperation.removeOperation(possible_name);
                     decoratorParserOperation.parse(text);
-                    /*
-                    Iterator<MenuItem> iterator = splitMenuButton.getItems().iterator();
-                    MenuItem menuItemDelete = new MenuItem();
-                    while (iterator.hasNext()) {
-                        MenuItem menuItem = iterator.next();
-                        //System.out.println(menuItem.getText());
-                        if (menuItem.getText().equals(possible_name)) {
-                            menuItemDelete = menuItem;
-                        }
-                    }
-                    splitMenuButton.getItems().remove(menuItemDelete);
-                    decoratorParserOperation.parse(text);
-                    this.inizializeMenuButton(possible_name);
-
+                    inputField.clear();
+                    this.setOperationsList();
+                    return;
                 }
-                     */                }
 
             } catch (Exception ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
@@ -321,7 +311,6 @@ public class InterfacciaController implements Initializable {
                     if (decoratorParserOperation.getNames().contains(
                             ((InsertUserDefinedOperationCommand) code).getName())) {
                         this.inizializeMenuButton(((InsertUserDefinedOperationCommand) code).getName());
-
                     }
                 }*/
 
@@ -348,13 +337,19 @@ public class InterfacciaController implements Initializable {
         this.setOperationsList();
     }
 
-    public void setVariablesList() throws InvalidVariableNameException, NonExistingVariable {
+    public void setVariablesList() {
         String s = "";
         variablesList.clear();
         for (Character ch : variableParser.getDict().getTable().keySet()) {
-            ComplexNumber value = variableParser.getDict().getVariableValue(ch);
-            s = "Variabile: " + ch + "\t\t\t\t\t\t\t\t " + "Valore: " + value.toString();
-            variablesList.add(s);
+            ComplexNumber value;
+            try {
+                value = variableParser.getDict().getVariableValue(ch);
+                s = "Variabile: " + ch + "\t\t\t\t\t\t " + "Valore: " + value.toString();
+                variablesList.add(s);
+            } catch (InvalidVariableNameException | NonExistingVariable ex) {
+
+            }
+
         }
 
     }
@@ -363,18 +358,24 @@ public class InterfacciaController implements Initializable {
         operationsList.clear();
         String s = "";
         for (String name : decoratorParserOperation.getNames()) {
-            s += "Nome: " + name + "\t\t\t\t\t\t " + "Operazioni associate: ";
+            OperationSet operationSet;
             LinkedList<OperationCommand> supportList = decoratorParserOperation.getOperations(name).getCommandList();
             for (OperationCommand command : supportList) {
                 if (command instanceof ExecuteUserDefinedOperationCommand) {
                     s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
+                }
+                else if (command instanceof VariableCommand) {
+                    s += " " + ((VariableCommand) command).toString();
                 } else {
                     s += " " + command.toString();
                 }
             }
             s += "\n";
+            operationSet = new OperationSet(name, s);
+            operationsList.add(operationSet);
+            s = "";
         }
-        operationsList.add(s);
+
     }
 
     @FXML
@@ -418,80 +419,6 @@ public class InterfacciaController implements Initializable {
             if (rs == ButtonType.OK);
         });
 
-    }
-
-    public void inizializeMenuButton(String text) {
-        MenuItem choice = new MenuItem(text);
-        splitMenuButton.getItems().add(choice);
-
-        choice.setOnAction((e) -> {
-            try {
-                //this.userOperation(code);
-                OperationCommand code = decoratorParserOperation.parse(text);
-                if (code != null) {
-                    try {
-                        solver.resolveOperation(code);
-                        observableList.clear();
-                        observableList.addAll(solver.getStructureStack().getStack());
-                    } catch (EmptyStackException ex) {
-                        alert("Errore!", "Operazione non valida", "Lo stack è vuoto!");
-                    } catch (NotApplicableOperation ex) {
-                        alert("Errore!", "Operazione non valida", "");
-                    } catch (InvalidNumberException ex) {
-                        alert("Errore!", "Inserito un numero non valido", text);
-                    } catch (InvalidVariableNameException ex) {
-                        alert("Errore!", "Inserito una variabile non valida", text);
-                    } catch (UndefinedPhaseException ex) {
-                        alert("Errore!", "Fase non definita", text);
-                    } catch (DivisionByZeroException ex) {
-                        alert("Errore!", "Divisione per zero.", "");
-                    } catch (VariableExistingException ex) {
-                        Alert alert = new Alert(AlertType.WARNING, "Variabile" + ((NewVariableCommand) code).getVariable() + " esistente, sovrascriverne il valore? ", ButtonType.YES, ButtonType.NO);
-                        alert.showAndWait();
-                        if (alert.getResult() == ButtonType.YES) {
-                            OverrideVariableCommand ovc = new OverrideVariableCommand((NewVariableCommand) code);
-                            solver.resolveOperation(ovc);
-                        }
-                        observableList.clear();
-                        observableList.addAll(solver.getStructureStack().getStack());
-
-                    } catch (InterruptedExecutionException ex) {
-                        Alert alert = new Alert(AlertType.WARNING, "L'esecuzione della funzione è stata interrotta a causa del seguente errore:" + ex.getExceptionCause()
-                                + "\nContinuare? ", ButtonType.YES, ButtonType.NO);
-                        alert.showAndWait();
-                        if (alert.getResult() == ButtonType.YES) {
-
-                        }
-                        if (alert.getResult() == ButtonType.NO) {
-                            // solver.rollBack(ex.getRollBackList());
-                        }
-                    }
-                    if (code instanceof InsertUserDefinedOperationCommand) {
-                        if (decoratorParserOperation.getNames().contains(
-                                ((InsertUserDefinedOperationCommand) code).getName())) {
-                            this.inizializeMenuButton(((InsertUserDefinedOperationCommand) code).getName());
-
-                        }
-                    }
-                }
-
-            } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException | InvalidOperationException ex) {
-                this.alert("errore", "Operazione non valida ", text);
-
-            } catch (ExistingNameException ex) {
-                Logger.getLogger(InterfacciaController.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            } catch (OperationNotFoundException ex) {
-                Logger.getLogger(InterfacciaController.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(InterfacciaController.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-
-        observableList.clear();
-        observableList.addAll(solver.getStructureStack().getStack());
     }
 
     @FXML
@@ -547,6 +474,9 @@ public class InterfacciaController implements Initializable {
                 for (OperationCommand command : supportList) {
                     if (command instanceof ExecuteUserDefinedOperationCommand) {
                         s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
+                    }
+                    else if (command instanceof VariableCommand) {
+                        s += " " + ((VariableCommand) command).toString();
                     } else {
                         s += " " + command.toString();
                     }
@@ -564,70 +494,53 @@ public class InterfacciaController implements Initializable {
     }
 
     @FXML
-    private void uploadFunctions(ActionEvent event) throws FileNotFoundException {
+    private void uploadFunctions(ActionEvent event) throws ExistingNameException, OperationNotFoundException, InvalidNameException, Exception {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
-            String text = "";
-            try {
-                Scanner sc = new Scanner(file);
-
-                while (sc.hasNext()) {
-                    String line = sc.nextLine();
-                    String name = line.split(":")[0];
-                    String operations = line.split(":")[1];
-                    text = ">>" + name + "$" + operations;
+            Scanner sc = new Scanner(file);
+            while (sc.hasNext()) {
+                String line = sc.nextLine();
+                String name = line.split(":")[0];
+                String operations = line.split(":")[1];
+                String text = ">>" + name + "$" + operations;
+                System.out.println(text);
+                try {
                     decoratorParserOperation.parse(text);
-                    //this.inizializeMenuButton(name);
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                alert("Errore!", "Operazione non valida", " L'inserimento non è valido");
-                inputField.clear();
-                return;
-            } catch (OperationNotFoundException ex) {
-                alert("Errore!", "Operazione non valida", "--> L'inserimento non è valido");
-            } catch (NullPointerException ex) {
-                alert("Errore!", "Operazione non valida", "--> L'inserimento non è valido");
-            } catch (ExistingNameException ex) {
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Operazione già inserita");
-                alert.setHeaderText("L'operazione è già stata inserita");
-                alert.setContentText("Vuoi sovrascriverla?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    String textString = decoratorParserOperation.clearStringOperation(text);
-                    String[] string = textString.split("\\$");
-                    String possible_name = string[0];
-                    possible_name = possible_name.replaceAll(" ", "");
-                    decoratorParserOperation.removeOperation(possible_name);
-                    Iterator<MenuItem> iterator = splitMenuButton.getItems().iterator();
-                    MenuItem menuItemDelete = new MenuItem();
-                    while (iterator.hasNext()) {
-                        MenuItem menuItem = iterator.next();
-                        //System.out.println(menuItem.getText());
-                        if (menuItem.getText().equals(possible_name)) {
-                            menuItemDelete = menuItem;
-                        }
-                    }
-                    splitMenuButton.getItems().remove(menuItemDelete);
-                    try {
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                    inputField.clear();
+                    return;
+                } catch (OperationNotFoundException ex) {
+                    alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                } catch (NullPointerException ex) {
+                    alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                } catch (ExistingNameException ex) {
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Operazione già inserita");
+                    alert.setHeaderText("L'operazione è già stata inserita");
+                    alert.setContentText("Vuoi sovrascriverla?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        String textString = decoratorParserOperation.clearStringOperation(text);
+                        String[] string = textString.split("\\$");
+                        String possible_name = string[0];
+                        possible_name = possible_name.replaceAll(" ", "");
+                        decoratorParserOperation.removeOperation(possible_name);
                         decoratorParserOperation.parse(text);
-                    } catch (ExistingNameException ex1) {
-                        Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex1);
-                    } catch (OperationNotFoundException | InvalidNameException ex1) {
-                        Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex1);
-                    } catch (Exception ex1) {
-                        Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex1);
                     }
-                    this.inizializeMenuButton(possible_name);
 
+                } catch (Exception ex) {
+
+                } finally {
+                    continue;
                 }
 
-            } catch (Exception ex) {
-                alert("Errore!", "Operazione non valida", "--> L'inserimento non è valido");
             }
+
         }
+
         this.setOperationsList();
     }
 
@@ -673,5 +586,30 @@ public class InterfacciaController implements Initializable {
         } catch (IOException e) {
             System.err.println("Error while opening new window.");
         }
+
+    }
+
+    public void removeOperationByUser(String name) {
+        System.out.println(decoratorParserOperation.getNames().size());
+
+        for (String possible_matching : decoratorParserOperation.getNames()) {
+            System.out.println(decoratorParserOperation.getOperationString(possible_matching));
+            if (decoratorParserOperation.getOperationString(possible_matching).contains(name)) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Operazione presente anche in altre operazioni");
+                alert.setHeaderText("L'operazione " + name + " è presente anche nell'operazione " + possible_matching);
+                alert.setContentText("Vuoi continuare?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    this.removeOperationByUser(possible_matching);
+                }
+
+            }
+            decoratorParserOperation.removeOperation(name);
+        }
+    }
+
+    public void setObservableOperations(OperationSet operationSet) {
+        decoratorParserOperation.removeOperation(operationSet.getNameOperation());
     }
 }

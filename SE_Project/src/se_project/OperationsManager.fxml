@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="562.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.OperationsManagerController">
    <children>
-      <ListView fx:id="listViewOperations" layoutX="11.0" layoutY="10.0" prefHeight="175.0" prefWidth="538.0" style="-fx-background-color: FCFCDA;" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-      <Separator layoutX="278.0" layoutY="10.0" orientation="VERTICAL" prefHeight="240.0" prefWidth="6.0" />
+      <TableView fx:id="tableViewOperations" layoutX="10.0" layoutY="10.0" prefHeight="240.0" prefWidth="542.0">
+         <columns>
+            <TableColumn fx:id="nameColumn" prefWidth="274.39996910095215" text="Nome" />
+            <TableColumn fx:id="operationColumn" prefWidth="267.20001831054685" text="Operazione associata" />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>
