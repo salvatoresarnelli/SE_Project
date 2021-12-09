@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="562.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.VariablesManagerController">
+<HBox fx:id="hbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="533.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.VariablesManagerController">
    <children>
-      <TableView fx:id="variablesTableView" layoutX="181.0" layoutY="36.0" prefHeight="240.0" prefWidth="517.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="10.0">
-        <columns>
-          <TableColumn fx:id="variablesColumn" prefWidth="270.0" text="Variabile" />
-          <TableColumn fx:id="valuesColumn" minWidth="0.0" prefWidth="271.0" text="Valore" />
-        </columns>
-      </TableView>
-      <Button id="plusVar" fx:id="plusVarButton" layoutX="207.0" layoutY="289.0" mnemonicParsing="false" onAction="#plusVarButtonActionPush" text="+var" />
-      <Button id="minusVar" fx:id="minusVarButton" layoutX="312.0" layoutY="289.0" mnemonicParsing="false" onAction="#minusVarButtonActionPush" text="-var" />
-      <Button id="saveVariable" fx:id="saveButton" layoutX="207.0" layoutY="338.0" mnemonicParsing="false" onAction="#saveButtonActionPush" text="save" />
-      <Button id="loadVariable" fx:id="loadButton" layoutX="311.0" layoutY="338.0" mnemonicParsing="false" onAction="#loadButtonActionPush" text="load" />
+      <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="533.0" style="-fx-background-color: #1d3557;">
+         <children>
+            <TableView fx:id="variablesTableView" layoutX="20.0" layoutY="73.0" prefHeight="206.0" prefWidth="325.0" style="-fx-background-color: #fcfcda; -fx-border-color: orange;" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="73.0" >
+               <columns>
+                  <TableColumn fx:id="variablesColumn" prefWidth="195.0" text="Variabile" />
+                  <TableColumn fx:id="valuesColumn" minWidth="0.0" prefWidth="163.0" text="Value" />
+               </columns>
+            </TableView>
+            <TextField layoutX="21.0" layoutY="33.0" prefHeight="25.0" prefWidth="162.0" />
+            <Button id="minusVar" fx:id="minusVarButton" layoutX="65.0" layoutY="296.0" mnemonicParsing="false" onAction="#minusVarButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="-var" />
+            <Button id="saveVariable" fx:id="saveButton1" layoutX="202.0" layoutY="296.0" mnemonicParsing="false" onAction="#saveButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="save" />
+            <Button id="loadVariable" fx:id="loadButton" layoutX="255.0" layoutY="297.0" mnemonicParsing="false" onAction="#loadButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="load" />
+            <Button id="plusVar" fx:id="plusVarButton" layoutX="113.0" layoutY="296.0" mnemonicParsing="false" onAction="#plusVarButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="+var" />
+            <Label layoutX="21.0" layoutY="14.0" text="Inserisci o cerca una variabile.." textFill="#dae1ae" />
+            <Button fx:id="addVarButton" layoutX="189.0" layoutY="33.0" mnemonicParsing="false" onAction="#addVarButtonAction" style="-fx-text-fill: white; -fx-background-color: #626873;" text="Aggiungi" />
+            <Button fx:id="removeVarButton" layoutX="318.0" layoutY="33.0" mnemonicParsing="false" onAction="#removeVarButtonAction" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Rimuovi" />
+            <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="299.0" stylesheets="@hamburgerStyle.css" />
+            <Button fx:id="searchVarButton" layoutX="261.0" layoutY="33.0" mnemonicParsing="false" onAction="#searchVarButtonAction" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Cerca" />
+            <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="10.0" prefHeight="292.0" prefWidth="155.0" style="-fx-background-color: 1d3557;" />
+         </children>
+      </AnchorPane>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="335.0" prefWidth="269.0">
+         <children>
+            <ListView fx:id="listView" editable="true" layoutX="10.0" layoutY="54.0" prefHeight="238.0" prefWidth="117.0" style="-fx-background-color: FCFCDA;" />
+            <Label layoutX="29.0" layoutY="37.0" text="Stack." textFill="#dae1ae" />
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</HBox>

@@ -40,7 +40,9 @@ public class VariableParser extends ParserString {
     
     
     @Override
-    public OperationCommand parse(String textString) throws ArrayIndexOutOfBoundsException, OperationNotFoundException, Exception {
+    public OperationCommand parse(String text) throws ArrayIndexOutOfBoundsException, OperationNotFoundException, Exception {
+        String textString = text.replaceAll(" ", "");
+        
         if (checkVariableIns(textString)) {
             char c = textString.charAt(1);
             NewVariableCommand command = (NewVariableCommand) parser.getFactory().getOperationCommand("NewVariableCommand");

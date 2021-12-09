@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vbox" prefHeight="294.0" prefWidth="157.0" style="-fx-background-radius: 18px; -fx-border-color: black; -fx-background-color: 1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.SidePaneController">
+   <children>
+      <ImageView fitHeight="128.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@MathSolver.JPG" />
+         </image>
+      </ImageView>
+      <Button fx:id="homeButton" accessibleText="home" mnemonicParsing="false" onAction="#homeButtonAction" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #757c8a; -fx-text-fill: white;" text="Button">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="HOME" />
+         </graphic>
+      </Button>
+      <Button fx:id="saveButton" accessibleText="Salva Funzione" mnemonicParsing="false" onAction="#saveFunctions" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Salva Funzione">
+         <graphic>
+            <FontAwesomeIconView fill="#e1e1e1" glyphName="SAVE" />
+         </graphic>
+      </Button>
+      <Button fx:id="uploadButton" accessibleText="Carica Funzione" mnemonicParsing="false" onAction="#uploadFunctions" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #757c8a; -fx-text-fill: white;" text="Carica Funzione">
+         <graphic>
+            <FontAwesomeIconView fill="#e4e4e4" glyphName="UPLOAD" />
+         </graphic>
+      </Button>
+      <Button fx:id="OperationsHandler" accessibleText="Gestione Operazioni" mnemonicParsing="false" onAction="#operationHandlerAction" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #626873;" text="Gestione Operazioni" textFill="WHITE">
+         <graphic>
+            <FontAwesomeIconView fill="#e4e4e4" glyphName="PLUS" />
+         </graphic>
+      </Button>
+      <Button fx:id="variablesHandler" accessibleText="Gestione Variabili" mnemonicParsing="false" onAction="#variablesHandlerAction" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #757c8a;" text="Gestione Variabili" textFill="WHITE">
+         <graphic>
+            <FontAwesomeIconView fill="#e4e4e4" glyphName="ITALIC" />
+         </graphic>
+      </Button>
+   </children>
+</VBox>

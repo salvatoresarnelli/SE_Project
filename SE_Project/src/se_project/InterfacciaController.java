@@ -40,6 +40,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -48,15 +49,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import other.OperationSet;
 import other.VariableSet;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
@@ -109,6 +114,17 @@ public class InterfacciaController implements Initializable {
 
     private ObservableList<ComplexNumber> observableList;
     @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private JFXDrawer drawer;
+    private Button variablesHandler;
+
+    private ObservableList<VariableSet> variablesList;
+    private ObservableList<OperationSet> operationsList;
+    private VBox box;
+    @FXML
+    private HBox hbox;
+    @FXML
     private MenuItem buttonClear;
     @FXML
     private MenuItem buttonDrop;
@@ -118,33 +134,57 @@ public class InterfacciaController implements Initializable {
     private MenuItem buttonSwap;
     @FXML
     private MenuItem buttonOver;
-    @FXML
-    private JFXHamburger hamburger;
-    @FXML
-    private JFXDrawer drawer;
-    @FXML
-    private Button saveButton;
-    @FXML
-    private Button uploadButton;
-    @FXML
-    private Button OperationsHandler;
-    @FXML
-    private Button variablesHandler;
-    @FXML
-    private VBox vbox;
-
-    private ObservableList<VariableSet> variablesList;
-    private ObservableList<OperationSet> operationsList;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      //  try {
-      //      VBox box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
-
-
+        
+        try {
+            box= FXMLLoader.load(getClass().getResource("sidePane.fxml"));
+        }catch(IOException ex){
+        alert("unable to reach sidepane.fxml", "","");
+        }
+        for (Node n: box.getChildren()){
+            if(n.getAccessibleText() !=null){
+                n.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
+                    
+                    try {
+                      switch(n.getAccessibleText()){ 
+                          
+                        case "home":
+                          Node homePage = FXMLLoader.load(getClass().getResource("calculator.fxml"));
+                            hbox.getChildren().setAll(homePage);                    
+                            break;
+                        case "Salva Funzione":
+                          Node variablesManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
+                            hbox.getChildren().setAll(variablesManager);                    
+                            break;
+                        
+                        case "Carica Funzione":
+                            Node update = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
+                            hbox.getChildren().setAll(update);
+                            break;   
+                            
+                        case "Gestione Operazioni": 
+                            Node opManager = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
+                            hbox.getChildren().setAll(opManager);                    
+                            break;
+                             
+                        case "Gestione Variabili": 
+                            Node varManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
+                            hbox.getChildren().setAll(varManager);                    
+                            break;
+                             
+               
+                    
+                    }   
+                    } catch (Exception ee) {
+                        System.out.println("Error");
+                    }
+                });
+                        }
+        }
         HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
         transition.setRate(-1);
-        //      drawer.setSidePane(box);
+        drawer.setSidePane(box);
         drawer.setVisible(false);
         //drawer.setMinWidth(0);
         hamburger.setOnMouseClicked(event -> {
@@ -485,7 +525,6 @@ public class InterfacciaController implements Initializable {
         observableList.addAll(solver.getStructureStack().getStack());
     }
 
-    @FXML
     public void saveFunctions() {
 
         try {
@@ -518,7 +557,6 @@ public class InterfacciaController implements Initializable {
         }
     }
 
-    @FXML
     private void uploadFunctions(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
@@ -578,7 +616,6 @@ public class InterfacciaController implements Initializable {
         this.setOperationsList();
     }
 
-    @FXML
     private void variablesHandlerAction(ActionEvent event) {
         if (event.getSource() == variablesHandler) {
             LoadStages("VariablesManager.fxml");
@@ -603,7 +640,6 @@ public class InterfacciaController implements Initializable {
         }
     }
 
-    @FXML
     private void operationHandlerAction(ActionEvent event) {
         try {
             Parent root;
@@ -646,5 +682,22 @@ public class InterfacciaController implements Initializable {
     public void setObservableOperations(OperationSet operationSet) {
         decoratorParserOperation.removeOperation(operationSet.getNameOperation());
     }
+/*
+    @FXML
+    private void minusVarButtonActionPush(ActionEvent event) {
+    }
+
+    @FXML
+    private void saveButtonActionPush(ActionEvent event) {
+    }
+
+    @FXML
+    private void loadButtonActionPush(ActionEvent event) {
+    }
+
+    @FXML
+    private void plusVarButtonActionPush(ActionEvent event) {
+    }
+*/
 
 }

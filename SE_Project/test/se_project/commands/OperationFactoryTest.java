@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import se_project.ComplexNumber;
-import se_project.commands.variablesCommands.DiffVariableCommandTest;
+import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.PushVariableCommand;
 import se_project.commands.variablesCommands.SumVariableCommand;

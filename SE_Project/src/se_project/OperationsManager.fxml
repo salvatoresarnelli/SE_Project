@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="562.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.OperationsManagerController">
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="335.0" prefWidth="533.0" style="-fx-background-color: #1d3557;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se_project.OperationsManagerController">
    <children>
       <TableView fx:id="tableViewOperations" layoutX="10.0" layoutY="10.0" prefHeight="240.0" prefWidth="542.0">
          <columns>
@@ -12,5 +14,7 @@
             <TableColumn fx:id="operationColumn" prefWidth="267.20001831054685" text="Operazione associata" />
          </columns>
       </TableView>
+      <JFXHamburger fx:id="hamburger" layoutX="4.0" layoutY="310.0" stylesheets="@hamburgerStyle.css" />
+      <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="10.0" prefHeight="292.0" prefWidth="155.0" style="-fx-background-color: 1d3557;" />
    </children>
 </AnchorPane>
