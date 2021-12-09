@@ -50,7 +50,7 @@ public class ExecuteUserDefinedOperationCommand extends OperationCommand {
         for (OperationCommand i : commandList) {
             i.setTarget(stack);
            
-            i.execute();
+            i.execute();  
             
         }
         return true;
@@ -64,5 +64,5 @@ public class ExecuteUserDefinedOperationCommand extends OperationCommand {
     public String toString() {
         return commandList.toString();
     }
-
+    
 }

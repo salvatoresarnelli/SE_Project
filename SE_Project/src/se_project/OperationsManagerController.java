@@ -56,26 +56,7 @@ public class OperationsManagerController implements Initializable {
         tableViewOperations.setItems(ob);
     }
 
-    private void actionButtonRemoveOperation(ActionEvent event) {
-        FXMLLoader fxmlLoader;
-        Parent root;
-        try {
-            fxmlLoader = new FXMLLoader(getClass().getResource("calculator.fxml"));
-            root = fxmlLoader.load();
-            InterfacciaController interfacciaController = fxmlLoader.getController();
-            ObservableList<OperationSet> selectedItems = tableViewOperations.getSelectionModel().getSelectedItems();
-            for (OperationSet operationSet : selectedItems) {
-                //interfacciaController.removeOperationByUser(operationSet.getNameOperation());
-                interfacciaController.setObservableOperations(operationSet);
-                observableList.remove(operationSet);
-                
-                
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(OperationsManagerController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-    }
     
 
 
