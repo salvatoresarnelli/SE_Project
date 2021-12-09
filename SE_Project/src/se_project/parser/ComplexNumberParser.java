@@ -41,9 +41,12 @@ public class ComplexNumberParser extends ParserString {
         }
 
         String ret = checkComplexNumber(text);
+       
+        
+       
         
         if (ret.equals(complex_number)) {
-            return new InsertNumberCommand(recognizeComplexNumber(first + text), null);
+            return new InsertNumberCommand(recognizeComplexNumber(text), null);
         }
         if (ret.equals(invalid_insert)) {
             return null;
@@ -68,13 +71,13 @@ public class ComplexNumberParser extends ParserString {
     public ComplexNumber recognizeNumber(String text) {
         String replaceAll = text.replaceAll(" ", "");
         char operator1 = this.checkFirstCharacter(text);
-        text = this.clearString(text);
+        text = this.clearString(replaceAll);
         if (text.contains("j")) {
             StringBuilder sb = new StringBuilder(text);
             if (sb.length() > 2) {
                 return null;
             }
-            if (sb.equals("j")) {
+            if (text.equals("j")) {
                 return new ComplexNumber(0, Double.parseDouble(operator1 + "1"));
             }
             if (sb.charAt(0) == 'j') {
@@ -113,9 +116,10 @@ public class ComplexNumberParser extends ParserString {
      * @return ritorna un numero complesso.
      */
     public ComplexNumber recognizeComplexNumber(String text) {
-        String replaceAll = text.replaceAll(" ", "");
+        text = text.replaceAll(" ", "");
         char operator1 = this.checkFirstCharacter(text);
-        text = this.clearString(replaceAll);
+        text = this.clearString(text);
+        
         char operator2 = ' ';
         if (text.contains("+")) {
             operator2 = '+';
@@ -130,8 +134,9 @@ public class ComplexNumberParser extends ParserString {
             if (sb.length() > 2) {
                 return null;
             }
-            if (sb.equals("j")) {
-                double real = Double.parseDouble(String.valueOf(operator2 + sb.charAt(0)));
+           
+            if (text.equals("j")) {
+                double real = Double.parseDouble(String.valueOf(operator2 + scanner[1]));
                 return new ComplexNumber(real, Double.parseDouble(operator1 + "1"));
 
             }
@@ -139,7 +144,7 @@ public class ComplexNumberParser extends ParserString {
             if (sb.charAt(0) == 'j') {
                 try {
                     double imaginary = Double.parseDouble(operator1 + String.valueOf(sb.charAt(1)));
-                    double real = Double.parseDouble(String.valueOf(operator2 + sb.charAt(0)));
+                    double real = Double.parseDouble(String.valueOf(operator2 + scanner[1]));
                     return new ComplexNumber(real, imaginary);
 
                 } catch (NumberFormatException e) {
@@ -147,9 +152,9 @@ public class ComplexNumberParser extends ParserString {
                 }
             }
             if (sb.charAt(1) == 'j') {
-                try {
-                    double imaginary = Double.parseDouble(operator1 + String.valueOf(sb.charAt(0)));
-                    double real = Double.parseDouble(operator2 + String.valueOf(sb.charAt(1)));
+                try {       
+                    double imaginary = Double.parseDouble(operator1 + String.valueOf(sb.charAt(0)));                 
+                    double real = Double.parseDouble(operator2 + scanner[1]);
                     return new ComplexNumber(real, imaginary);
 
                 } catch (NumberFormatException e) {
@@ -164,7 +169,7 @@ public class ComplexNumberParser extends ParserString {
                 if (sb.length() > 2) {
                     return null;
                 }
-                if (sb.equals("j")) {
+                if (text.equals("j")) {
                     return new ComplexNumber(real, Double.parseDouble(operator2 + "1"));
                 }
                 if (sb.charAt(0) == 'j') {
@@ -201,6 +206,7 @@ public class ComplexNumberParser extends ParserString {
      *
      */
     public String checkComplexNumber(String text) {
+        
         if (text.contains("+") || text.contains("-")) {
             String replaceAll = text.replaceAll(" ", "");
             String[] scanner = replaceAll.split("\\+|\\-");
@@ -283,6 +289,7 @@ public class ComplexNumberParser extends ParserString {
      */
     public boolean checkPossiblePartImaginary(String text) {
         text = this.clearString(text);
+        text = text.replaceAll(" ", "");
         if (text.contains("j")) {
             StringBuilder sb = new StringBuilder(text);
             if (sb.length() > 2) {
@@ -337,6 +344,7 @@ public class ComplexNumberParser extends ParserString {
         if (this.checkPossiblePartReal(text)) {
             return single_number;
         }
+        
         return this.checkPossiblePartImaginary(text) ? single_number : invalid_insert;
     }
 
