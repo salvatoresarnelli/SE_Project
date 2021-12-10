@@ -6,7 +6,6 @@
 package se_project.parser;
 
 import se_project.commands.OperationCommand;
-import se_project.commands.OperationsFactory;
 import se_project.commands.stackCommands.ClearCommand;
 import se_project.commands.stackCommands.DropCommand;
 import se_project.commands.stackCommands.DuplicateCommand;

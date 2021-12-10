@@ -5,23 +5,18 @@
  */
 package se_project.parser;
 
-import se_project.parser.ParserString;
 import se_project.exceptions.ExistingNameException;
 import se_project.exceptions.InvalidNameException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import se_project.InterfacciaController;
+import se_project.OperationDict;
 import se_project.commands.Command;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
 import se_project.exceptions.OperationNotFoundException;
-import se_project.commands.OperationsFactory;
 import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
@@ -30,14 +25,19 @@ import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
 
-/**
+/**La classe UserDefinedOperationParser viene utilizzata come decoratore di un ParserString definito in precendenza,
+ * in particolare VariableParser, per aggiungere nuove funzionalità ad esso. In particolare, l'UserDefinedOperationParser
+ * permette di creare e di inserire nuove operazioni definite dall'utente. Le operazione verranno salvate in una struttura
+ * dati, definita come un HashMap<String,OperationCommand> che presenti come chiave il nome dell'operazione definita dall'utente,
+ * la quale non deve presentare caratteri alfanumerici e deve avere una lunghezza maggiore di 1; come value, invece, saranno presenti
+ * tutti i comandi associati all'operazione
  *
- * @author emanu
+ * 
  */
 public class UserDefinedOperationParser extends ParserString {
 
     private final ParserString parserString;
-    private final HashMap<String, OperationCommand> hashMap;
+    private final OperationDict operationDict;
     private final LinkedList<String> linkedList;
 
     /**
@@ -51,7 +51,7 @@ public class UserDefinedOperationParser extends ParserString {
      */
     public UserDefinedOperationParser(ParserString parserString) {
         this.parserString = parserString;
-        hashMap = new HashMap<>();
+        operationDict = OperationDict.getInstance();
         linkedList = new LinkedList<>();
         Collections.addAll(linkedList, "+", "-", "+-", "sqrt", "*", ":", "dup", "swap", "over", "drop");
 
@@ -74,19 +74,20 @@ public class UserDefinedOperationParser extends ParserString {
      * definiti precedentemente.
      *
      */
+    /*
     public UserDefinedOperationParser(ParserString parserString, HashMap<String, OperationCommand> hashMap1) throws InvalidNameException {
         this.parserString = parserString;
         hashMap1.keySet().stream().filter((s) -> (!this.checkName(s))).forEachOrdered((_item) -> {
             throw new InvalidNameException();
         });
-        this.hashMap = new HashMap<>(hashMap1);
+        operationDict.setHashMap(hashMap1);
         linkedList = new LinkedList<>();
         Collections.addAll(linkedList, "+", "-", "+-", "sqrt", "*", ":", "dup", "swap", "over", "drop");
     }
 
     /**
      * Il metodo prende in ingresso una stringa da dover formattare, eliminando
-     * eventuale \n e i primi due caratteri.
+     * eventuali \n e i primi due caratteri.
      *
      * @param text la stringa da dover formattare.
      * @throws StringIndexOutBoundsException, nel momento in cui la stringa
@@ -129,6 +130,14 @@ public class UserDefinedOperationParser extends ParserString {
         return true;
     }
 
+    /**
+     * Il metodo prende una stringa da dover formattare,controllando se sono
+     * presenti all'interno di essa spazi iniziali, eliminandoli eventualmente.
+     *
+     * @param text, Stringa da dover formattare.
+     * @return string stringa formattata.
+     *
+     */
     public String removeInitialSpaces(String text) throws StringIndexOutOfBoundsException {
         while (text.charAt(0) == ' ') {
             StringBuilder sb = new StringBuilder(text);
@@ -138,6 +147,26 @@ public class UserDefinedOperationParser extends ParserString {
         }
         return text;
     }
+
+    /**
+     * Il metodo prende una stringa in ingresso. Il metodo ritorna un
+     * InsertUserDefinedOperationCommand se il pattern della stringa passata è
+     * corretto. Di seguito un'esempio: >>NomeFunzione $ func + - + Il pattern
+     * prevede una sintassi in cui vengono definiti all'inizio due caratteri
+     * maggiore, poi successivamente il nome della funzione, un delimitatore, e
+     * tutte le operazioni che si vogliono associare al nome della funzione. Le
+     * operazioni che possono essere associate sono: "+", "-", "+-", "sqrt",
+     * "*", ":", "dup", "swap", "over", "drop" e anche le operazioni già
+     * definite precedentemente.
+     *
+     *
+     * @param text, Stringa da dover controllare
+     * @return InsertUserDefinedOperationCommand , comando utilizzato per
+     * inserire l'operazione.
+     * @throws ExistingNameException, il metodo lancia un'eccezione se il nome
+     * dell'operazione che si vuole inserire, è già presente.
+     *
+     */
 
     private InsertUserDefinedOperationCommand parseInsert(String textString) throws ArrayIndexOutOfBoundsException,
             ExistingNameException, OperationNotFoundException, Exception {
@@ -156,10 +185,10 @@ public class UserDefinedOperationParser extends ParserString {
         possible_operations = this.removeInitialSpaces(possible_operations);
         LinkedList<OperationCommand> finalOperations = new LinkedList<>();
 
-        if (!hashMap.containsKey(possible_name)) {
+        if (!operationDict.getHashMap().containsKey(possible_name)) {
             String[] operations = possible_operations.split("\\s+");
             for (String possibile_operation : operations) {
-                if (!hashMap.containsKey(possibile_operation)) {
+                if (!operationDict.getHashMap().containsKey(possibile_operation)) {
                     OperationCommand parsed = parserString.parse(possibile_operation);
                     if (parsed == null) {
                         throw new InvalidNameException("operazione non definita " + possibile_operation);
@@ -167,27 +196,26 @@ public class UserDefinedOperationParser extends ParserString {
                         finalOperations.add(parsed);
                     }
                 } else {
-                    finalOperations.add(super.getFactory().getOperationCommand(possibile_operation, hashMap));
+                    finalOperations.add(super.getFactory().getOperationCommand(possibile_operation, operationDict.getHashMap()));
                 }
             }
 
-            //final_operations.addAll(Arrays.asList(operations));
-            hashMap.put(possible_name, new ExecuteUserDefinedOperationCommand(possible_name, finalOperations));
-            return new InsertUserDefinedOperationCommand(possible_name, finalOperations, hashMap);
+            operationDict.getHashMap().put(possible_name, new ExecuteUserDefinedOperationCommand(possible_name, finalOperations));
+            return new InsertUserDefinedOperationCommand(possible_name, finalOperations, operationDict.getHashMap());
         }
 
-        throw new ExistingNameException();//return still_name_inserted;
+        throw new ExistingNameException();
 
     }
 
     /**
-     * Il metodo prende una stringa da dover formattare,controllando se sono
-     * presenti spazi iniziali definiti dall'utente.
+     * Il metodo prende in ingresso una stringa da dover controllare. In
+     * particolare controlla se l'utente sta cercando di definire un'operazione,
+     * nel caso contrario chiama il parser che viene esteso.
      *
-     * @param text, Stringa da dover formattare.
-     * @throws StringIndexOutOfBoundsException viene lanciata quando la stringa
-     * ha una size minore di 1 (stringa vuota).
-     * @return string stringa formattata.
+     * @param textString, Stringa da dover formattare.
+     * @throws ArrayIndexOutBoundsException
+     * @return OperationCommand, comando da eseguire.
      *
      *
      */
@@ -197,7 +225,7 @@ public class UserDefinedOperationParser extends ParserString {
         if (textString.startsWith(">>")) {
             return parseInsert(textString);
         }
-        if (getNames() != null && getNames().contains(textString)) {
+        if (operationDict.getNames() != null && operationDict.getNames().contains(textString)) {
 
             ExecuteUserDefinedOperationCommand userDefOp = userOperation(textString);
             if (userDefOp != null) {
@@ -208,97 +236,37 @@ public class UserDefinedOperationParser extends ParserString {
         return parserString.parse(textString);
     }
 
+    /**
+     * Il metodo prende in ingresso il nome di un'operazione definita
+     * precedentemente e ritorna tutti i comandi associati a quel nome.
+     *
+     * @param text, Nome dell'operazione
+     * @throws se_project.exceptions.EmptyStackException se lo stack è vuoto.
+     * @throws se_project.exceptions.NotApplicableOperation se non è possibile
+     * applicare l'operazione
+     * @throws se_project.exceptions.UndefinedPhaseException se la fase del
+     * numero complesso non è definita.
+     * @throws se_project.exceptions.DivisionByZeroException se si sta cercando
+     * di fare una divisone per 0.
+     * @throws se_project.exceptions.InvalidOperationException se l'operazione
+     * inserita non è valida.
+     * @throws se_project.exceptions.InvalidNumberException se il numero
+     * inserito non è valido.
+     * @return OperationCommand, comando da eseguire.
+     *
+     */
+
     public ExecuteUserDefinedOperationCommand userOperation(String text) throws EmptyStackException, NotApplicableOperation, InvalidNumberException, UndefinedPhaseException, DivisionByZeroException, InvalidOperationException {
-        ExecuteUserDefinedOperationCommand operations = getOperations(text);
+        ExecuteUserDefinedOperationCommand operations = operationDict.getOperations(text);
         return operations;
     }
 
-    /**
-     * Il metodo prende in ingresso il nome di un operazione già definita
-     * dall'utente e restituisce tutte le operazioni associate al nome.
-     *
-     * @param name, Nome dell'operazione.
-     * @return LinkedList<String> le operazioni associate al nome, nel caso
-     * l'operazione non esiste,return null.
-     *
-     */
-    public ExecuteUserDefinedOperationCommand getOperations(String name) {
-        LinkedList<OperationCommand> commandList;
-        LinkedList<OperationCommand> ret = new LinkedList<>();
+ 
 
-        if (hashMap.get(name) instanceof ExecuteUserDefinedOperationCommand) {
-            commandList = ((ExecuteUserDefinedOperationCommand) hashMap.get(name)).getCommandList();
-            for (OperationCommand command : commandList) {
-                ExecuteUserDefinedOperationCommand tmp;
-                if (command instanceof ExecuteUserDefinedOperationCommand) {
-                    tmp = getOperations(((ExecuteUserDefinedOperationCommand) command).getName());
-                    ret.add(tmp);
-                } else {
-                    ret.add(command);
-                }
-            }
-            return new ExecuteUserDefinedOperationCommand(name, ret);
+  
 
-        }
-        /*
-        ret = new LinkedList<OperationCommand>();
-        ret.add(hashMap.get(name));
-        return ret;
-         */
-        return null;
-    }
-
-    /**
-     **Il metodo prende in ingresso il nome di un operazione già definita
-     * dall'utente e restituisce una stringa in cui sono presenti tutte le
-     * operazioni associate intervallate da uno spazio.
-     *
-     * @param text, Nome dell'operazione
-     * @return string stringa contenente tutte operazioni intervallate da uno
-     * spazio.
-     *
-     */
-    public String getOperationString(String text) {
-
-        String s = "";
-        if(this.hashMap.containsKey(text)){
-              s += text + " :";
-        LinkedList<OperationCommand> supportList = this.getOperations(text).getCommandList();
-        for (OperationCommand command : supportList) {
-            if (command instanceof ExecuteUserDefinedOperationCommand) {
-                s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
-            }
-            if (command instanceof VariableCommand) {
-                s += " " + ((VariableCommand) command).toString();
-            } else {
-                s += " " + command.toString();
-            }
-        }
-        s += "\n";
-        }
-        return null;
-    }
-      
-        /*
-        LinkedList<String> list;
-        String[] splitted = hashMap.get(text).toString().split(" ");
-        list = new LinkedList(Arrays.asList(splitted));
-        if (list == null) {
-            return null;
-        }
-        String final_string = " ";
-        return list.stream().map((s) -> s + " ").reduce(final_string, String::concat);
-         */
-        /**
-         **Il metodo restituisce i nomi di tutte le operazioni definite
-         * dall'utente.
-         *
-         * @return Set<String> contenente tutti i nomi delle operazioni.
-         *
-         */
-    public Set<String> getNames() {
-        return hashMap.keySet();
-    }
+   
+   
 
     /**
      **Il metodo prende in ingresso il nome di un operazione già definita
@@ -310,22 +278,28 @@ public class UserDefinedOperationParser extends ParserString {
      *
      */
     public boolean removeOperation(String name) {
-        Command remove = hashMap.remove(name);
+        Command remove = operationDict.getHashMap().remove(name);
         return (remove != null);
     }
-
+    
+      /**
+     **Il metodo ritorna un hashMap, in cui sono presenti come chiavi i nomi delle operazioni definite dall'utente
+     * e come value tutti gli OperationCommand associati ai nomi.
+     * @return HashMap<String, OperationCommand> il metodo ritorna true se l'elemento era presente ed è
+     * 
+     *
+     */
     public HashMap<String, OperationCommand> getHashMap() {
-        return hashMap;
+        return operationDict.getHashMap();
     }
-
-    /*
-    @Override
-    public String toString() {
-
-        return this.hashMap.toString();
-    }
+      /**
+     **Il metodo ritorna un ParserString associato al decoratore.
+     * @return ParserString
+     * 
+     *
      */
     public ParserString getParserString() {
         return parserString;
     }
+    
 }

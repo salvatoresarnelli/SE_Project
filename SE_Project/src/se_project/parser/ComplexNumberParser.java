@@ -9,9 +9,16 @@ import se_project.ComplexNumber;
 import se_project.commands.InsertNumberCommand;
 import se_project.commands.OperationCommand;
 
-/**
+/**La classe ComplexNumberParser permette all'utente di definire dei numeri complessi. 
+ * Le possibilità in cui possono essere definite sono molteplici:
+ *solo parte reale                  +3.0
+ * solo parte immaginaria           +4j
+ * parte reale e parte immaginaria  +3 + 6j oppure 6j + 3 oppure j6 + 1
+ * La classe viene definita come un decoratore di un ParserString già definito, così
+ * da implementare nuove funzionalità. 
+ * 
  *
- * @author aless
+ * @author 
  */
 public class ComplexNumberParser extends ParserString {
 
@@ -20,11 +27,26 @@ public class ComplexNumberParser extends ParserString {
     private final String single_number = "__SINGLENUMBER__";
     private final String invalid_insert = "__INVALID__";
     private final String continue_checking = "__CHECKING__";
-
+     /**
+     * Il costruttore del decorator prende in ingresso un parser string e
+     * inizializza successivamente un ParserString.
+     * @param parser, parser che verrà decorato.
+     *
+     */
     public ComplexNumberParser(ParserString parser) {
         this.parser = parser;
     }
-
+      /**
+     * Il metodo prende in ingresso una stringa da dover controllare. In
+     * particolare controlla se l'utente sta cercando di definire un numero complesso,
+     * nel caso contrario chiama il parser che viene esteso.
+     *
+     * @param text, Stringa da dover formattare.
+     * @return OperationCommand, comando da eseguire.
+     * @throws java.lang.Exception
+     *
+     *
+     */
     @Override
     public OperationCommand parse(String text) throws NullPointerException, Exception {
 
@@ -39,12 +61,7 @@ public class ComplexNumberParser extends ParserString {
         if (text.startsWith("+") || text.startsWith("-")) {
             return null;
         }
-
         String ret = checkComplexNumber(text);
-       
-        
-       
-        
         if (ret.equals(complex_number)) {
             return new InsertNumberCommand(recognizeComplexNumber(text), null);
         }
@@ -65,8 +82,8 @@ public class ComplexNumberParser extends ParserString {
      * numero puramente immaginario.
      *
      * @author emanu
-     * @param text , stringa da dover controllare.
-     * @return il metodo ritorna un numero complesso.
+     * @param  text  String. Stringa da dover controllare.
+     * @return ComplexNumber il metodo ritorna un numero complesso.
      */
     public ComplexNumber recognizeNumber(String text) {
         String replaceAll = text.replaceAll(" ", "");
@@ -197,11 +214,10 @@ public class ComplexNumberParser extends ParserString {
 
     /**
      * Il metodo controlla se la stringa data in input è un numero complesso.
-     *
      * @author emanu
      * @param text , stringa da dover controllare.
-     * @return ritorna complex_number se la stringa è un numero complesso,
-     * ritorna continue_checking se la stringa passata non è un numero
+     * @return ritorna un ComplexNumber se la stringa è un numero complesso,
+     * ritorna continue_checking se la stringa passata non è un numero,
      * altrimenti invalid_insert.
      *
      */
@@ -325,9 +341,6 @@ public class ComplexNumberParser extends ParserString {
         }
         return false;
     }
-
-
-    
 
 
     /**

@@ -8,31 +8,20 @@ package se_project;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import java.io.BufferedInputStream;
 import se_project.parser.UserDefinedOperationParser;
 import se_project.parser.ParserString;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import javafx.scene.control.ListView;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.PatternSyntaxException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,23 +37,17 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitMenuButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
 import other.OperationSet;
 import other.VariableSet;
-import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.exceptions.OperationNotFoundException;
@@ -74,8 +57,6 @@ import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.ExistingNameException;
-import se_project.exceptions.InterruptedExecutionException;
-import se_project.exceptions.InvalidNameException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidOperationException;
 import se_project.exceptions.InvalidVariableNameException;
@@ -121,6 +102,7 @@ public class InterfacciaController implements Initializable {
 
     private ObservableList<VariableSet> variablesList;
     private ObservableList<OperationSet> operationsList;
+    OperationDict operationDict = OperationDict.getInstance();
     private VBox box;
     @FXML
     private HBox hbox;
@@ -154,16 +136,15 @@ public class InterfacciaController implements Initializable {
                             hbox.getChildren().setAll(homePage);                    
                             break;
                         case "Salva Funzione":
-                          Node variablesManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
-                            hbox.getChildren().setAll(variablesManager);                    
+                        this.saveFunctions();
                             break;
                         
                         case "Carica Funzione":
-                            Node update = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
-                            hbox.getChildren().setAll(update);
+                            this.uploadFunctions();
                             break;   
                             
                         case "Gestione Operazioni": 
+                            
                             Node opManager = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
                             hbox.getChildren().setAll(opManager);                    
                             break;
@@ -176,7 +157,7 @@ public class InterfacciaController implements Initializable {
                
                     
                     }   
-                    } catch (Exception ee) {
+                    } catch (IOException ee) {
                         System.out.println("Error");
                     }
                 });
@@ -425,9 +406,9 @@ public class InterfacciaController implements Initializable {
     public void setOperationsList() {
         operationsList.clear();
         String s = "";
-        for (String name : decoratorParserOperation.getNames()) {
+        for (String name : operationDict.getNames()) {
             OperationSet operationSet;
-            LinkedList<OperationCommand> supportList = decoratorParserOperation.getOperations(name).getCommandList();
+            LinkedList<OperationCommand> supportList = operationDict.getOperations(name).getCommandList();
             for (OperationCommand command : supportList) {
                 if (command instanceof ExecuteUserDefinedOperationCommand) {
                     s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
@@ -438,7 +419,9 @@ public class InterfacciaController implements Initializable {
                 }
             }
             s += "\n";
+            
             operationSet = new OperationSet(name, s);
+            
             operationsList.add(operationSet);
             s = "";
         }
@@ -537,9 +520,9 @@ public class InterfacciaController implements Initializable {
             }
             PrintWriter pw = new PrintWriter(file);
             String s = "";
-            for (String name : decoratorParserOperation.getNames()) {
+            for (String name : operationDict.getNames()) {
                 s += name + " :";
-                LinkedList<OperationCommand> supportList = decoratorParserOperation.getOperations(name).getCommandList();
+                LinkedList<OperationCommand> supportList = operationDict.getOperations(name).getCommandList();
                 for (OperationCommand command : supportList) {
                     if (command instanceof ExecuteUserDefinedOperationCommand) {
                         s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
@@ -557,7 +540,7 @@ public class InterfacciaController implements Initializable {
         }
     }
 
-    private void uploadFunctions(ActionEvent event) {
+    private void uploadFunctions() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
         File file = fileChooser.showOpenDialog(new Stage());
@@ -646,7 +629,7 @@ public class InterfacciaController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OperationsManager.fxml"));
             root = fxmlLoader.load();
             OperationsManagerController operationsManagerController = fxmlLoader.getController();
-            operationsManagerController.setObservableListOperations(operationsList);
+            //operationsManagerController.setObservableListOperations(operationsList);
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
@@ -659,30 +642,7 @@ public class InterfacciaController implements Initializable {
 
     }
 
-    public void removeOperationByUser(String name) {
-        System.out.println(decoratorParserOperation.getNames().size());
-
-        for (String possible_matching : decoratorParserOperation.getNames()) {
-            System.out.println(decoratorParserOperation.getOperationString(possible_matching));
-            if (decoratorParserOperation.getOperationString(possible_matching).contains(name)) {
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Operazione presente anche in altre operazioni");
-                alert.setHeaderText("L'operazione " + name + " è presente anche nell'operazione " + possible_matching);
-                alert.setContentText("Vuoi continuare?");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    this.removeOperationByUser(possible_matching);
-                }
-
-            }
-            decoratorParserOperation.removeOperation(name);
-        }
-    }
-
-    public void setObservableOperations(OperationSet operationSet) {
-        decoratorParserOperation.removeOperation(operationSet.getNameOperation());
-    }
-/*
+   
     @FXML
     private void minusVarButtonActionPush(ActionEvent event) {
     }
@@ -698,6 +658,6 @@ public class InterfacciaController implements Initializable {
     @FXML
     private void plusVarButtonActionPush(ActionEvent event) {
     }
-*/
+
 
 }

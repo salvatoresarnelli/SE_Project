@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,5 +17,6 @@
       </TableView>
       <JFXHamburger fx:id="hamburger" layoutX="4.0" layoutY="310.0" stylesheets="@hamburgerStyle.css" />
       <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="10.0" prefHeight="292.0" prefWidth="155.0" style="-fx-background-color: 1d3557;" />
+      <Button fx:id="buttonRemove" layoutX="245.0" layoutY="276.0" mnemonicParsing="false" onAction="#actionButtonRemove" text="Rimuovi " />
    </children>
 </AnchorPane>
