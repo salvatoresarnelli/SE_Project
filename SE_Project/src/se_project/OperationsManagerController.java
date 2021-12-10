@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +37,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import other.OperationSet;
+import se_project.commands.OperationCommand;
+import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
+import se_project.commands.variablesCommands.VariableCommand;
 
 /**
  *
@@ -57,6 +61,10 @@ public class OperationsManagerController implements Initializable {
     @FXML
     private JFXDrawer drawer;
     private VBox box;
+    @FXML
+    private Button buttonRemove;
+    private OperationDict operationDict;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -65,51 +73,50 @@ public class OperationsManagerController implements Initializable {
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         operationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         observableList = FXCollections.observableArrayList();
-           
+        operationDict = OperationDict.getInstance();
+
         try {
-            box= FXMLLoader.load(getClass().getResource("sidePane.fxml"));
-        }catch(IOException ex){
-        alert("unable to reach sidepane.fxml", "","");
+            box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
+        } catch (IOException ex) {
+            alert("unable to reach sidepane.fxml", "", "");
         }
-        for (Node n: box.getChildren()){
-            if(n.getAccessibleText() !=null){
-                n.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-                    
+        for (Node n : box.getChildren()) {
+            if (n.getAccessibleText() != null) {
+                n.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+
                     try {
-                      switch(n.getAccessibleText()){ 
-                          
-                        case "home":
-                          Node homePage = FXMLLoader.load(getClass().getResource("calculator.fxml"));
-                            pane.getChildren().setAll(homePage);                    
-                            break;
-                        case "Salva Funzione":
-                          Node variablesManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
-                            pane.getChildren().setAll(variablesManager);                    
-                            break;
-                        
-                        case "Carica Funzione":
-                            Node update = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
-                            pane.getChildren().setAll(update);
-                            break;   
-                            
-                        case "Gestione Operazioni": 
-                            Node opManager = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
-                            pane.getChildren().setAll(opManager);                    
-                            break;
-                             
-                        case "Gestione Variabili": 
-                            Node varManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
-                            pane.getChildren().setAll(varManager);                    
-                            break;
-                             
-               
-                    
-                    }   
+                        switch (n.getAccessibleText()) {
+
+                            case "home":
+                                Node homePage = FXMLLoader.load(getClass().getResource("calculator.fxml"));
+                                pane.getChildren().setAll(homePage);
+                                break;
+                            case "Salva Funzione":
+                                Node variablesManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
+                                pane.getChildren().setAll(variablesManager);
+                                break;
+
+                            case "Carica Funzione":
+                                Node update = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
+                                pane.getChildren().setAll(update);
+                                break;
+
+                            case "Gestione Operazioni":
+                                Node opManager = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
+                                pane.getChildren().setAll(opManager);
+                                break;
+
+                            case "Gestione Variabili":
+                                Node varManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
+                                pane.getChildren().setAll(varManager);
+                                break;
+
+                        }
                     } catch (Exception ee) {
                         System.out.println("Error");
                     }
                 });
-                        }
+            }
         }
         HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
         transition.setRate(-1);
@@ -137,9 +144,10 @@ public class OperationsManagerController implements Initializable {
 
             }
         });
+        this.setObservableList();
+        tableViewOperations.setItems(observableList);
     }
 
-    
     public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -151,13 +159,74 @@ public class OperationsManagerController implements Initializable {
 
     }
 
-    public void setObservableListOperations(ObservableList<OperationSet> ob) {
-        observableList = ob;
-        tableViewOperations.setItems(ob);
+    private void setObservableList() {
+        if (operationDict.getNames().isEmpty()) {
+            return;
+        }
+        observableList.clear();
+        String s = "";
+        for (String name : operationDict.getNames()) {
+            OperationSet operationSet;
+            LinkedList<OperationCommand> supportList = operationDict.getOperations(name).getCommandList();
+            for (OperationCommand command : supportList) {
+                if (command instanceof ExecuteUserDefinedOperationCommand) {
+                    s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
+                } else if (command instanceof VariableCommand) {
+                    s += " " + ((VariableCommand) command).toString();
+                } else {
+                    s += " " + command.toString();
+                }
+            }
+            s += "\n";
+
+            operationSet = new OperationSet(name, s);
+
+            observableList.add(operationSet);
+            s = "";
+        }
+
     }
 
+    @FXML
+    private void actionButtonRemove(ActionEvent event) {
+        OperationSet selectedItem = tableViewOperations.getSelectionModel().getSelectedItem();
+       // this.removeOperation(selectedItem.getNameOperation());
+    }
+/*
+    private void removeOperation(String name) {
+        if (operationDict.getHashMap().isEmpty()) {
+            return;
+        }
+        LinkedList<String> list = new LinkedList<>();
+        
+        for (String op : operationDict.getNames()) {
+            if (operationDict.getOperationString(op).contains(name) && !(name.equals(op))) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("L'operazione è presente in altre operazioni");
+                alert.setHeaderText("L'operazione " + name + " è presente anche nell'operazione  " + op);
+                alert.setContentText("Vuoi continuare?");
+                alert.showAndWait().ifPresent(rs -> {
+                    if (rs == ButtonType.OK){
+                        list.add(op);
+                    }
+                
+                    
+                });
 
-    
-
-
+            }
+            
+        }
+        operationDict.getHashMap().remove(name);
+        if(list.isEmpty()){
+            this.setObservableList();
+            return;
+        }
+        for(String operation : list){
+            operationDict.getHashMap().remove(operation);
+            removeOperation(operation);
+        }
+       this.setObservableList();
+        
+    }
+*/
 }
