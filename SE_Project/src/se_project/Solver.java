@@ -22,14 +22,27 @@ import se_project.exceptions.VariableExistingException;
  * @author aless
  */
 public class Solver {
-
-    private Stack stack;
+    /**
+     * Questa classe è un singleton. Rappresenta il risolutore delle operazioni.
+     * è l'unica classe ad avere lo stack e dunque in grado di eseguire 
+     * operazioni su di esso.
+     */
+    private final Stack stack;
     private static Solver instance = null;
-
+    
+    /**
+     * Costruttore privato, viene richiamato solo una volta nella getInstance.
+     * Qui viene settato lo stack.
+     */
     private Solver(Stack stack) {
         this.stack = stack;
     }
-
+    /**
+     * Crea il solver se non esiste.Restituisce il solver creato precedentemente 
+ Se esiste già un'instanza di esso.
+     * 
+     * @return Solver
+     */
     public static Solver getInstance() {
         // Crea l'oggetto solo se NON esiste:
         if (instance == null) {
@@ -37,15 +50,30 @@ public class Solver {
         }
         return instance;
     }
-
+    
+    /**
+     * Resituisce lo stack.
+     * @return Stack
+     */
     public Stack getStructureStack() {
         return this.stack;
     }
- 
-    public void resolveOperation(Command text) throws  EmptyStackException , NotApplicableOperation , InvalidNumberException , InvalidVariableNameException, UndefinedPhaseException, DivisionByZeroException, VariableExistingException, Exception{
-            LinkedList<ComplexNumber> actualStack = getStructureStack().getStack();
-            ((OperationCommand)text).setTarget(stack);
-            text.execute();
+    /**
+     * @param command
+     * @throws se_project.exceptions.EmptyStackException
+     * @throws se_project.exceptions.NotApplicableOperation
+     * @throws se_project.exceptions.InvalidNumberException
+     * @throws se_project.exceptions.InvalidVariableNameException
+     * @throws se_project.exceptions.UndefinedPhaseException
+     * @throws se_project.exceptions.DivisionByZeroException
+     * @throws se_project.exceptions.VariableExistingException
+     * 
+     * Questo metodo prende come parametro un comando, ne setta lo stack come target.
+     * E ne richiede l'esecuzione.
+     */
+    public void resolveOperation(Command command) throws  EmptyStackException , NotApplicableOperation , InvalidNumberException , InvalidVariableNameException, UndefinedPhaseException, DivisionByZeroException, VariableExistingException, Exception{
+            ((OperationCommand)command).setTarget(stack);
+            command.execute();
                 
             }
        
