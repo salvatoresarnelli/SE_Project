@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -29,6 +30,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +44,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -61,9 +64,11 @@ import se_project.exceptions.InterruptedExecutionException;
 import se_project.exceptions.InvalidNumberException;
 import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
+import se_project.exceptions.OperationNotFoundException;
 import se_project.exceptions.UndefinedPhaseException;
 import se_project.exceptions.VariableExistingException;
-
+import se_project.parser.VariableParser;
+import se_project.parser.ParserString;
 /**
  * FXML Controller class
  *
@@ -98,13 +103,11 @@ public class VariablesManagerController implements Initializable {
     @FXML
     private JFXDrawer drawer;
     @FXML
-    private ListView<?> listView;
+    private ListView<ComplexNumber> listView;
     @FXML
     private Button addVarButton;
     @FXML
     private Button removeVarButton;
-    @FXML
-    private Button searchVarButton;
     @FXML
     private FontAwesomeIconView leftArrow;
     @FXML
@@ -114,6 +117,12 @@ public class VariablesManagerController implements Initializable {
     private int index;
     @FXML
     private TableColumn<?, ?> raw;
+    @FXML
+    private TextField input;
+    @FXML
+    private FontAwesomeIconView doubleRight;
+    @FXML
+    private FontAwesomeIconView doubleLeft;
 
     /**
      * Initializes the controller class.
@@ -132,7 +141,7 @@ public class VariablesManagerController implements Initializable {
         valuesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         variablesTableView.setItems(observableList);
         index = variablesStack.length();
-
+        listView.setItems(FXCollections.observableList(solver.getStructureStack().getStack()));
         iterator = (ListIterator<Record>) variablesStack.iterator(index);
         try {
             box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
@@ -231,7 +240,7 @@ public class VariablesManagerController implements Initializable {
             }
 
         }
-       raw.setText("Aggiornata a: Ora");
+        raw.setText("Aggiornata a: Ora");
     }
 
     public void setObservableList(ObservableList<VariableSet> list) {
@@ -274,15 +283,22 @@ public class VariablesManagerController implements Initializable {
 
     @FXML
     private void plusVarButtonActionPush(ActionEvent event) {
-        SumVariableCommand command = new SumVariableCommand();
-        sumDiffResolveCommand(command);
+        if (index != variablesStack.length()) {
+            alert("Attenzione!", "Non posso effettuare quest'operazione su una variabile salvata in memoria!", "Passa ad una delle variabili correnti e riprova");
+        } else {
+            SumVariableCommand command = new SumVariableCommand();
+            sumDiffResolveCommand(command);
+        }
     }
 
     @FXML
     private void minusVarButtonActionPush(ActionEvent event) {
-        DiffVariableCommand command = new DiffVariableCommand();
-        sumDiffResolveCommand(command);
-
+        if (index != variablesStack.length()) {
+            alert("Attenzione!", "Non posso effettuare quest'operazione su una variabile salvata in memoria!", "Passa ad una delle variabili correnti e riprova");
+        } else {
+            DiffVariableCommand command = new DiffVariableCommand();
+            sumDiffResolveCommand(command);
+        }
     }
 
     @FXML
@@ -309,9 +325,9 @@ public class VariablesManagerController implements Initializable {
                 }
 
                 dialog.setVisible(false);
-            }   
+            }
         });
-                index++;
+        index++;
 
     }
 
@@ -321,15 +337,37 @@ public class VariablesManagerController implements Initializable {
 
     @FXML
     private void addVarButtonAction(ActionEvent event) {
+        
+        String inputText = input.getText();
+                if(inputText!=null){
+
+        VariableParser parser = new VariableParser(new ParserString());
+        try {
+            VariableCommand command = (VariableCommand) parser.parse(">"+inputText);
+            solver.resolveOperation(command);
+        } catch (OperationNotFoundException ex) {
+            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        input.clear();
+        updateTable();
+    }
     }
 
     @FXML
     private void removeVarButtonAction(ActionEvent event) {
+        String inputText = input.getText();
+        if(inputText!=null){
+        inputText = inputText.replaceAll(" ", "");
+        if(inputText.length()==1)
+            dictionary.remove(inputText.charAt(0));
+        input.clear();
+        }
+        updateTable();
+
     }
 
-    @FXML
-    private void searchVarButtonAction(ActionEvent event) {
-    }
 
     @FXML
     private void leftArrowAction(MouseEvent event) {
@@ -354,7 +392,7 @@ public class VariablesManagerController implements Initializable {
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = read.getDate().format(formatter);
-            raw.setText("Aggiornata a: "+formatDateTime);
+            raw.setText("Aggiornata a: " + formatDateTime);
         } catch (NoSuchElementException ex) {
             updateTable();
         }
@@ -384,12 +422,53 @@ public class VariablesManagerController implements Initializable {
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String formatDateTime = read.getDate().format(formatter);
-            raw.setText("Aggiornata a: "+formatDateTime);
+            raw.setText("Aggiornata a: " + formatDateTime);
 
         } catch (NoSuchElementException ex) {
-            
 
         }
     }
+
+    @FXML
+    private void doubleRightAction(MouseEvent event) {
+        HashMap<Character, ComplexNumber> map=null;
+        Record read = null;
+        try {
+            while(index!=0){
+            iterator = (ListIterator<Record>) variablesStack.iterator(index);
+            
+             read = iterator.previous();
+            map = read.getDictRecord();
+            index--;
+            }
+            VariableSet variableSet;
+            observableList.clear();
+            for (Character ch : map.keySet()) {
+                ComplexNumber value;
+                value = map.get(ch);
+                if (value != null) {
+                    variableSet = new VariableSet(ch.toString(), value.toString());
+                } else {
+                    variableSet = new VariableSet(ch.toString(), "Nessun valore disponibile.");
+                }
+
+                observableList.add(variableSet);
+
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formatDateTime = read.getDate().format(formatter);
+            raw.setText("Aggiornata a: " + formatDateTime);
+
+        } catch (NoSuchElementException ex) {
+
+        }
+    }
+
+    @FXML
+    private void doubleLeftAction(MouseEvent event) {
+        index=variablesStack.length();
+            updateTable();
+        }        
+    
 
 }

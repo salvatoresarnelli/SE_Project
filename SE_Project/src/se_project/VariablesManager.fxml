@@ -26,19 +26,20 @@
                   </TableColumn>
                </columns>
             </TableView>
-            <TextField layoutX="21.0" layoutY="33.0" prefHeight="25.0" prefWidth="162.0" />
+            <TextField fx:id="input" layoutX="21.0" layoutY="33.0" prefHeight="25.0" prefWidth="162.0" />
             <Button id="minusVar" fx:id="minusVarButton" layoutX="65.0" layoutY="296.0" mnemonicParsing="false" onAction="#minusVarButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="-var" />
             <Button id="saveVariable" fx:id="saveButton1" layoutX="202.0" layoutY="296.0" mnemonicParsing="false" onAction="#saveButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="save" />
             <Button id="loadVariable" fx:id="loadButton" layoutX="255.0" layoutY="297.0" mnemonicParsing="false" onAction="#loadButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="load" />
             <Button id="plusVar" fx:id="plusVarButton" layoutX="113.0" layoutY="296.0" mnemonicParsing="false" onAction="#plusVarButtonActionPush" style="-fx-background-color: #626873; -fx-text-fill: white;" text="+var" />
             <Label layoutX="21.0" layoutY="14.0" text="Inserisci o cerca una variabile.." textFill="#dae1ae" />
             <Button fx:id="addVarButton" layoutX="189.0" layoutY="33.0" mnemonicParsing="false" onAction="#addVarButtonAction" style="-fx-text-fill: white; -fx-background-color: #626873;" text="Aggiungi" />
-            <Button fx:id="removeVarButton" layoutX="318.0" layoutY="33.0" mnemonicParsing="false" onAction="#removeVarButtonAction" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Rimuovi" />
+            <Button fx:id="removeVarButton" layoutX="261.0" layoutY="33.0" mnemonicParsing="false" onAction="#removeVarButtonAction" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Rimuovi" />
             <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="299.0" stylesheets="@hamburgerStyle.css" />
-            <Button fx:id="searchVarButton" layoutX="261.0" layoutY="33.0" mnemonicParsing="false" onAction="#searchVarButtonAction" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Cerca" />
             <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="10.0" prefHeight="292.0" prefWidth="155.0" style="-fx-background-color: 1d3557;" />
-            <FontAwesomeIconView fx:id="leftArrow" fill="ORANGE" glyphName="ARROW_LEFT" layoutX="163.0" layoutY="279.0" onMouseClicked="#leftArrowAction" />
-            <FontAwesomeIconView fx:id="rightArrow" fill="ORANGE" glyphName="ARROW_RIGHT" layoutX="183.0" layoutY="279.0" onMouseClicked="#rightArrowAction" wrappingWidth="11.285714149475098" />
+            <FontAwesomeIconView fx:id="leftArrow" fill="ORANGE" glyphName="ARROW_LEFT" layoutX="157.0" layoutY="282.0" onMouseClicked="#leftArrowAction" size="20" />
+            <FontAwesomeIconView fx:id="rightArrow" fill="ORANGE" glyphName="ARROW_RIGHT" layoutX="187.0" layoutY="282.0" onMouseClicked="#rightArrowAction" size="20" wrappingWidth="11.285714149475098" />
+            <FontAwesomeIconView fx:id="doubleRight" fill="ORANGE" glyphName="ANGLE_DOUBLE_RIGHT" layoutX="211.0" layoutY="283.0" onMouseClicked="#doubleRightAction" size="20" />
+            <FontAwesomeIconView fx:id="doubleLeft" fill="ORANGE" glyphName="ANGLE_DOUBLE_LEFT" layoutX="142.0" layoutY="282.0" onMouseClicked="#doubleLeftAction" size="20" />
          </children>
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="335.0" prefWidth="269.0">

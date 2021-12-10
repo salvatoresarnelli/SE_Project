@@ -70,4 +70,9 @@ public class VariablesDict {
     public HashMap<Character, ComplexNumber> getTable() {
         return table;
     }
+    public ComplexNumber remove(char c){
+        if(table.containsKey(c))
+            return table.remove(c);
+        return null;
+    }
 }
