@@ -111,7 +111,7 @@ public class InterfacciaController implements Initializable {
     private final Solver solver = Solver.getInstance();
     private final VariableParser variableParser = new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(new ParserString()))));
     private final UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(variableParser);
-
+    private VariablesStack variablesStack;
     private ObservableList<ComplexNumber> observableList;
     @FXML
     private JFXHamburger hamburger;
@@ -257,7 +257,7 @@ public class InterfacciaController implements Initializable {
             }
 
         });
-
+        variablesStack = VariablesStack.getInstance();
         observableList.addAll(solver.getStructureStack().getStack());
         listView.setItems(observableList);
         variablesList = FXCollections.observableArrayList();

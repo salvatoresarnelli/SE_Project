@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -15,10 +16,14 @@
    <children>
       <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="533.0" style="-fx-background-color: #1d3557;">
          <children>
-            <TableView fx:id="variablesTableView" layoutX="20.0" layoutY="73.0" prefHeight="206.0" prefWidth="325.0" style="-fx-background-color: #fcfcda; -fx-border-color: orange;" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="73.0" >
+            <TableView fx:id="variablesTableView" layoutX="20.0" layoutY="73.0" prefHeight="188.0" prefWidth="359.0" style="-fx-background-color: #fcfcda; -fx-border-color: orange;" AnchorPane.bottomAnchor="74.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="73.0">
                <columns>
-                  <TableColumn fx:id="variablesColumn" prefWidth="195.0" text="Variabile" />
-                  <TableColumn fx:id="valuesColumn" minWidth="0.0" prefWidth="163.0" text="Value" />
+                  <TableColumn fx:id="raw" prefWidth="75.0" text="Aggiornata a:">
+                     <columns>
+                        <TableColumn fx:id="variablesColumn" prefWidth="195.0" text="Variabile" />
+                        <TableColumn fx:id="valuesColumn" minWidth="0.0" prefWidth="163.0" text="Valore" />
+                     </columns>
+                  </TableColumn>
                </columns>
             </TableView>
             <TextField layoutX="21.0" layoutY="33.0" prefHeight="25.0" prefWidth="162.0" />
@@ -32,6 +37,8 @@
             <JFXHamburger fx:id="hamburger" layoutX="14.0" layoutY="299.0" stylesheets="@hamburgerStyle.css" />
             <Button fx:id="searchVarButton" layoutX="261.0" layoutY="33.0" mnemonicParsing="false" onAction="#searchVarButtonAction" style="-fx-background-color: #626873; -fx-text-fill: white;" text="Cerca" />
             <JFXDrawer fx:id="drawer" layoutX="10.0" layoutY="10.0" prefHeight="292.0" prefWidth="155.0" style="-fx-background-color: 1d3557;" />
+            <FontAwesomeIconView fx:id="leftArrow" fill="ORANGE" glyphName="ARROW_LEFT" layoutX="163.0" layoutY="279.0" onMouseClicked="#leftArrowAction" />
+            <FontAwesomeIconView fx:id="rightArrow" fill="ORANGE" glyphName="ARROW_RIGHT" layoutX="183.0" layoutY="279.0" onMouseClicked="#rightArrowAction" wrappingWidth="11.285714149475098" />
          </children>
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="335.0" prefWidth="269.0">

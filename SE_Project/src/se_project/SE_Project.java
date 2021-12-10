@@ -10,11 +10,14 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -34,7 +37,15 @@ public class SE_Project extends Application {
         stage.setFullScreen(false);
         stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
         stage.setTitle("Math Solver");
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
         stage.show();
+        
     }
 
     /**
