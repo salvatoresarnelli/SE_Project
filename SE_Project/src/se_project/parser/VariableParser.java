@@ -6,6 +6,7 @@
 package se_project.parser;
 
 import se_project.VariablesDict;
+import se_project.VariablesStack;
 import se_project.parser.ParserString;
 import se_project.commands.Command;
 import se_project.commands.OperationCommand;
@@ -13,6 +14,7 @@ import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.PushVariableCommand;
+import se_project.commands.variablesCommands.SaveVariableCommand;
 import se_project.commands.variablesCommands.SumVariableCommand;
 import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.InvalidVariableNameException;
@@ -26,11 +28,13 @@ public class VariableParser extends ParserString {
 
     private ParserString parser;
     private VariablesDict dict;
-
+    private VariablesStack variablesStack;
+    
     public VariableParser(ParserString parser) {
         this.parser = parser;
         dict=VariablesDict.getInstance();
-
+        variablesStack = VariablesStack.getInstance();
+        
     }
 
     public VariablesDict getDict() {
@@ -77,6 +81,13 @@ public class VariableParser extends ParserString {
             command.setDictionary(dict);
             return command;
         }
+        if(checkVariableSave(textString)){
+            SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("SaveVariableCommand");
+            command.setDictionary(dict);
+            command.setStack(variablesStack);
+            return command;
+        }
+        
         return parser.parse(textString);
     }
 
@@ -102,6 +113,11 @@ public class VariableParser extends ParserString {
         }catch(NonExistingVariable ex){
             return false;
         }
+    }
+    
+    private boolean checkVariableSave(String textString){
+        return textString.equals("save");
+        
     }
 
 }
