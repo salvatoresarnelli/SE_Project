@@ -261,14 +261,9 @@ public class UserDefinedOperationParser extends ParserString {
         return operations;
     }
 
+
  
-
-  
-
-   
-   
-
-    /**
+       /**
      **Il metodo prende in ingresso il nome di un operazione già definita
      * dall'utente e la rimuove.Nel caso in cui non è presente return false
      *
@@ -277,9 +272,9 @@ public class UserDefinedOperationParser extends ParserString {
      * stato cancellato, false altrimenti.
      *
      */
-    public boolean removeOperation(String name) {
-        Command remove = operationDict.getHashMap().remove(name);
-        return (remove != null);
+
+    public boolean removeOperation(String name){
+        return operationDict.removeOperation(name);
     }
     
       /**
@@ -298,8 +293,6 @@ public class UserDefinedOperationParser extends ParserString {
      * 
      *
      */
-    public ParserString getParserString() {
-        return parserString;
-    }
+   
     
 }

@@ -535,6 +535,7 @@ public class InterfacciaController implements Initializable {
                 s += "\n";
             }
             pw.print(s);
+            pw.close();
         } catch (FileNotFoundException ex) {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
         }

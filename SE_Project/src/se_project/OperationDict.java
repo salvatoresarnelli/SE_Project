@@ -8,6 +8,7 @@ package se_project;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
+import se_project.commands.Command;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.commands.variablesCommands.VariableCommand;
@@ -111,6 +112,18 @@ public class OperationDict {
         return s;
     }
     
-    
+       /**
+     **Il metodo prende in ingresso il nome di un operazione già definita
+     * dall'utente e la rimuove.Nel caso in cui non è presente return false
+     *
+     * @param name, Nome dell'operazione
+     * @return boolean il metodo ritorna true se l'elemento era presente ed è
+     * stato cancellato, false altrimenti.
+     *
+     */
+    public boolean removeOperation(String name) {
+        Command remove = this.hashMap.remove(name);
+        return (remove != null);
+    }
     
 }

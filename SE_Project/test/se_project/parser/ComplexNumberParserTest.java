@@ -13,8 +13,11 @@ import se_project.ComplexNumber;
 import se_project.commands.OperationCommand;
 
 /**
- *
- * @author aless
+ *La classe complexNumberParserText è stata utilizzata per testare 
+ * i controlli fatti dalla classe ComplexNumberParser. 
+ * Si testeranno tutti i metodi pubblici presenti, in modalità white box e 
+ * black box.
+ * 
  */
 public class ComplexNumberParserTest {
 
@@ -40,7 +43,10 @@ public class ComplexNumberParserTest {
     }
 
     /**
-     * Test of clearString method, of class ParserString.
+     * Test del metodo clearString utilizzato per rimuovere eventuali \n presenti
+     * all'interno della stringa. Inoltre, ai fini del controllo, elimina anche un eventuale
+     * segno + o - presente all'inizio della stringa. Secondo la logica white box si è pensato di inserire 
+     * come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
      */
     @Test
     public void testClearString() {
@@ -63,6 +69,13 @@ public class ComplexNumberParserTest {
         assertEquals(expResult, result);
 
     }
+     /**
+     * Test del metodo CheckPossibilePartReal utilizzato per controllare se l'utente ha cercato
+     * di inserire un numero puramente reale.Secondo la logica white box si è pensato di inserire 
+     * come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta è un numero puramente reale, una volta è una stringa che non è possibile
+     * considerare come un numero.
+     */
 
     @Test
     public void testCheckPossibilePartReal() {
@@ -78,7 +91,11 @@ public class ComplexNumberParserTest {
     }
 
     /**
-     * Test of checkPossiblePartImaginary method, of class ParserString.
+     *  Test del metodo CheckPossibilePartImaginary utilizzato per controllare se l'utente ha cercato
+     * di inserire un numero puramente immaginario.Secondo la logica white box si è pensato di inserire 
+     * come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta è un numero puramente immaginario, una volta è una stringa che non è possibile
+     * considerare come un numero immaginario.
      */
     @Test
     public void testCheckPossiblePartImaginary() {
@@ -99,7 +116,11 @@ public class ComplexNumberParserTest {
     }
 
     /**
-     * Test of checkPossibleOneNumber method, of class ParserString.
+     * Test del metodo CheckPossibileOneNumber utilizzato per controllare se l'utente ha cercato
+     * di inserire un numero, che esso sia immaginario o puramente reale .Secondo la logica white box si è pensato di inserire 
+     * come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta è un numero puramente immaginario, una volta è una stringa che non è possibile
+     * considerare come un numero immaginario, una volta un numero reale, una volta un numero puramente immaginario con la sola variabile j.
      */
     @Test
     public void testCheckPossibleOneNumber() {
@@ -112,6 +133,9 @@ public class ComplexNumberParserTest {
         text = "+4";
         result = parser.checkPossibleOneNumber(text);
         assertEquals(expResult, result);
+        text = "+j";
+        result = parser.checkPossibleOneNumber(text);
+        assertEquals(expResult, result);
         text = "4hello";
         expResult = "__INVALID__";
         result = parser.checkPossibleOneNumber(text);
@@ -120,7 +144,11 @@ public class ComplexNumberParserTest {
     }
 
     /**
-     * Test of checkComplexNumber method, of class ParserString.
+     *    * Test del metodo CheckComplexNumber utilizzato per controllare se l'utente ha cercato
+     * di inserire un numero complesso completo, con parte  sia immaginaria  che reale .Secondo la logica white box si è pensato di inserire 
+     * come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta è un numero complesso completo , una volta è una stringa che non è possibile
+     * considerare come un numero immaginario, una volta un numero reale.
      */
     @Test
     public void testCheckComplexNumber() {
@@ -166,25 +194,13 @@ public class ComplexNumberParserTest {
 
     }
 
-    /**
-     * Test of checkPossiblePartReal method, of class ParserString.
-     */
-    @Test
-    public void testCheckPossiblePartReal() {
-        ComplexNumberParser parser = new ComplexNumberParser(new ParserString());
-        String text = "+4";
-        boolean expResult = true;
-        boolean result = parser.checkPossiblePartReal(text);
-        assertEquals(expResult, result);
-        text = "+4ldlsl";
-        expResult = false;
-        result = parser.checkPossiblePartReal(text);
-        assertEquals(expResult, result);
-
-    }
+ 
 
     /**
-     * Test of checkFirstCharacter method, of class ParserString.
+     * Test del metodo CheckFirstCharacter  utilizzato per controllare cosa ha inserito l'utente come primo carattere.
+     * .Secondo la logica white box si è pensato di inserire come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta è un numero puramente reale in cui è presente come primo carattere un segno più , una volta è un numero puramente reale 
+     * in cui è presente come primo carattere un segno meno , e una volta una stringa con vari \n. 
      */
     @Test
     public void testCheckFirstCharacter() {
@@ -208,7 +224,12 @@ public class ComplexNumberParserTest {
     }
 
     /**
-     * Test of recognizeComplexNumber method, of class ParserString.
+     * * Test del metodo RecognizeComplexNumber  utilizzato per controllare se la stringa inserita è un numero complesso completo, con parte reale e parte immaginaria.
+     * Si sono distinti i casi in cui sono inseriti un numero complesso completo , o un numero puramente reale o puramente immaginario, considerato come un single number.
+     * Il metodo inoltre ritorna, dopo aver letto la stringa, l'ogetto ComplexNumber, definito dall'utente
+     * .Secondo la logica white box si è pensato di inserire come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta è sempre un numero complesso completo, scritto però in varie varianti: Prima parte reale e poi immaginaria, poi parte immaginaria e poi reale,
+     * poi un numero complesso di questo tipo --> j4 + 3. 
      */
     @Test
     public void testRecognizeComplexNumber() {
@@ -233,11 +254,20 @@ public class ComplexNumberParserTest {
         result = parser.recognizeComplexNumber(text);
         assertEquals(expResult.getRealPart(), result.getRealPart(), 0);
         assertEquals(expResult.getImaginaryPart(), result.getImaginaryPart(), 0);
+        text = "j3 -4";
+        expResult = new ComplexNumber(-4, 3);
+        result = parser.recognizeComplexNumber(text);
+        assertEquals(expResult.getRealPart(), result.getRealPart(), 0);
+        assertEquals(expResult.getImaginaryPart(), result.getImaginaryPart(), 0);
 
     }
 
     /**
-     * Test of recognizeNumber method, of class ParserString.
+      * * Test del metodo RecognizeNumber  utilizzato per controllare se la stringa inserita è un numero puramente immaginario o reale.
+     * Si sono distinti i casi in cui sono inseriti un numero puramente immaginario  , o un numero puramente reale , considerato come un single number.
+     * Il metodo inoltre ritorna, dopo aver letto la stringa, l'ogetto ComplexNumber, definito dall'utente. 
+     * .Secondo la logica white box si è pensato di inserire come input di test tutti gli input che generassero tutti i path possibili all'interno del metodo.
+     * La stringa data in input una volta + un numero puramente reale, un numero puramente immaginario.
      */
     @Test
     public void testRecognizeNumber() {
