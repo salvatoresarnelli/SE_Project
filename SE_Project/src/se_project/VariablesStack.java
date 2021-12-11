@@ -90,4 +90,8 @@ public class VariablesStack {
         return history.size();
     }
 
+    
+    public Record first(){
+        return history.get(0);
+    }
 }

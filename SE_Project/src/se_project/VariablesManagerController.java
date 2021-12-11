@@ -426,15 +426,11 @@ public class VariablesManagerController implements Initializable {
     private void doubleRightAction(MouseEvent event) {
         HashMap<Character, ComplexNumber> map = dictionary.getTable();
         Record read = null;
+        try{
         if (variablesStack.length() > 0) {
-            try {
-                while (index > 0) {
-                    iterator = (ListIterator<Record>) variablesStack.iterator(index);
-
-                    read = iterator.previous();
-                    map = read.getDictRecord();
-                    index--;
-                }
+                index =0;
+                read = variablesStack.first();
+                map = read.getDictRecord();
                 VariableSet variableSet;
                 observableList.clear();
                 for (Character ch : map.keySet()) {
@@ -452,11 +448,11 @@ public class VariablesManagerController implements Initializable {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formatDateTime = read.getDate().format(formatter);
                 raw.setText("Aggiornata a: " + formatDateTime);
-
+            }
             } catch (NoSuchElementException ex) {
 
             }
-        }
+        
     }
 
     @FXML
