@@ -119,69 +119,72 @@ public class InterfacciaController implements Initializable {
     private MenuItem buttonSwap;
     @FXML
     private MenuItem buttonOver;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        //caricamento della barra laterale(menù)
         try {
-            box= FXMLLoader.load(getClass().getResource("sidePane.fxml"));
-        }catch(IOException ex){
-        alert("unable to reach sidepane.fxml", "","");
+            box = FXMLLoader.load(getClass().getResource("sidePane.fxml"));
+        } catch (IOException ex) {
+            alert("unable to reach sidepane.fxml", "", "");
         }
-        for (Node n: box.getChildren()){
-            if(n.getAccessibleText() !=null){
-                n.addEventHandler(MouseEvent.MOUSE_CLICKED, e->{
-                    
+        for (Node n : box.getChildren()) {
+            if (n.getAccessibleText() != null) {
+                n.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+
                     try {
-                      switch(n.getAccessibleText()){ 
-                          
-                        case "home":
-                          Node homePage = FXMLLoader.load(getClass().getResource("calculator.fxml"));
-                            hbox.getChildren().setAll(homePage);                    
-                            break;
-                        case "Salva Funzione":
-                        this.saveFunctions();
-                            break;
-                        
-                        case "Carica Funzione":
-                            this.uploadFunctions();
-                            break;   
-                            
-                        case "Gestione Operazioni": 
-                            
-                            Node opManager = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
-                            hbox.getChildren().setAll(opManager);                    
-                            break;
-                             
-                        case "Gestione Variabili": 
-                            Node varManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
-                            hbox.getChildren().setAll(varManager);                    
-                            break;
-                             
-               
-                    
-                    }   
+                        switch (n.getAccessibleText()) {
+
+                            case "home":
+                                Node homePage = FXMLLoader.load(getClass().getResource("calculator.fxml"));
+                                hbox.getChildren().setAll(homePage);
+                                break;
+                            case "Salva Funzione":
+                                this.saveFunctions();
+                                break;
+
+                            case "Carica Funzione":
+                                this.uploadFunctions();
+                                break;
+
+                            case "Gestione Operazioni":
+
+                                Node opManager = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
+                                hbox.getChildren().setAll(opManager);
+                                break;
+
+                            case "Gestione Variabili":
+                                Node varManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
+                                hbox.getChildren().setAll(varManager);
+                                break;
+
+                        }
                     } catch (IOException ee) {
                         System.out.println("Error");
                     }
                 });
-                        }
+            }
         }
+        //viene definita la transizione del button "hamburger".
         HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburger);
+        //alla pressione viene effettuata una transizione.
         transition.setRate(-1);
+        //viene impostata la scena caricata come pannello laterale del menù a scomparsa.
         drawer.setSidePane(box);
+        //menù a scomparsa inizialmente invisibile.
         drawer.setVisible(false);
-        //drawer.setMinWidth(0);
+        //sulla pressione dell'hamburger
         hamburger.setOnMouseClicked(event -> {
+            //viene effettuata la transizione.
             transition.setRate(transition.getRate() * -1);
             transition.play();
             if (!drawer.isOpened()) {
-                // drawer.setMinWidth(220);
-                // drawer.setVisible(true);
+                //se il menù laterale è chiuso, viene reso visibile e aperto.
+                drawer.setVisible(true);
                 drawer.open();
 
-                drawer.setVisible(true);
             } else {
-                //  drawer.setMinWidth(0);
+                //se è aperto, viene chiuso e reso invisibile al termine della chiusura.
                 drawer.close();
                 Platform.runLater(new Runnable() {
                     @Override
@@ -195,8 +198,16 @@ public class InterfacciaController implements Initializable {
         /*si inizilizzano lista e iteratore*/
         prevs = new LinkedList<>();
         it = prevs.listIterator();
+        //si inizializza una observable list, associata allo stack.
         observableList = FXCollections.observableArrayList();
-
+        /*si definisce che 
+            o alla pressione del tasto enter, si deve leggere il contenuto della 
+              casella di testo.
+            o alla pressione del tasto freccia su deve comparire nella casella 
+              di testo l'ultimo comando passato.
+            o alla pressione del tasto freccia giù deve comparire nella casella 
+              di testo il comando passato successivamente.
+        */
         inputField.setOnKeyPressed((KeyEvent event) -> {
             String tmp;
             /*se è stato premuto enter, si passa la stringa scritta nella casella
@@ -241,6 +252,7 @@ public class InterfacciaController implements Initializable {
             }
 
         });
+        //si inizializza lo stack delle variabili.
         variablesStack = VariablesStack.getInstance();
         observableList.addAll(solver.getStructureStack().getStack());
         listView.setItems(observableList);
@@ -251,24 +263,16 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void ActionPush(ActionEvent event) throws InvalidVariableNameException, NonExistingVariable {
-        try {
+        try {//alla pressione del tasto push, si legge il contenuto della casella di testo
             String text = inputField.getText();
+            //si aggiunge la stringa allo storico delle stringhe inserite se la stringa  non è vuota.
             if (!text.isEmpty()) {
                 prevs.addLast(text);
                 index = prevs.size();
             }
             OperationCommand code = null;
-            /*  if (decoratorParserOperation.getNames() != null && decoratorParserOperation.getNames().contains(text)) {
-                try {
-                    userOperation(text);
-                } catch (EmptyStackException | NotApplicableOperation | InvalidNumberException | UndefinedPhaseException | DivisionByZeroException | InvalidOperationException ex) {
-                    this.Alert("errore", "Operazione non valida ", text);
-                }
-                return;
-            }
-            
-             */
-            try {
+
+            try {//si passa la stringa passata al parser.
                 code = decoratorParserOperation.parse(text);
 
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -284,11 +288,15 @@ public class InterfacciaController implements Initializable {
                 return;
 
             } catch (ExistingNameException ex) {
+                /*se è stato riscontrato un inserimento di una variabile che ha già valore 
+                si chiede se la si vuole sovrascrivere*/
+                //viene mostrato un Alert che chiede come si vuole procedere.
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Operazione già inserita");
                 alert.setHeaderText("L'operazione è già stata inserita");
                 alert.setContentText("Vuoi sovrascriverla?");
                 Optional<ButtonType> result = alert.showAndWait();
+                //se la risposta è sì, si sovrascrive.
                 if (result.get() == ButtonType.OK) {
                     String textString = decoratorParserOperation.clearStringOperation(text);
                     String[] string = textString.split("\\$");
@@ -300,36 +308,39 @@ public class InterfacciaController implements Initializable {
                     this.setOperationsList();
                     return;
                 } else {
+                       //Altrimenti si pulisce la casella di testo.
+
                     inputField.clear();
                     return;
                 }
 
-            }catch(CollisionException ex){
-                    String message = ex.getMessage();
-                    ButtonType jNumber = new ButtonType("Inserimento Numero");
-                    ButtonType operation = new ButtonType("Operazione con Variabile");
+            } catch (CollisionException ex) {
+                /*se è stato riscontrata una collisione si chiede di chiarire l'
+                ambiguità*/
+                String message = ex.getMessage();
+                ButtonType jNumber = new ButtonType("Inserimento Numero");
+                ButtonType operation = new ButtonType("Operazione con Variabile");
 
+                Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma" + "C'è stata una collisione, cosa intendi fare?", jNumber, operation);
+                alert.showAndWait();
+                if (alert.getResult() == operation) {
+                    if (message.charAt(0) == '+') {
+                        code = new SumVariableCommand();
+                        ((SumVariableCommand) code).setVariable(message.charAt(1));
+                        ((SumVariableCommand) code).setDictionary(VariablesDict.getInstance());
+                    } else {
+                        code = new DiffVariableCommand();
+                        ((DiffVariableCommand) code).setVariable(message.charAt(1));
 
-                     Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma" +"C'è stata una collisione, cosa intendi fare?", jNumber, operation);
-                    alert.showAndWait();
-                    if (alert.getResult() == operation) {
-                        if(message.charAt(0)=='+'){
-                          code = new SumVariableCommand();
-                          ((SumVariableCommand) code).setVariable(message.charAt(1));
-                        ((SumVariableCommand)code).setDictionary(VariablesDict.getInstance());
-                        }else{
-                             code = new DiffVariableCommand();
-                             ((DiffVariableCommand) code).setVariable(message.charAt(1));
+                        ((DiffVariableCommand) code).setDictionary(VariablesDict.getInstance());
 
-                        ((DiffVariableCommand)code).setDictionary(VariablesDict.getInstance());
-                        
-                        }
                     }
-                    else {if ( alert.getResult() == jNumber){
-                       code = new ComplexNumberParser(new ParserString()).parse(message);
+                } else {
+                    if (alert.getResult() == jNumber) {
+                        code = new ComplexNumberParser(new ParserString()).parse(message);
                     }
-                        }
-                } catch (Exception ex) {
+                }
+            } catch (Exception ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             }
 
@@ -340,26 +351,18 @@ public class InterfacciaController implements Initializable {
                     solver.resolveOperation(code);
                 } catch (EmptyStackException ex) {
                     alert("Errore!", "Operazione non valida", "Lo stack è vuoto!");
-                    this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
                     return;
                 } catch (NotApplicableOperation ex) {
                     alert("Errore!", "Operazione non valida", "");
-                    this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
                     return;
                 } catch (InvalidNumberException ex) {
                     alert("Errore!", "Inserito un numero non valido", text);
-                    this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
                     return;
                 } catch (InvalidVariableNameException ex) {
                     alert("Errore!", "Inserito una variabile non valida", text);
-                    this.solver.getStructureStack().clear();
-                    this.solver.getStructureStack().push(structureStack.getStack());
                     inputField.clear();
                     return;
                 } catch (UndefinedPhaseException ex) {
@@ -383,13 +386,7 @@ public class InterfacciaController implements Initializable {
                     }
 
                 }
-                /*
-                if (code instanceof InsertUserDefinedOperationCommand) {
-                    if (decoratorParserOperation.getNames().contains(
-                            ((InsertUserDefinedOperationCommand) code).getName())) {
-                        this.inizializeMenuButton(((InsertUserDefinedOperationCommand) code).getName());
-                    }
-                }*/
+              
             } else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
@@ -452,9 +449,9 @@ public class InterfacciaController implements Initializable {
                 }
             }
             s += "\n";
-            
+
             operationSet = new OperationSet(name, s);
-            
+
             operationsList.add(operationSet);
             s = "";
         }
@@ -676,7 +673,6 @@ public class InterfacciaController implements Initializable {
 
     }
 
-   
     @FXML
     private void minusVarButtonActionPush(ActionEvent event) {
     }
@@ -692,6 +688,5 @@ public class InterfacciaController implements Initializable {
     @FXML
     private void plusVarButtonActionPush(ActionEvent event) {
     }
-
 
 }

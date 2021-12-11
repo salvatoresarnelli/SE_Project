@@ -12,7 +12,7 @@ import se_project.exceptions.OperationNotFoundException;
 
 /**
  *
- * @author aless
+ * @author emanu
  */
 public class OperationParser extends ParserString {
 
@@ -61,9 +61,7 @@ public class OperationParser extends ParserString {
         }
         String possible_operation = text.toLowerCase();
         return null;
-        /*
-            if(possible_operation.equals("addition") || possible_operation.equals("substraction") || possible_operation.equals("multiplication") || possible_operation.equals("division")|| possible_operation.equals("square root")|| possible_operation.equals("invert sign"))return operation;
-            return continue_checking;*/
+     
     }
 
   

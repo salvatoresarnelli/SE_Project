@@ -19,6 +19,8 @@ import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
 
 /**
+ * Decoratore del ParserString, in grado di riconoscere le operazioni sulle
+ * variabili.
  *
  * @author aless
  */
@@ -39,6 +41,18 @@ public class VariableParser extends ParserString {
         return dict;
     }
 
+    /**
+     * Il metodo parse è in grado di riconoscere se: o la string passata come
+     * parametro è un inserimento di una variabile.o la string passata come
+     * parametro è una push di una variabile.o la string passata è un comando
+     * [+][nome_var] o la string passata è un comando [-][nome_var] o la string
+     * passata è un comando save
+     *
+     *
+     * @param text
+     * @return OperationCommand
+     * @throws se_project.exceptions.OperationNotFoundException
+     */
     @Override
     public OperationCommand parse(String text) throws ArrayIndexOutOfBoundsException, OperationNotFoundException, Exception {
         String textString = text.replaceAll(" ", "");
@@ -62,7 +76,7 @@ public class VariableParser extends ParserString {
 
         if (checkVariableDiff(textString)) {
             char c = textString.charAt(1);
-            if(c=='j'){
+            if (c == 'j') {
                 throw new CollisionException(textString);
             }
             DiffVariableCommand command = (DiffVariableCommand) parser.getFactory().getOperationCommand("DiffVariableCommand");
@@ -74,54 +88,79 @@ public class VariableParser extends ParserString {
 
         if (checkVariableSum(textString)) {
             char c = textString.charAt(1);
-             if(c=='j'){
+            if (c == 'j') {
                 throw new CollisionException(textString);
             }
             SumVariableCommand command = (SumVariableCommand) parser.getFactory().getOperationCommand("SumVariableCommand");
             command.setVariable(c);
             command.setDictionary(dict);
-           
-                return command;
+
+            return command;
 
         }
         if (checkVariableSave(textString)) {
             SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("SaveVariableCommand");
             command.setDictionary(dict);
             command.setVariablesStack(variablesStack);
-                return command;
-            
-                
+            return command;
+
         }
 
         return parser.parse(textString);
     }
 
+    /**
+     * Verifica se la stringa passata rispetta la sintassi dell'inserimento:
+     * >[lettera].
+     *
+     */
     private boolean checkVariableIns(String txtString) {
-        return txtString.charAt(0) == '>' && txtString.length() == 2 && Character.isAlphabetic(txtString.charAt(1));
+        return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '>'
+                && Character.isAlphabetic(txtString.charAt(1));
     }
 
+    /**
+     * Verifica se la stringa passata rispetta la sintassi della push:
+     * <[lettera].
+     *
+     */
     private boolean checkVariablePushed(String txtString) {
-        return txtString.charAt(0) == '<' && txtString.length() == 2 && Character.isAlphabetic(txtString.charAt(1));
+        return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '<' && Character.isAlphabetic(txtString.charAt(1));
     }
 
+    /**
+     * Verifica se la stringa passata rispetta la sintassi della somma del
+     * valore di una variabile: +[lettera].
+     *
+     */
     private boolean checkVariableSum(String txtString) {
         try {
-            return txtString.charAt(0) == '+' && txtString.length() == 2 && dict.getVariableValue(txtString.charAt(1)) != null;
+            return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '+' && dict.getVariableValue(txtString.charAt(1)) != null;
         } catch (NonExistingVariable | InvalidVariableNameException ex) {
             return false;
         }
     }
 
+    /**
+     * Verifica se la stringa passata rispetta la sintassi della differenza del
+     * valore di una variabile: -[lettera].
+     *
+     */
     private boolean checkVariableDiff(String txtString) throws NonExistingVariable, InvalidVariableNameException {
         try {
-            return txtString.charAt(0) == '-' && txtString.length() == 2 && dict.getVariableValue(txtString.charAt(1)) != null;
+            return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '-' && dict.getVariableValue(txtString.charAt(1)) != null;
         } catch (NonExistingVariable ex) {
             return false;
         }
     }
 
+    /**
+     * Verifica se la stringa passata rispetta la sintassi del salvataggio:
+     * save.
+     *
+     */
     private boolean checkVariableSave(String textString) {
-        return textString.equals("save");
+        return textString != null && textString.equals("save");
 
     }
 
