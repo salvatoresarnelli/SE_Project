@@ -6,8 +6,6 @@
 package se_project;
 
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import other.Utilities;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.InvalidNumberException;

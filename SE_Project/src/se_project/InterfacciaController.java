@@ -277,8 +277,12 @@ public class InterfacciaController implements Initializable {
                 return;
             } catch (OperationNotFoundException ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                return;
+
             } catch (NullPointerException ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                return;
+
             } catch (ExistingNameException ex) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Operazione già inserita");
@@ -389,6 +393,8 @@ public class InterfacciaController implements Initializable {
             } else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
+                return;
+
             }
 
             observableList.clear();

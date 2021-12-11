@@ -5,22 +5,15 @@
  */
 package se_project.parser;
 
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import se_project.VariablesDict;
 import se_project.VariablesStack;
-import se_project.parser.ParserString;
-import se_project.commands.Command;
 import se_project.commands.OperationCommand;
-import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.PushVariableCommand;
 import se_project.commands.variablesCommands.SaveVariableCommand;
 import se_project.commands.variablesCommands.SumVariableCommand;
-import se_project.commands.variablesCommands.VariableCommand;
 import se_project.exceptions.CollisionException;
 import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
