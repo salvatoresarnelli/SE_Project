@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -112,7 +113,9 @@ public class VariablesManagerController implements Initializable {
     private FontAwesomeIconView doubleLeft;
     @FXML
     private Button pushVariableButton;
-
+    
+    private InterfacciaController interfacciaController;
+    
     /**
      * Initializes the controller class.
      */
@@ -149,13 +152,13 @@ public class VariablesManagerController implements Initializable {
                                 hbox.getChildren().setAll(homePage);
                                 break;
                             case "Salva Funzione":
-                                Node variablesManager = FXMLLoader.load(getClass().getResource("VariablesManager.fxml"));
-                                hbox.getChildren().setAll(variablesManager);
+                                interfacciaController = this.loadController();
+                                interfacciaController.saveFunctions();
                                 break;
 
                             case "Carica Funzione":
-                                Node update = FXMLLoader.load(getClass().getResource("OperationsManager.fxml"));
-                                hbox.getChildren().setAll(update);
+                                interfacciaController = this.loadController();
+                                interfacciaController.uploadFunctions();
                                 break;
 
                             case "Gestione Operazioni":
@@ -510,5 +513,13 @@ public class VariablesManagerController implements Initializable {
             }
         });
 
+    }
+    
+    public InterfacciaController loadController() throws IOException {
+            Parent root;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calculator.fxml"));
+            root = fxmlLoader.load();
+            InterfacciaController interfacciaController = fxmlLoader.getController();
+            return interfacciaController;
     }
 }
