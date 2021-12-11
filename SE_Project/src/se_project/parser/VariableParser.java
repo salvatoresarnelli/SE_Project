@@ -87,7 +87,7 @@ public class VariableParser extends ParserString {
         if (checkVariableSave(textString)) {
             SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("SaveVariableCommand");
             command.setDictionary(dict);
-            command.setStack(variablesStack);
+            command.setVariablesStack(variablesStack);
                 return command;
             
                 

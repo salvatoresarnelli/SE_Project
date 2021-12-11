@@ -18,7 +18,12 @@ import se_project.exceptions.UndefinedPhaseException;
 /**
  *
  * @author pionp
+ * Questa classe rappresenta un'operazione di coseno.
+ * Essa, essendo un'operazione, estende la classe OperationCommand, ereditandone
+ * un'instanza dello stack. è presente un'ulteriore attributo, "name", che
+ * rappresenta il nome dell'operazione.
  */
+ 
 public class CosCommand extends OperationCommand{
     private final String name ="cos";
     
@@ -29,7 +34,14 @@ public class CosCommand extends OperationCommand{
     public CosCommand(Stack stack) {
         super(stack);
     }
-    
+    /**
+     * @return 
+     * @throws se_project.exceptions.EmptyStackException     
+     * @throws se_project.exceptions.UndefinedPhaseException     
+     * @throws se_project.exceptions.NotApplicableOperation     
+     * @throws se_project.exceptions.InvalidNumberException     
+     * @throws se_project.exceptions.DivisionByZeroException     
+     */
     @Override
     public LinkedList<ComplexNumber> execute() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException, DivisionByZeroException {
         if (super.getTarget().size() >= 1) {

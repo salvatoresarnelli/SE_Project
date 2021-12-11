@@ -8,7 +8,7 @@ package se_project.exceptions;
  *
  * @author Salvatore
  */
-public class InvalidOperationException extends Exception{
+public class InvalidOperationException extends Exception {
 
     /**
      * Creates a new instance of <code>InvalidOperationException</code> without

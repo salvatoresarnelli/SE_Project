@@ -12,13 +12,14 @@ import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationComm
 /**
  *
  * @author aless
- */ 
-public class InterruptedExecutionException extends Exception{
-    private ExecuteUserDefinedOperationCommand command; 
+ */
+public class InterruptedExecutionException extends Exception {
+
+    private ExecuteUserDefinedOperationCommand command;
     private LinkedList<ComplexNumber> rollBackList;
     private String exceptionCause;
 
-    public InterruptedExecutionException(ExecuteUserDefinedOperationCommand command, LinkedList<ComplexNumber> rollBackList,String exceptionCause) {
+    public InterruptedExecutionException(ExecuteUserDefinedOperationCommand command, LinkedList<ComplexNumber> rollBackList, String exceptionCause) {
         this.command = command;
         this.rollBackList = rollBackList;
         this.exceptionCause = exceptionCause;
@@ -35,7 +36,5 @@ public class InterruptedExecutionException extends Exception{
     public LinkedList<ComplexNumber> getRollBackList() {
         return rollBackList;
     }
-    
-    
-   
+
 }

@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import se_project.commands.OperationCommand;
 
 /**
+ * La classe InsertUserDefinedOperationCommand rapprensenta l'azione di
+ * definizione di un'operazione definita dall'utente.
  *
  * @author aless
  */
@@ -29,16 +31,24 @@ public class InsertUserDefinedOperationCommand extends OperationCommand {
     public String getName() {
         return name;
     }
-    
+
     public LinkedList<OperationCommand> getCommandList() {
         return commandList;
     }
 
+    /**
+     * Viene inserita una coppia nome opearazione e un comando
+     * "ExecuteUserDefinedOperationCommand" che contiene l'insieme delle
+     * operazioni da eseguire.
+     * @return 
+     * @throws java.lang.Exception
+     */
     @Override
     public Object execute() throws Exception {
         return commandDict.put(name, new ExecuteUserDefinedOperationCommand(name, commandList));
     }
-     /**
+
+    /**
      * La toString della classe ColonsCommand contiene solo il nome
      * dell'operazione.
      */

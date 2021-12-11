@@ -6,9 +6,10 @@
 package se_project.exceptions;
 
 /**
+ * Eccezione lanciata quando si vuole accedere ad una variabile non esistente.
  *
  * @author aless
  */
-public class NonExistingVariable extends Exception{
-    
+public class NonExistingVariable extends Exception {
+
 }

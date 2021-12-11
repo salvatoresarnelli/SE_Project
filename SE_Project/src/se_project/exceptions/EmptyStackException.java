@@ -6,6 +6,8 @@
 package se_project.exceptions;
 
 /**
+ * Tale eccezione viene lanciata nel momento in cui si vuole rimuovere un
+ * elemento o si vuole fare delle operazioni su uno stack vuoto.
  *
  * @author Salvatore Sarnelli
  */

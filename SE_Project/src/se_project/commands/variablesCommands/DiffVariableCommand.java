@@ -12,7 +12,8 @@ import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
 
 /**
- *
+ * Classe che rappresenta l'operazione di aggiornamento del valore di una variabile
+ * sottrandone l'ultimo elemento contenuto nello stack.
  * @author pionp
  */
 public class DiffVariableCommand extends VariableCommand{
@@ -25,6 +26,15 @@ public class DiffVariableCommand extends VariableCommand{
     super();
     }
 
+    /**
+     * Prende il valore associato alla variabile dal dizionario,
+     * prende l'elemento in cima allo stack e aggiorna il valore associato alla 
+     * variabile con il valore della variabile - il valore in cima allo stack.
+     * @return 
+     * @throws se_project.exceptions.InvalidVariableNameException
+     * @throws se_project.exceptions.NonExistingVariable
+     * @throws se_project.exceptions.EmptyStackException
+     */
     @Override
     public ComplexNumber execute() throws InvalidVariableNameException, NonExistingVariable, EmptyStackException  {
         VariablesDict dict = super.getDictionary();

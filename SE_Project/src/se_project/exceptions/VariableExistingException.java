@@ -6,9 +6,11 @@
 package se_project.exceptions;
 
 /**
+ * Eccezione lanciata quando si vuole assegnare un valore ad una variabile che
+ * ha già un valore.
  *
  * @author aless
  */
 public class VariableExistingException extends Exception {
-    
+
 }

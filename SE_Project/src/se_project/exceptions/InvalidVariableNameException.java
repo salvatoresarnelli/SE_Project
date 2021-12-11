@@ -6,9 +6,11 @@
 package se_project.exceptions;
 
 /**
+ * Eccezione lanciata quando si vuole inserire una variabile avente nome non
+ * ammesso.
  *
  * @author aless
  */
 public class InvalidVariableNameException extends Exception {
-    
+
 }

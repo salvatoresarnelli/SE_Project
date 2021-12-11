@@ -6,9 +6,10 @@
 package se_project.exceptions;
 
 /**
+ * Eccezione lanciata quando si vuole calcolare la fase di 0+0j (non definita)
  *
  * @author aless
  */
 public class UndefinedPhaseException extends Exception {
-    
+
 }

@@ -6,7 +6,9 @@
 package se_project.exceptions;
 
 /**
- *
+ * Eccezione lanciata quando si vuole inserire una user defined operation avente
+ * nome non ammesso.
+ * 
  * @author emanu
  */
 public class InvalidNameException extends RuntimeException {

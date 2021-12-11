@@ -6,7 +6,8 @@
 package se_project.exceptions;
 
 /**
- *
+ * Eccezione lanciata quando si vuole effettuare un'operazione sullo stack, ma
+ * il numero di elementi nello stack non lo consentono.
  * @author aless
  */
 public class NotApplicableOperation extends Exception {

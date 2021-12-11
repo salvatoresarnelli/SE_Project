@@ -7,8 +7,10 @@ package se_project.exceptions;
 
 /**
  *
- * @author aless
+ * @author aless 
+ * Eccezione lanciata quando si vuole inserire una variabile il
+ * cui valore non è ammesso.
  */
 public class InvalidNumberException extends Exception {
-    
+
 }

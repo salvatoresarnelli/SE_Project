@@ -36,7 +36,7 @@ public class DuplicateCommand extends OperationCommand {
      * presente nello stack. Se la dimensione dello stack è minore di 1,
      * l'operazione non è eseguibile e dunque viene lanciata un'eccezione. Se la
      * dimensione dello stack lo consente, viene inserito in cima allo stack
-     * una copia dell'ultimo elemento.
+     * una copia l'ultimo elemento.
      *
      *
      * @return Boolean

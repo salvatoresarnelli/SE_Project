@@ -6,12 +6,13 @@
 package se_project.exceptions;
 
 /**
- *
- * @author aless
+ * Eccezione lanciata quando si vuole eseguire un'operazione definita
+ * dall'utente ma non esiste alcuna operazione associata a quel nome. * @author
+ * aless
  */
 public class OperationNotFoundException extends Exception {
 
     public OperationNotFoundException() {
     }
-    
+
 }

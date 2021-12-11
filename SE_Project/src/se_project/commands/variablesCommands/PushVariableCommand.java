@@ -12,7 +12,9 @@ import se_project.exceptions.InvalidVariableNameException;
 import se_project.exceptions.NonExistingVariable;
 
 /**
- *
+ * Tale classe rappresenta il comando di "push variable", ovvero la capacità di prendere 
+ * una variabile dalla memoria e di inserirne il valore nello stack.
+ * 
  * @author aless
  */
 public class PushVariableCommand extends VariableCommand{
@@ -21,7 +23,12 @@ public class PushVariableCommand extends VariableCommand{
     public PushVariableCommand() {
     super();
     }
-
+/**
+ * Tale metodo prende il valore della variabile variable dal dizionario delle 
+ * variabili e aggiunge allo stack.
+ * 
+     * @throws se_project.exceptions.InvalidVariableNameException
+ */
 
     @Override
     public ComplexNumber execute() throws InvalidVariableNameException, NonExistingVariable  {

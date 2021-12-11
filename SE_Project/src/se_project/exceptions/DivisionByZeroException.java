@@ -6,9 +6,10 @@
 package se_project.exceptions;
 
 /**
+ * Quest'eccezione viene generata nel momento si vuole dividere per 0.
  *
  * @author aless
  */
 public class DivisionByZeroException extends Exception {
-    
+
 }

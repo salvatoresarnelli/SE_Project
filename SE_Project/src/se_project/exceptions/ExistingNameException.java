@@ -9,18 +9,24 @@ import java.util.LinkedList;
 import se_project.ComplexNumber;
 
 /**
+ * Eccezione lanciata quando si vuole inserire una userdefined operation, ma è
+ * già presente in memoria una userdefined operation con lo stesso nome.
  *
  * @author aless
  */
 public class ExistingNameException extends Exception {
+
     private LinkedList<ComplexNumber> list;
-    public ExistingNameException(){}
-    public ExistingNameException(LinkedList<ComplexNumber> list){
-    this.list = list;
+
+    public ExistingNameException() {
+    }
+
+    public ExistingNameException(LinkedList<ComplexNumber> list) {
+        this.list = list;
     }
 
     public LinkedList<ComplexNumber> getList() {
         return list;
     }
-    
+
 }
