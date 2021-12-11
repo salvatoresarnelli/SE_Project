@@ -52,9 +52,8 @@ public class ComplexNumberParser extends ParserString {
      *
      *
      */
-    
     private OperationCommand numberParser(String text) {
-    
+
         if (text.length() == 0) {
             return null;
         }
@@ -76,18 +75,18 @@ public class ComplexNumberParser extends ParserString {
         ret = checkPossibleOneNumber(text);
 
         if (ret == single_number) {
-           
+
             return new InsertNumberCommand(recognizeNumber((first + text).replaceAll(" ", "")), null);
         }
         return null;
     }
-    
+
     @Override
     public OperationCommand parse(String text) throws NullPointerException, Exception {
         OperationCommand command;
         command = numberParser(text);
-        if(command !=null){
-             return command;
+        if (command != null) {
+            return command;
         }
         return parser.parse(text);
     }
@@ -106,15 +105,14 @@ public class ComplexNumberParser extends ParserString {
         text = this.clearString(replaceAll);
         if (text.contains("j")) {
             StringBuilder sb = new StringBuilder(text);
-            if (sb.length() > 2) {
-                return null;
-            }
+           
             if (text.equals("j")) {
                 return new ComplexNumber(0, Double.parseDouble(operator1 + "1"));
             }
             if (sb.charAt(0) == 'j') {
                 try {
-                    double imaginary = Double.parseDouble(String.valueOf(sb.charAt(1)));
+                    text = text.replaceAll("j", "");
+                    double imaginary = Double.parseDouble(String.valueOf(text));
                     String finalImaginary = operator1 + String.valueOf(imaginary);
                     return new ComplexNumber(0, Double.parseDouble(finalImaginary));
 
@@ -123,9 +121,10 @@ public class ComplexNumberParser extends ParserString {
                 }
 
             }
-            if (sb.charAt(1) == 'j') {
+            if (sb.charAt(text.length()-1) == 'j') {
                 try {
-                    double imaginary = Double.parseDouble(String.valueOf(sb.charAt(0)));
+                    text = text.replaceAll("j","");
+                    double imaginary = Double.parseDouble(String.valueOf(text));
                     String finalImaginary = operator1 + String.valueOf(imaginary);
                     return new ComplexNumber(0, Double.parseDouble(finalImaginary));
                 } catch (NumberFormatException e) {
@@ -322,39 +321,42 @@ public class ComplexNumberParser extends ParserString {
     public boolean checkPossiblePartImaginary(String text) {
         text = this.clearString(text);
         text = text.replaceAll(" ", "");
+        if (text.equals("j") || text.equals("-j")) {
+            return true;
+        }
         if (text.contains("j")) {
+
             StringBuilder sb = new StringBuilder(text);
-            if (sb.length() > 2) {
+          
+            if ( (text.charAt(0) == '.') || text.charAt(text.length()-1) == '.') {
                 return false;
             }
-
-            if (sb.charAt(0) == 'j' && sb.length() == 1) {
-                return true;
-            }
-            if (sb.charAt(0) == 'j') {
-
-                try {
-                    double imaginary = Double.parseDouble(String.valueOf(sb.charAt(1)));
-
-                    return true;
-
-                } catch (NumberFormatException e) {
-
+            int jCount=0;
+            int pointCount=0;
+            for (int i = 0; i < text.length(); i++) {
+                if(sb.charAt(i)=='j'){
+                    jCount++;
                 }
-
-            }
-
-            if (sb.charAt(1) == 'j') {
-                try {
-                    double imaginary = Double.parseDouble(String.valueOf(sb.charAt(0)));
-                    return true;
-
-                } catch (NumberFormatException e) {
+                if(sb.charAt(i)=='.'){
+                pointCount++;
+                }
+                if ((sb.charAt(i) > '9' || sb.charAt(i) < '0') && (sb.charAt(i) != '.') && (sb.charAt(i)!='j')) {
                     return false;
                 }
-
             }
+            if(jCount>1 || pointCount>1)
+                return false;
+            
+            text = text.replaceAll("j", "");
+
+            try {
+                Double.parseDouble(text);
+            } catch (NumberFormatException ex) {
+                return false;
+            }
+            return true;
         }
+
         return false;
     }
 
@@ -387,5 +389,4 @@ public class ComplexNumberParser extends ParserString {
         return ' ';
     }
 
-  
 }
