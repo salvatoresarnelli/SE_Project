@@ -181,46 +181,20 @@ public class OperationsManagerController implements Initializable {
 
     }
 
+  
     @FXML
     private void actionButtonRemove(ActionEvent event) {
         OperationSet selectedItem = tableViewOperations.getSelectionModel().getSelectedItem();
-       // this.removeOperation(selectedItem.getNameOperation());
-    }
-/*
-    private void removeOperation(String name) {
-        if (operationDict.getHashMap().isEmpty()) {
-            return;
-        }
-        LinkedList<String> list = new LinkedList<>();
-        
-        for (String op : operationDict.getNames()) {
-            if (operationDict.getOperationString(op).contains(name) && !(name.equals(op))) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("L'operazione è presente in altre operazioni");
-                alert.setHeaderText("L'operazione " + name + " è presente anche nell'operazione  " + op);
-                alert.setContentText("Vuoi continuare?");
-                alert.showAndWait().ifPresent(rs -> {
-                    if (rs == ButtonType.OK){
-                        list.add(op);
-                    }
+        for(String name : operationDict.getNames()){
+            if(operationDict.getOperationString(name).contains(selectedItem.getNameOperation())){
+                this.alert("Errore!", "Impossibile eliminare l'operazione", "L'operazione "+ selectedItem.getNameOperation() +  "è presente anche in " + name);
+                return;
                 
-                    
-                });
-
             }
             
         }
-        operationDict.getHashMap().remove(name);
-        if(list.isEmpty()){
-            this.setObservableList();
-            return;
-        }
-        for(String operation : list){
-            operationDict.getHashMap().remove(operation);
-            removeOperation(operation);
-        }
-       this.setObservableList();
-        
+        operationDict.removeOperation(selectedItem.getNameOperation());
+        this.setObservableList();
+       
     }
-*/
 }
