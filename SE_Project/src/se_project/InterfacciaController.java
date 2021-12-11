@@ -571,7 +571,7 @@ public class InterfacciaController implements Initializable {
         }
     }
 
-    private void uploadFunctions() {
+    public void uploadFunctions() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
         File file = fileChooser.showOpenDialog(new Stage());
