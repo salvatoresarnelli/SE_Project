@@ -13,16 +13,27 @@ import java.util.NoSuchElementException;
 
 /**
  *
- * @author aless
+ * @author aless Questa classe mantiene uno stack di Record, mantendo un
+ * dizionario di variabili. Tale classe è un singleton.
  */
 public class VariablesStack {
+
     private LinkedList<Record> history;
     private static VariablesStack instance = null;
-    
-    private VariablesStack(){
+
+    /**
+     * Costruttore privato.
+     */
+    private VariablesStack() {
         history = new LinkedList<>();
     }
-    
+
+    /**
+     * Crea un'instanza dello stack delle variabili se non esiste.Se invece
+     * esiste, ne restituisce l'instanza.
+     *
+     * @return
+     */
     public static VariablesStack getInstance() {
         // Crea l'oggetto solo se NON esiste:
         if (instance == null) {
@@ -30,29 +41,53 @@ public class VariablesStack {
         }
         return instance;
     }
-    
-    public void pushVariablesSnapShot(VariablesDict dictionary){
-        HashMap<Character,ComplexNumber> currentMap = new HashMap<>();
-        for(char var = 'a';var!='z';var++){
-            if(dictionary.getTable().containsKey(var)){
+
+    /**
+     * Prende un variablesDict come parametro.Ogni variabile contenuta nel
+     * dizionario viene aggiunta al record. Per ogni variabile assente nel
+     * dictionary si associa null. Il record viene inserito nello storico delle
+     * variabili.
+     *
+     * @param dictionary
+     */
+    public void pushVariablesSnapShot(VariablesDict dictionary) {
+        HashMap<Character, ComplexNumber> currentMap = new HashMap<>();
+        for (char var = 'a'; var <= 'z'; var++) {
+            if (dictionary.getTable().containsKey(var)) {
                 currentMap.put(var, dictionary.getTable().get(var));
-            }
-            else
+            } else {
                 currentMap.put(var, null);
+            }
         }
         history.addLast(new Record(currentMap));
     }
-    
-    public Record popVariableSnapShot( ) throws NoSuchElementException{
+
+    /**
+     * 
+     * @return Record
+     * @throws NoSuchElementException
+     * Rimuove l'ultimo record inserito nello stack e lo restituisce.
+     * Viene lanciata un'eccezione se lo stack è vuoto.
+     */
+    public Record popVariableSnapShot() throws NoSuchElementException {
         return history.removeLast();
     }
-    
-    public Iterator<Record> iterator(int index){
-        return history.listIterator(index);
-    }
-    public int length(){
-    return history.size();
+
+    /**
+     * Resituisce un'iteratore a partire dall'indice index passato come parametro.
+     * @param index
+     * @return 
+     */
+    public Iterator<Record> iterator(int index) throws IndexOutOfBoundsException {
+       return history.listIterator(index);
     }
 
-    
+    /**
+     * Resituisce il numero di elementi contenuti nello stack.
+     * @return int
+     */
+    public int length() {
+        return history.size();
+    }
+
 }

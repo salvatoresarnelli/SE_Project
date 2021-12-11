@@ -7,6 +7,7 @@ package se_project.commands;
 
 import se_project.ComplexNumber;
 import se_project.Stack;
+import se_project.VariablesDict;
 
 /**
  *
@@ -35,6 +36,7 @@ public abstract class OperationCommand implements Command {
     public void setTarget(Stack target) {
         this.target = target;
     }
+
     
     
 }

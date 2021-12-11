@@ -50,10 +50,13 @@ import other.OperationSet;
 import other.VariableSet;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
+import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.OverrideVariableCommand;
+import se_project.commands.variablesCommands.SumVariableCommand;
 import se_project.commands.variablesCommands.VariableCommand;
+import se_project.exceptions.CollisionException;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.EmptyStackException;
 import se_project.exceptions.ExistingNameException;
@@ -297,7 +300,32 @@ public class InterfacciaController implements Initializable {
                     return;
                 }
 
-            } catch (Exception ex) {
+            }catch(CollisionException ex){
+                    String message = ex.getMessage();
+                    ButtonType jNumber = new ButtonType("Inserimento Numero");
+                    ButtonType operation = new ButtonType("Operazione con Variabile");
+
+
+                     Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma" +"C'è stata una collisione, cosa intendi fare?", jNumber, operation);
+                    alert.showAndWait();
+                    if (alert.getResult() == operation) {
+                        if(message.charAt(0)=='+'){
+                          code = new SumVariableCommand();
+                          ((SumVariableCommand) code).setVariable(message.charAt(1));
+                        ((SumVariableCommand)code).setDictionary(VariablesDict.getInstance());
+                        }else{
+                             code = new DiffVariableCommand();
+                             ((DiffVariableCommand) code).setVariable(message.charAt(1));
+
+                        ((DiffVariableCommand)code).setDictionary(VariablesDict.getInstance());
+                        
+                        }
+                    }
+                    else {if ( alert.getResult() == jNumber){
+                       code = new ComplexNumberParser(new ParserString()).parse(message);
+                    }
+                        }
+                } catch (Exception ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             }
 
@@ -351,7 +379,6 @@ public class InterfacciaController implements Initializable {
                     }
 
                 }
-
                 /*
                 if (code instanceof InsertUserDefinedOperationCommand) {
                     if (decoratorParserOperation.getNames().contains(

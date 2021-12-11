@@ -40,6 +40,7 @@
             <FontAwesomeIconView fx:id="rightArrow" fill="ORANGE" glyphName="ARROW_RIGHT" layoutX="187.0" layoutY="282.0" onMouseClicked="#rightArrowAction" size="20" wrappingWidth="11.285714149475098" />
             <FontAwesomeIconView fx:id="doubleRight" fill="ORANGE" glyphName="ANGLE_DOUBLE_RIGHT" layoutX="211.0" layoutY="283.0" onMouseClicked="#doubleRightAction" size="20" />
             <FontAwesomeIconView fx:id="doubleLeft" fill="ORANGE" glyphName="ANGLE_DOUBLE_LEFT" layoutX="142.0" layoutY="282.0" onMouseClicked="#doubleLeftAction" size="20" />
+            <Button fx:id="pushVariableButton" layoutX="327.0" layoutY="33.0" mnemonicParsing="false" onAction="#pushVariableAction" style="-fx-background-color: orange;" text="Push" />
          </children>
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="335.0" prefWidth="269.0">

@@ -18,7 +18,7 @@ import se_project.exceptions.NonExistingVariable;
 public class DiffVariableCommand extends VariableCommand{
     
     
-    public DiffVariableCommand(Character variable, VariableCommand command) {
+    public DiffVariableCommand(Character variable) {
     }
     
     public DiffVariableCommand() {

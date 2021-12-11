@@ -15,4 +15,6 @@ import se_project.commands.OperationCommand;
 public interface AbstractParserString {
     
     public abstract <T extends OperationCommand> T parse(String text) throws Exception;
+    
+    
 }

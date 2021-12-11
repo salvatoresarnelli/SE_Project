@@ -7,8 +7,6 @@ package se_project;
 
 import se_project.exceptions.EmptyStackException;
 import java.util.LinkedList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import se_project.exceptions.InvalidOperationException;
 
 /**
@@ -58,6 +56,15 @@ public class Stack {
         return true;
     }
 
+    /**
+     * Il metodo si occupa di inserire una lista di numeri complessi alla fine
+     * dello stack.
+     *
+     * @author Salvatore Sarnelli
+     * @param c
+     * @return true se l'inserimento è stato effettuato correttamente, false
+     * altrimenti.
+     */
     public boolean push(LinkedList<ComplexNumber> c) {
         if (c == null) {
             return false;
@@ -210,6 +217,7 @@ public class Stack {
      * Il metodo si occupa di scambiare gli ultimi due elementi dello stack.
      *
      * @author Salvatore Sarnelli
+     * @throws se_project.exceptions.InvalidOperationException
      * @param
      * @return true se l'operazione di scambio viene effettuata con successo.
      * @throws EmptyStackException se lo stack è vuoto;
@@ -231,6 +239,7 @@ public class Stack {
      * stack e di inserirlo alla fine dello stack.
      *
      * @author Salvatore Sarnelli
+     * @throws se_project.exceptions.InvalidOperationException
      * @param
      * @return true se l'operazione di over viene effettuata con successo.
      * @throws EmptyStackException se lo stack è vuoto; EmptyStackException se

@@ -5,6 +5,8 @@
  */
 package se_project.parser;
 
+import java.util.LinkedList;
+import se_project.commands.Command;
 import se_project.commands.OperationCommand;
 import se_project.commands.OperationsFactory;
 
@@ -31,6 +33,8 @@ public class ParserString implements AbstractParserString {
     public OperationsFactory getFactory() {
         return factory;
     }
+  
+    
     
 }
 

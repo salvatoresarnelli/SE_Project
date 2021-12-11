@@ -229,7 +229,7 @@ public class UserDefinedOperationParser extends ParserString {
 
             ExecuteUserDefinedOperationCommand userDefOp = userOperation(textString);
             if (userDefOp != null) {
-                return userDefOp;
+              
             }
         }
 
@@ -293,6 +293,5 @@ public class UserDefinedOperationParser extends ParserString {
      * 
      *
      */
-   
-    
+  
 }

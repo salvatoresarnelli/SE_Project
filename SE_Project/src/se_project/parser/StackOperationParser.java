@@ -5,6 +5,10 @@
  */
 package se_project.parser;
 
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import se_project.commands.Command;
 import se_project.commands.OperationCommand;
 import se_project.commands.stackCommands.ClearCommand;
 import se_project.commands.stackCommands.DropCommand;
@@ -28,9 +32,9 @@ public class StackOperationParser extends ParserString{
          if (text.length() == 0) {
             return null;
         }
-        OperationCommand return_value = checkOperationStack(text);
-        if (return_value != null) {
-            return return_value;
+        OperationCommand returnValue = checkOperationStack(text);
+        if (returnValue != null) {
+            return returnValue;
         }
         if(parser!=null)
             return parser.parse(text);
@@ -52,5 +56,7 @@ public class StackOperationParser extends ParserString{
             return new SwapCommand(null);
         return null;
     }
+    
+
     
 }

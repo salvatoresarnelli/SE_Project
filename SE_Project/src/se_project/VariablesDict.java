@@ -110,18 +110,17 @@ public class VariablesDict {
         checkName(var);
         table.put(var, value);
     }
-    
+
     /**
      *
      * @param var
      * @return ComplexNumber
-     * @throws InvalidVariableNameException 
-     * Verifica se la variabile var ha un valore ammissibile. 
-     * Se la variabile non è presente viene lanciata un'eccezione, altrimenti
-     * restituisce il numero complesso associato alla variabile passata.
+     * @throws InvalidVariableNameException Verifica se la variabile var ha un
+     * valore ammissibile. Se la variabile non è presente viene lanciata
+     * un'eccezione, altrimenti restituisce il numero complesso associato alla
+     * variabile passata.
      * @throws se_project.exceptions.NonExistingVariable
      */
-
     public ComplexNumber getVariableValue(char var) throws InvalidVariableNameException, NonExistingVariable {
         checkName(var);
         if (!table.containsKey(var)) {
@@ -129,16 +128,22 @@ public class VariablesDict {
         }
         return table.get(var);
     }
-    
-     /**
+
+    /**
      *
      * @return HashMap<Character,ComplexNumber>
-     * restituisce 
+     * restituisce l'hashmap contentente chiavi e numeri complessi.
      */
-
     public HashMap<Character, ComplexNumber> getTable() {
         return table;
     }
+
+    /**
+     *
+     * @param c
+     * @return ComplexNumber rimuove una variabile se conntenuta nella tabella.
+     * restituisce il numero rimosso, null se il numero non è presente.
+     */
 
     public ComplexNumber remove(char c) {
         if (table.containsKey(c)) {

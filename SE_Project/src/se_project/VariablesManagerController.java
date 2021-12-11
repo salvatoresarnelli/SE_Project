@@ -69,6 +69,7 @@ import se_project.exceptions.UndefinedPhaseException;
 import se_project.exceptions.VariableExistingException;
 import se_project.parser.VariableParser;
 import se_project.parser.ParserString;
+
 /**
  * FXML Controller class
  *
@@ -123,6 +124,8 @@ public class VariablesManagerController implements Initializable {
     private FontAwesomeIconView doubleRight;
     @FXML
     private FontAwesomeIconView doubleLeft;
+    @FXML
+    private Button pushVariableButton;
 
     /**
      * Initializes the controller class.
@@ -333,41 +336,197 @@ public class VariablesManagerController implements Initializable {
 
     @FXML
     private void loadButtonActionPush(ActionEvent event) {
+        Record r;
+        ComplexNumber c;
+        try {
+            r = variablesStack.popVariableSnapShot();
+            dictionary.getTable().clear();
+            for (Character ch : r.getDictRecord().keySet()) {
+                c = r.getDictRecord().get(ch);
+                if (c != null) {
+                    dictionary.getTable().put(ch, c);
+
+                }
+            }
+            index = variablesStack.length();
+            updateTable();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane pane = new JOptionPane("Caricamento effettuato con successo!", JOptionPane.INFORMATION_MESSAGE);
+
+                    JDialog dialog = pane.createDialog(null);
+                    dialog.setModal(false);
+                    dialog.setLocation(500, 380);
+
+                    int intValue = Integer.parseInt("FCFCDA", 16);
+                    Color aColor = new Color(intValue);
+                    pane.setBackground(aColor);
+                    dialog.setBackground(aColor);
+                    dialog.setVisible(true);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    dialog.setVisible(false);
+                }
+            });
+
+        } catch (NoSuchElementException ex) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane pane = new JOptionPane("Impossibile recuperare lo stato precedente delle variabili.", JOptionPane.INFORMATION_MESSAGE);
+
+                    JDialog dialog = pane.createDialog(null);
+                    dialog.setModal(false);
+                    dialog.setLocation(500, 380);
+
+                    int intValue = Integer.parseInt("FCFCDA", 16);
+                    Color aColor = new Color(intValue);
+                    pane.setBackground(aColor);
+                    dialog.setBackground(aColor);
+                    dialog.setVisible(true);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    dialog.setVisible(false);
+                }
+            });
+        }
     }
 
     @FXML
     private void addVarButtonAction(ActionEvent event) {
-        
-        String inputText = input.getText();
-                if(inputText!=null){
 
-        VariableParser parser = new VariableParser(new ParserString());
-        try {
-            VariableCommand command = (VariableCommand) parser.parse(">"+inputText);
-            solver.resolveOperation(command);
-        } catch (OperationNotFoundException ex) {
-            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+        String inputText = input.getText();
+        if (inputText != null && !inputText.isEmpty()) {
+
+            VariableParser parser = new VariableParser(new ParserString());
+            try {
+                VariableCommand command = (VariableCommand) parser.parse(">" + inputText);
+                solver.resolveOperation(command);
+            } catch (OperationNotFoundException ex) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        JOptionPane pane = new JOptionPane("Parametro non valido", JOptionPane.INFORMATION_MESSAGE);
+
+                        JDialog dialog = pane.createDialog(null);
+                        dialog.setModal(false);
+                        dialog.setLocation(500, 380);
+
+                        int intValue = Integer.parseInt("FCFCDA", 16);
+                        Color aColor = new Color(intValue);
+                        pane.setBackground(aColor);
+                        dialog.setBackground(aColor);
+                        dialog.setVisible(true);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        dialog.setVisible(false);
+                    }
+                });
+            } catch (Exception ex) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        JOptionPane pane = new JOptionPane("Impossibile eseguire l'operazione richiesta.", JOptionPane.INFORMATION_MESSAGE);
+
+                        JDialog dialog = pane.createDialog(null);
+                        dialog.setModal(false);
+                        dialog.setLocation(500, 380);
+
+                        int intValue = Integer.parseInt("FCFCDA", 16);
+                        Color aColor = new Color(intValue);
+                        pane.setBackground(aColor);
+                        dialog.setBackground(aColor);
+                        dialog.setVisible(true);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        dialog.setVisible(false);
+                    }
+                });
+            }
+            input.clear();
+            updateTable();
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane pane = new JOptionPane("Inserire il nome di una variabile nella casella di testo prima di procedere", JOptionPane.INFORMATION_MESSAGE);
+
+                    JDialog dialog = pane.createDialog(null);
+                    dialog.setModal(false);
+                    dialog.setLocation(500, 380);
+
+                    int intValue = Integer.parseInt("FCFCDA", 16);
+                    Color aColor = new Color(intValue);
+                    pane.setBackground(aColor);
+                    dialog.setBackground(aColor);
+                    dialog.setVisible(true);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    dialog.setVisible(false);
+                }
+            });
         }
-        input.clear();
-        updateTable();
-    }
     }
 
     @FXML
     private void removeVarButtonAction(ActionEvent event) {
         String inputText = input.getText();
-        if(inputText!=null){
-        inputText = inputText.replaceAll(" ", "");
-        if(inputText.length()==1)
-            dictionary.remove(inputText.charAt(0));
-        input.clear();
+        if (inputText != null && !inputText.isEmpty()) {
+            inputText = inputText.replaceAll(" ", "");
+            if (inputText.length() == 1) {
+                
+                dictionary.remove(inputText.charAt(0));
+            }
+            input.clear();
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane pane = new JOptionPane("Inserire una variabile nella casella di testo prima di procedere", JOptionPane.INFORMATION_MESSAGE);
+
+                    JDialog dialog = pane.createDialog(null);
+                    dialog.setModal(false);
+                    dialog.setLocation(500, 380);
+
+                    int intValue = Integer.parseInt("FCFCDA", 16);
+                    Color aColor = new Color(intValue);
+                    pane.setBackground(aColor);
+                    dialog.setBackground(aColor);
+                    dialog.setVisible(true);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    dialog.setVisible(false);
+                }
+            });
         }
         updateTable();
 
     }
-
 
     @FXML
     private void leftArrowAction(MouseEvent event) {
@@ -431,15 +590,16 @@ public class VariablesManagerController implements Initializable {
 
     @FXML
     private void doubleRightAction(MouseEvent event) {
-        HashMap<Character, ComplexNumber> map=null;
+        HashMap<Character, ComplexNumber> map = dictionary.getTable();
         Record read = null;
+        if(variablesStack.length()>0){
         try {
-            while(index!=0){
-            iterator = (ListIterator<Record>) variablesStack.iterator(index);
-            
-             read = iterator.previous();
-            map = read.getDictRecord();
-            index--;
+            while (index > 0) {
+                iterator = (ListIterator<Record>) variablesStack.iterator(index);
+
+                read = iterator.previous();
+                map = read.getDictRecord();
+                index--;
             }
             VariableSet variableSet;
             observableList.clear();
@@ -462,13 +622,104 @@ public class VariablesManagerController implements Initializable {
         } catch (NoSuchElementException ex) {
 
         }
+        }
     }
 
     @FXML
     private void doubleLeftAction(MouseEvent event) {
-        index=variablesStack.length();
+        index = variablesStack.length();
+        updateTable();
+    }
+
+    @FXML
+    private void pushVariableAction(ActionEvent event) {
+        
+        String inputText = input.getText();
+        if (inputText != null && !inputText.isEmpty()) {
+
+            VariableParser parser = new VariableParser(new ParserString());
+            try {
+                VariableCommand command = (VariableCommand) parser.parse("<" + inputText);
+                solver.resolveOperation(command);
+            } catch (OperationNotFoundException ex) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        JOptionPane pane = new JOptionPane("Parametro non valido", JOptionPane.INFORMATION_MESSAGE);
+
+                        JDialog dialog = pane.createDialog(null);
+                        dialog.setModal(false);
+                        dialog.setLocation(500, 380);
+
+                        int intValue = Integer.parseInt("FCFCDA", 16);
+                        Color aColor = new Color(intValue);
+                        pane.setBackground(aColor);
+                        dialog.setBackground(aColor);
+                        dialog.setVisible(true);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        dialog.setVisible(false);
+                    }
+                });
+            } catch (Exception ex) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        JOptionPane pane = new JOptionPane("Impossibile eseguire l'operazione richiesta.", JOptionPane.INFORMATION_MESSAGE);
+
+                        JDialog dialog = pane.createDialog(null);
+                        dialog.setModal(false);
+                        dialog.setLocation(500, 380);
+
+                        int intValue = Integer.parseInt("FCFCDA", 16);
+                        Color aColor = new Color(intValue);
+                        pane.setBackground(aColor);
+                        dialog.setBackground(aColor);
+                        dialog.setVisible(true);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        dialog.setVisible(false);
+                    }
+                });
+            }
+            input.clear();
             updateTable();
-        }        
-    
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane pane = new JOptionPane("Inserire il nome di una variabile nella casella di testo prima di procedere", JOptionPane.INFORMATION_MESSAGE);
+
+                    JDialog dialog = pane.createDialog(null);
+                    dialog.setModal(false);
+                    dialog.setLocation(500, 380);
+
+                    int intValue = Integer.parseInt("FCFCDA", 16);
+                    Color aColor = new Color(intValue);
+                    pane.setBackground(aColor);
+                    dialog.setBackground(aColor);
+                    dialog.setVisible(true);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(VariablesManagerController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    dialog.setVisible(false);
+                }
+            });
+
+        }
+                    listView.setItems(FXCollections.observableList(solver.getStructureStack().getStack()));
+
+    }
 
 }

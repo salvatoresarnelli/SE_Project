@@ -19,7 +19,7 @@ import se_project.exceptions.VariableExistingException;
  */
 public class SumVariableCommand extends VariableCommand{
     
-    public SumVariableCommand(Character variable, VariableCommand command) {
+    public SumVariableCommand(Character variable) {
     }
     
     public SumVariableCommand() {
