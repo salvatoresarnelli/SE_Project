@@ -6,7 +6,7 @@
 package se_project.commands;
 
 /**
- *
+ * Quest'interfaccia astratta definisce il metodo execute.
  * @author aless
  */
 public abstract interface Command {

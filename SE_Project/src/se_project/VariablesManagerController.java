@@ -429,7 +429,7 @@ public class VariablesManagerController implements Initializable {
         try{
         if (variablesStack.length() > 0) {
                 index =0;
-                read = variablesStack.first();
+                read = variablesStack.last();
                 map = read.getDictRecord();
                 VariableSet variableSet;
                 observableList.clear();

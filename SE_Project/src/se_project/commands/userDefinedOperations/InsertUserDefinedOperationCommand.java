@@ -38,7 +38,10 @@ public class InsertUserDefinedOperationCommand extends OperationCommand {
     public Object execute() throws Exception {
         return commandDict.put(name, new ExecuteUserDefinedOperationCommand(name, commandList));
     }
-
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString() {
         return commandList.toString();

@@ -90,8 +90,18 @@ public class VariablesStack {
         return history.size();
     }
 
-    
-    public Record first(){
+    /**
+     *Questo metodo restituisce l'ultimo elemento dello stack.
+     * @return Record
+     */
+    public Record last(){
         return history.get(0);
+    }
+     /**
+     *Questo metodo restituisce l' elemento in cima allo stack.
+     * @return Record
+     */
+    public Record top(){
+        return history.get(length()-1);
     }
 }

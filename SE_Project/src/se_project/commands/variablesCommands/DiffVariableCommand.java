@@ -35,7 +35,10 @@ public class DiffVariableCommand extends VariableCommand{
         dict.forceSettingVariable(super.getVariable(), c_1);
         return c_1;
     }
-
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString() {
         return "-" + super.getVariable();

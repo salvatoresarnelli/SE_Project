@@ -44,7 +44,10 @@ public VariableCommand() {
     public VariablesDict getDictionary() {
         return dictionary;
     }
-
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString() {
         return "VariableCommand{" + "dictionary=" + dictionary + '}';

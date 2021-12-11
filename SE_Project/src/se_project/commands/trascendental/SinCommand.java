@@ -45,7 +45,10 @@ public class SinCommand extends OperationCommand{
         }
 
     }
-
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString() {
         return name;

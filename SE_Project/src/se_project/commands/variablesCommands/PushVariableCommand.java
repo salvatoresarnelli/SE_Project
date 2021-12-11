@@ -31,6 +31,10 @@ public class PushVariableCommand extends VariableCommand{
         stack.push(c);
         return c;
     }
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString(){
         return ">" + super.getVariable();

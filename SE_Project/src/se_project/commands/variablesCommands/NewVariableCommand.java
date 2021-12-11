@@ -43,14 +43,13 @@ public class NewVariableCommand extends VariableCommand {
 
         return complex;
     }
-
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString(){
         return ">" + super.getVariable();
     }
-    /*
-    NewVariableCommand(Character variable, VariableCommand command) {
-        
-    }
-     */
+   
 }

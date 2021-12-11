@@ -59,7 +59,10 @@ public class ExecuteUserDefinedOperationCommand extends OperationCommand {
     public LinkedList<OperationCommand> getCommandList() {
         return commandList;
     }
-
+     /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
     @Override
     public String toString() {
         return commandList.toString();

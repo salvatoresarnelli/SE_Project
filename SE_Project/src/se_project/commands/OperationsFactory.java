@@ -29,23 +29,30 @@ import se_project.commands.trascendental.SinCommand;
 import se_project.commands.variablesCommands.SaveVariableCommand;
 
 /**
+ * Tale classe consente di generare instanze di Comandi "command". In
+ * particolare, questi vengono generati ma non sono ancora applicabili, in
+ * quanto il loro target viene definito solo dall'oggetto che si occuperà di
+ * eseguire e gestire la loro esecuzione.
  *
  * @author aless
  */
 public class OperationsFactory {
 
-    public HashMap<String, ExecuteUserDefinedOperationCommand> operationsTable;
-
     public OperationsFactory() {
 
     }
 
-    public void addCommand(String name, LinkedList<OperationCommand> command) {
-        ExecuteUserDefinedOperationCommand userDefinedCommand = new ExecuteUserDefinedOperationCommand(name, command);
-        operationsTable.put(name, userDefinedCommand);
-
-    }
-
+    /**
+     * Questo metodo consente di generare un comando, a partire da una stringa
+     * passatagli come parametro.
+     * Esempio: 
+     * - getOperationCommand("+") restituisce un'instanza di PlusCommand.
+     * - getOperationCommand("save") restituisceun'instanza di SaveVariableCommand
+     *
+     * @param type
+     * @return OperationCommand
+     * @throws se_project.exceptions.OperationNotFoundException
+     */
     public OperationCommand getOperationCommand(String type) throws OperationNotFoundException {
         if (type.startsWith(">") && type.length() == 2) {
             type = "NewVariableCommand";
@@ -113,13 +120,51 @@ public class OperationsFactory {
         if (type.equals("cos")) {
             return new CosCommand();
         }
-        if (type.equals("SaveVariableCommand")){
+        if (type.equals("SaveVariableCommand")) {
             return new SaveVariableCommand();
         }
 
         throw new OperationNotFoundException();
     }
-
+    /**
+     * Questo metodo consente di generare un comando, a partire da una stringa
+     * passatagli come parametro e una mappa Stringa->Operazioni.
+     * In particolare, consente di individuare se un comando richiesto
+     * è uno dei comandi già esistenti, oppure è un comando contenuto nella tabella 
+     * passata come parametro.
+     * Nel caso in cui questo viene riconosciuto, viene restituito un'instanza del
+     * comando.
+     * 
+     * Esempio: 
+     *  Supponendo che dict sia come definito in tabella:
+     *                __________________________________
+     *               |               |lista delle opera-|
+     *               |nome operazione|      zioni       |
+     *               |______________ |__________________|
+     *               |    sum        |     + + +        |
+     *               |_______________|__________________| 
+     *               |   diffsum     |     - sum        |
+     *               |_______________|__________________|
+     *               
+     * 
+     * - getOperationCommand("+",dict): restituisce un'instanza di PlusCommand;
+     * 
+     * - getOperationCommand("save",dict): restituisce un'instanza di
+     *                                     SaveVariableCommand;
+     * 
+     * - getOperationCommand("sum",dict): restituisce un'instanza di
+     *                                    ExecuteUserDefinedOperationCommand in
+     *                                    cui la CommandList è + + +;
+     * 
+     * - getOperationCommand("sum",dict): restituisce un'instanza di
+     *                                    ExecuteUserDefinedOperationCommand in
+     *                                    cui la CommandList è - + + +;
+     *
+     * @param type
+     * @param table
+     * @return OperationCommand
+     * @throws se_project.exceptions.OperationNotFoundException
+     */
     public OperationCommand getOperationCommand(String type, HashMap<String, OperationCommand> table) throws OperationNotFoundException {
         try {
             return getOperationCommand(type);

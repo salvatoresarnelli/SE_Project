@@ -7,36 +7,51 @@ package se_project.commands;
 
 import se_project.ComplexNumber;
 import se_project.Stack;
-import se_project.VariablesDict;
 
 /**
+ * Questa classe astratta rappresenta un'operazione generica. Presenta al
+ * proprio interno un'instanza dello stack, su cui verranno effettuate le
+ * operazioni.
+ *
  *
  * @author aless
  */
 public abstract class OperationCommand implements Command {
+
     private Stack target;
-    private ComplexNumber number;
-    
+
+    /**
+     * Costruttore vuoto
+     */
     public OperationCommand() {
-        
+
     }
+
+    /**
+     * Costruttore che setta lo stack come target.
+     *
+     * @param stack
+     */
     public OperationCommand(Stack stack) {
         this.target = stack;
     }
 
-    public OperationCommand(Stack target, ComplexNumber number) {
-        this.target = target;
-        this.number = number;
-    }
-
+    /**
+     * Restituisce lo stack definito come target.
+     *
+     * @return Stack
+     */
     public Stack getTarget() {
-            return target;
+        return target;
     }
 
+    /**
+     * Setta lo stack definito come target con il parametro passato.
+     *
+     * @param target
+     */
     public void setTarget(Stack target) {
         this.target = target;
     }
 
-    
-    
 }

@@ -29,7 +29,11 @@ public class SwapCommand extends OperationCommand{
     public Boolean execute() throws EmptyStackException, InvalidOperationException {
         return super.getTarget().swap();
     }
-
+ /**
+     * La toString della classe ColonsCommand contiene solo il nome
+     * dell'operazione.
+     */
+    @Override
     public String toString() {
         return name;
     }
