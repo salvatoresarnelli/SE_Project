@@ -44,28 +44,31 @@ public class ComplexNumberParser extends ParserString {
     /**
      * Il metodo prende in ingresso una stringa da dover controllare. In
      * particolare controlla se l'utente sta cercando di definire un numero
-     * complesso, nel caso contrario chiama il parser che viene esteso.
+     * complesso.
      *
      * @param text, Stringa da dover formattare.
      * @return OperationCommand, comando da eseguire.
-     * @throws java.lang.Exception
+     *
      *
      *
      */
-    
     private OperationCommand numberParser(String text) {
-    
+
         if (text.length() == 0) {
             return null;
         }
         OperationCommand return_value;
-
+        //per semplicità viene pulita la stringa, eliminando temporaneamente l'operatore iniziale
+        //se presente, ed eventuali \n.
         char first = this.checkFirstCharacter(text);
         text = clearString(text);
-
+        //se il testo inizia ancora con un operatore, c'è un errore nell'input.
+        //esempio : ++3.
         if (text.startsWith("+") || text.startsWith("-")) {
             return null;
         }
+        //viene controllato se la stringa data in input è un numero complesso attraverso il metodo
+        //checkComplexNumber, in caso positivo viene definito il comando InsertNumberCommand
         String ret = checkComplexNumber(text);
         if (ret.equals(complex_number)) {
             return new InsertNumberCommand(recognizeComplexNumber(text), null);
@@ -74,20 +77,36 @@ public class ComplexNumberParser extends ParserString {
             return null;
         }
         ret = checkPossibleOneNumber(text);
+        /*
+        si è cercata di fare la differenza tra un numero complesso, definito completo, il quale contiene sia parte immaginaria 
+        che reale, ed un single_number, il quale è un numero puramente reale o puramente immaginario.
+         */
 
         if (ret == single_number) {
-           
             return new InsertNumberCommand(recognizeNumber((first + text).replaceAll(" ", "")), null);
         }
         return null;
     }
-    
+
+    /**
+     * Il metodo prende in ingresso una stringa da dover controllare. In
+     * particolare controlla se l'utente sta cercando di definire un numero
+     * complesso, nel caso contrario chiama il parser che viene esteso.
+     *
+     * @param text, Stringa da dover formattare.
+     * @return OperationCommand, comando da eseguire.
+     * @throws java.lang.Exception , NullPointerException
+     *
+     *
+     */
     @Override
     public OperationCommand parse(String text) throws NullPointerException, Exception {
+        //Il metodo è un override del Parser che viene decorato ed esteso. Vengono implementate
+        //funzionalità aggiuntive, come quelle appunto di riconoscere un numero dato in input.
         OperationCommand command;
         command = numberParser(text);
-        if(command !=null){
-             return command;
+        if (command != null) {
+            return command;
         }
         return parser.parse(text);
     }
@@ -101,19 +120,30 @@ public class ComplexNumberParser extends ParserString {
      * @return ComplexNumber il metodo ritorna un numero complesso.
      */
     public ComplexNumber recognizeNumber(String text) {
+        //vengono eliminati gli spazi nella stringa.
         String replaceAll = text.replaceAll(" ", "");
+        //viene eliminato l'operatore + o - se presente.
         char operator1 = this.checkFirstCharacter(text);
         text = this.clearString(replaceAll);
+        //se il numero contiene una j, allora potrebbe essere un numero immaginario
         if (text.contains("j")) {
             StringBuilder sb = new StringBuilder(text);
+            //se la lunghezza di sb è >2 significa che non è stato inserito correttamente
+            //il numero complesso.
             if (sb.length() > 2) {
                 return null;
             }
+            //se la stringa data in input contiene solamente j, l'utente sta cercando di definire
+            //il numero complesso 0 +1j.
             if (text.equals("j")) {
                 return new ComplexNumber(0, Double.parseDouble(operator1 + "1"));
             }
+            //qui viene controllata la posizione di j, in quanto potrebbe essere presente sia come primo carattere
+            // esempio --> 3j ; oppure come secondo carattere --> j3
             if (sb.charAt(0) == 'j') {
                 try {
+                    //se è presente come primo carattere, si cerca di convertire in double il numero in posizione 1
+                    //nel caso in cui non si riesca a tradurre, viene catturata l'eccezione e si va avanti.
                     double imaginary = Double.parseDouble(String.valueOf(sb.charAt(1)));
                     String finalImaginary = operator1 + String.valueOf(imaginary);
                     return new ComplexNumber(0, Double.parseDouble(finalImaginary));
@@ -123,6 +153,7 @@ public class ComplexNumberParser extends ParserString {
                 }
 
             }
+            //ragionamento simmetrico rispetto al precedente.
             if (sb.charAt(1) == 'j') {
                 try {
                     double imaginary = Double.parseDouble(String.valueOf(sb.charAt(0)));
@@ -133,7 +164,8 @@ public class ComplexNumberParser extends ParserString {
                 }
             }
 
-        } else {
+        }//se non contiene una j, allora l'utente potrebbe voler definire un numero puramente reale.
+        else {
             double real = Double.parseDouble(operator1 + text);
             return new ComplexNumber(real, 0);
         }
@@ -148,10 +180,12 @@ public class ComplexNumberParser extends ParserString {
      * @return ritorna un numero complesso.
      */
     public ComplexNumber recognizeComplexNumber(String text) {
+        //vengono eliminati gli spazi nella stringa.
         text = text.replaceAll(" ", "");
+        //viene eliminato l'operatore + o - se presente.
         char operator1 = this.checkFirstCharacter(text);
         text = this.clearString(text);
-
+        //viene salvato anche l'operatore presente all'interno della string, in quanto dopo la split, verrà perso.
         char operator2 = ' ';
         if (text.contains("+")) {
             operator2 = '+';
@@ -159,22 +193,32 @@ public class ComplexNumberParser extends ParserString {
         if (text.contains("-")) {
             operator2 = '-';
         }
+        //viene splittato sull'operatore e si coprono tutte le casistiche possibili 
+        // parte reale + parte immaginaria o parte immaginaria + parte reale
+        // parte reale - parte immaginaria o parte immaginaria - parte reale
         String[] scanner = text.split("\\+|\\-");
         text = scanner[0];
+        //se text contiene una j, allora ci troviamo nel caso immaginaria + o - quella reale.
         if (text.contains("j")) {
             StringBuilder sb = new StringBuilder(text);
+            //se la lunghezza di sb è >2 significa che non è stato inserito correttamente
+            //il numero complesso.
             if (sb.length() > 2) {
                 return null;
             }
-
+              //se la stringa data in input contiene solamente j, l'utente sta cercando di definire
+            //il numero complesso parte reale +1j.
             if (text.equals("j")) {
                 double real = Double.parseDouble(String.valueOf(operator2 + scanner[1]));
                 return new ComplexNumber(real, Double.parseDouble(operator1 + "1"));
 
             }
-
+              //qui viene controllata la posizione di j, in quanto potrebbe essere presente sia come primo carattere
+            // esempio --> 3j ; oppure come secondo carattere --> j3
             if (sb.charAt(0) == 'j') {
                 try {
+                     //se è presente come primo carattere, si cerca di convertire in double il numero in posizione 1
+                    //nel caso in cui non si riesca a tradurre, viene catturata l'eccezione e si va avanti.
                     double imaginary = Double.parseDouble(operator1 + String.valueOf(sb.charAt(1)));
                     double real = Double.parseDouble(String.valueOf(operator2 + scanner[1]));
                     return new ComplexNumber(real, imaginary);
@@ -183,6 +227,7 @@ public class ComplexNumberParser extends ParserString {
 
                 }
             }
+                //ragionamento simmetrico rispetto al precedente.
             if (sb.charAt(1) == 'j') {
                 try {
                     double imaginary = Double.parseDouble(operator1 + String.valueOf(sb.charAt(0)));
@@ -193,17 +238,27 @@ public class ComplexNumberParser extends ParserString {
 
                 }
             }
-        } else {
+        } //nel caso in cui il text non conteneva una j, allora l'utente potrebbe voler inserire
+        //parte reale + o - parte immaginaria.
+        else {
+            //si converte la stringa in un double.
             double real = Double.parseDouble(operator1 + scanner[0]);
             text = scanner[1];
+              //se text contiene una j, allora potrebbe essere un numero complesso.
             if (text.contains("j")) {
+                     //se la lunghezza di sb è >2 significa che non è stato inserito correttamente
+            //il numero complesso.
                 StringBuilder sb = new StringBuilder(text);
                 if (sb.length() > 2) {
                     return null;
                 }
+                 //se la stringa data in input contiene solamente j, l'utente sta cercando di definire
+            //il numero complesso parte reale +1j.
                 if (text.equals("j")) {
                     return new ComplexNumber(real, Double.parseDouble(operator2 + "1"));
                 }
+                 //qui viene controllata la posizione di j, in quanto potrebbe essere presente sia come primo carattere
+            // esempio --> 3j ; oppure come secondo carattere --> j3
                 if (sb.charAt(0) == 'j') {
                     try {
                         double imaginary = Double.parseDouble(operator2 + String.valueOf(sb.charAt(1)));
@@ -213,6 +268,7 @@ public class ComplexNumberParser extends ParserString {
 
                     }
                 }
+                //ragionamento simmetrico rispetto al precedente.
                 if (sb.charAt(1) == 'j') {
                     try {
                         double imaginary = Double.parseDouble(operator2 + String.valueOf(sb.charAt(0)));
@@ -240,23 +296,32 @@ public class ComplexNumberParser extends ParserString {
     public String checkComplexNumber(String text) {
 
         if (text.contains("+") || text.contains("-")) {
+            //vengono eliminati gli spazi presenti nella stringa.
             String replaceAll = text.replaceAll(" ", "");
+            //viene fatta la split sull'operatore presente nella stringa.
             String[] scanner = replaceAll.split("\\+|\\-");
+                      //se la lunghezza di scanner è >2 significa che non è stato inserito correttamente
+            //il numero complesso.
             if (scanner.length > 2) {
                 return invalid_insert;
             }
+            //scanner[0] potrebbe essere un numero reale + un numero immaginario oppure il contrario. 
             if (this.checkPossiblePartReal(scanner[0])) {
+                //se scanner[0] è un numero reale, allora viene controllato che scanner[1] sia un numero immaginario.
                 try {
                     String element = scanner[1];
+                    //l'eccezione viene lanciata nel caso in cui scanner[1], nel caso in cui esso non esista.
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return invalid_insert;
                 }
                 return this.checkPossiblePartImaginary(scanner[1]) ? complex_number : invalid_insert;
             }
-
+              //scanner[0] potrebbe essere un numero immaginario + un numero reale oppure il contrario. 
             if (this.checkPossiblePartImaginary(scanner[0])) {
+           //se scanner[0] è un numero immaginario, allora viene controllato che scanner[1] sia un numero reale.
                 try {
                     String element = scanner[1];
+                      //l'eccezione viene lanciata nel caso in cui scanner[1], nel caso in cui esso non esista.
                 } catch (ArrayIndexOutOfBoundsException e) {
                     return invalid_insert;
                 }
@@ -303,6 +368,9 @@ public class ComplexNumberParser extends ParserString {
      */
     public boolean checkPossiblePartReal(String text) {
         try {
+            //si cerca di convertire la stringa in double. In caso di successo, 
+            //il metodo torna true. Nel caso in cui viene lanciata un'eccezione,
+            //allora il metodo torna false;
             double real = Double.parseDouble(text);
             return true;
         } catch (NumberFormatException ex) {
@@ -323,14 +391,19 @@ public class ComplexNumberParser extends ParserString {
         text = this.clearString(text);
         text = text.replaceAll(" ", "");
         if (text.contains("j")) {
+            //se la lunghezza di sb è >2 significa che non è stato inserito correttamente
+            //il numero complesso.
             StringBuilder sb = new StringBuilder(text);
             if (sb.length() > 2) {
                 return false;
             }
-
+                //se la stringa data in input contiene solamente j, l'utente sta cercando di definire
+            //il numero complesso parte reale +1j.
             if (sb.charAt(0) == 'j' && sb.length() == 1) {
                 return true;
             }
+          //qui viene controllata la posizione di j, in quanto potrebbe essere presente sia come primo carattere
+            // esempio --> 3j ; oppure come secondo carattere --> j3
             if (sb.charAt(0) == 'j') {
 
                 try {
@@ -343,7 +416,7 @@ public class ComplexNumberParser extends ParserString {
                 }
 
             }
-
+    //ragionamento simmetrico rispetto al precedente.
             if (sb.charAt(1) == 'j') {
                 try {
                     double imaginary = Double.parseDouble(String.valueOf(sb.charAt(0)));
@@ -369,6 +442,7 @@ public class ComplexNumberParser extends ParserString {
      *
      */
     public String checkPossibleOneNumber(String text) {
+        //se è solo un numero, allora viene controllato che esso sia un numero puramente reale o puramente immaginario.
         if (this.checkPossiblePartReal(text)) {
             return single_number;
         }
@@ -377,6 +451,8 @@ public class ComplexNumberParser extends ParserString {
     }
 
     public char checkFirstCharacter(String text) {
+        //viene pulita la stringa, eliminando gli eventuali /n
+        // e il primo carattere se è un operatore + o - 
         text = text.replaceAll("\\n", "");
         if (text.startsWith("+") || text.startsWith("-")) {
             StringBuilder sb = new StringBuilder(text);
@@ -387,5 +463,4 @@ public class ComplexNumberParser extends ParserString {
         return ' ';
     }
 
-  
 }

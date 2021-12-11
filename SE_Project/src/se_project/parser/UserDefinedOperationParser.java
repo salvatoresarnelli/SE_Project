@@ -74,16 +74,7 @@ public class UserDefinedOperationParser extends ParserString {
      * definiti precedentemente.
      *
      */
-    /*
-    public UserDefinedOperationParser(ParserString parserString, HashMap<String, OperationCommand> hashMap1) throws InvalidNameException {
-        this.parserString = parserString;
-        hashMap1.keySet().stream().filter((s) -> (!this.checkName(s))).forEachOrdered((_item) -> {
-            throw new InvalidNameException();
-        });
-        operationDict.setHashMap(hashMap1);
-        linkedList = new LinkedList<>();
-        Collections.addAll(linkedList, "+", "-", "+-", "sqrt", "*", ":", "dup", "swap", "over", "drop");
-    }
+   
 
     /**
      * Il metodo prende in ingresso una stringa da dover formattare, eliminando
@@ -96,6 +87,8 @@ public class UserDefinedOperationParser extends ParserString {
      *
      */
     public String clearStringOperation(String text) throws StringIndexOutOfBoundsException {
+        //vengono elimnati \n se presenti e i primi due caratteri, in quanto per definire un'operazione
+        //l'utente deve inserire >>... 
         text = text.replaceAll("\\n", "");
         if (text.length() < 2) {
             throw new StringIndexOutOfBoundsException();
@@ -118,11 +111,13 @@ public class UserDefinedOperationParser extends ParserString {
      * @return string stringa formattata.
      *
      */
+    
     public boolean checkName(String text) {
 
         char[] chars = text.toCharArray();
         StringBuilder sb = new StringBuilder();
         for (char c : chars) {
+            //nel caso in cui un carattere contenga un numero, il metodo torna false, true altrimenti.
             if (Character.isDigit(c)) {
                 return false;
             }
@@ -170,24 +165,34 @@ public class UserDefinedOperationParser extends ParserString {
 
     private InsertUserDefinedOperationCommand parseInsert(String textString) throws ArrayIndexOutOfBoundsException,
             ExistingNameException, OperationNotFoundException, Exception {
+        //viene pulita la stringa da vari \n e da i primi due caratteri usati per definire un'operazione
         textString = this.clearStringOperation(textString);
+        //viene fatta la split sul carattere delimitatore tra il nome della funzione e la lista delle operazione
+        //che l'utente vuole associare.
         String[] string = textString.split("\\$");
         String possible_name = string[0];
+        //vengono elimnati gli spazi.
         possible_name = possible_name.replaceAll(" ", "");
-
+        //se l'utente cerca di definire l'operazione di un carattere o un operazione predefinita presente 
+        //nella linked list, ovver + - * : swap  dup over drop. L'inserimento di un operazione con un 
+        //carattere non è permesso, in quanto ambiguo con la definizione delle variabili.
         if (possible_name.length() <= 1 || linkedList.contains(possible_name)) {
             return null;
         }
+        //controllo che il nome non abbia caratteri alfanumerici.
         String possible_operations = string[1];
         if (!this.checkName(possible_name)) {
             return null;
         }
+        //eliminati gli spazi.
         possible_operations = this.removeInitialSpaces(possible_operations);
         LinkedList<OperationCommand> finalOperations = new LinkedList<>();
-
+        //se il nome dell'operazione è stato già utilizzato, viene lanciata l'eccezione ExistingNameException.
         if (!operationDict.getHashMap().containsKey(possible_name)) {
+            //vengono prese le operazioni attraverso la split sullo spazio. 
             String[] operations = possible_operations.split("\\s+");
             for (String possibile_operation : operations) {
+                //se l'operazione non è quella definita da un utente, allora viene aggiunta alla lista dei comandi.
                 if (!operationDict.getHashMap().containsKey(possibile_operation)) {
                     OperationCommand parsed = parserString.parse(possibile_operation);
                     if (parsed == null) {
@@ -199,7 +204,7 @@ public class UserDefinedOperationParser extends ParserString {
                     finalOperations.add(super.getFactory().getOperationCommand(possibile_operation, operationDict.getHashMap()));
                 }
             }
-
+            //vengono associati la lista dei comandi al nome definito dall'utente.
             operationDict.getHashMap().put(possible_name, new ExecuteUserDefinedOperationCommand(possible_name, finalOperations));
             return new InsertUserDefinedOperationCommand(possible_name, finalOperations, operationDict.getHashMap());
         }
@@ -222,9 +227,11 @@ public class UserDefinedOperationParser extends ParserString {
     @Override
     public OperationCommand parse(String textString) throws ArrayIndexOutOfBoundsException,
             ExistingNameException, OperationNotFoundException, InvalidNameException, Exception {
+        //se la stringa inizia con i due caratteri >, allora l'utente potrebbe voler definire un'operazione
         if (textString.startsWith(">>")) {
             return parseInsert(textString);
         }
+        //se la stringa invece è il nome di un operazione definita dall'utente, viene chiamata la funzione userOperation.
         if (operationDict.getNames() != null && operationDict.getNames().contains(textString)) {
 
             ExecuteUserDefinedOperationCommand userDefOp = userOperation(textString);
@@ -232,6 +239,7 @@ public class UserDefinedOperationParser extends ParserString {
               
             }
         }
+        //altrimenti vengono chiamate le funzionalità del parser decorato.
 
         return parserString.parse(textString);
     }

@@ -64,7 +64,7 @@ public class OperationsManagerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        //vengono inizializzate le colonne con i nomi degli attributi presenti nell'oggetto OperationSet
         nameColumn.setCellValueFactory(new PropertyValueFactory("nameOperation"));
         operationColumn.setCellValueFactory(new PropertyValueFactory("listOperation"));
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -77,6 +77,7 @@ public class OperationsManagerController implements Initializable {
         } catch (IOException ex) {
             alert("unable to reach sidepane.fxml", "", "");
         }
+        //viene definito lo switch per cambiare la scena a seconda del button cliccato dall'utente.
         for (Node n : box.getChildren()) {
             if (n.getAccessibleText() != null) {
                 n.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -96,6 +97,7 @@ public class OperationsManagerController implements Initializable {
                             case "Carica Funzione":
                                 interfacciaController = this.loadController();
                                 interfacciaController.uploadFunctions();
+                                this.setObservableList();
                                 break;
 
                             case "Gestione Operazioni":
@@ -155,17 +157,34 @@ public class OperationsManagerController implements Initializable {
         });
 
     }
+   /**
+     *Il metodo viene utilizzato per aggiornare l'observable list che è 
+     * legata alla tableView.
+     *
+     */
 
     private void setObservableList() {
         if (operationDict.getNames().isEmpty()) {
+            observableList.clear();
             return;
         }
         observableList.clear();
         String s = "";
+        /*
+        operationDict è un oggetto di tipo OperationDict, in cui sono presenti tutte le 
+        operazioni definite dall'utente, in cui la chiave identifica il nome dell'operazione,
+        mentre il value corrisponde alla lista di comandi associati. Quindi, per aggiornare la tableView
+        a seconda degli input dell'utente, viene aggiornata una observableList di  OperationSet, il quale 
+        oggetto contiene due parametri di tipo Stringa, ovvero il nome e le operazioni associate.
+        */
+          //per tutte le operazioni definite dall'utente.
         for (String name : operationDict.getNames()) {
             OperationSet operationSet;
+            //viene creata una lista d'appoggio in cui vengono salvati tutti i comandi associati al nome dell'operazione.
             LinkedList<OperationCommand> supportList = operationDict.getOperations(name).getCommandList();
             for (OperationCommand command : supportList) {
+                //per tutti i comandi associati al nome, vengono considerati vari casi, poiché la classe OperationCommand è
+                //estesa da vari oggetti.
                 if (command instanceof ExecuteUserDefinedOperationCommand) {
                     s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
                 } else if (command instanceof VariableCommand) {
@@ -175,7 +194,7 @@ public class OperationsManagerController implements Initializable {
                 }
             }
             s += "\n";
-
+            //una volta definita la stringa, viene creato un oggetto OperationSet da inserire nell'observable list.
             operationSet = new OperationSet(name, s);
 
             observableList.add(operationSet);
@@ -183,11 +202,20 @@ public class OperationsManagerController implements Initializable {
         }
 
     }
-
+    /**
+     *Il metodo, associato al button remove, viene utilizzato per rimuovere un'operazione presente all'interno
+     * della tableView.
+     *@param ActionEvent event.
+     *
+     */
   
     @FXML
     private void actionButtonRemove(ActionEvent event) {
+        //viene selezionato l'operationSet cliccato dall'utente.
         OperationSet selectedItem = tableViewOperations.getSelectionModel().getSelectedItem();
+        //viene controllato se l'operazione cliccata dall'utente è presente anche in altre operazioni.
+        //nel caso in cui è presente in altre operazioni, si è deciso di non permettere la rimozione dell'operazione
+        //selezionata.
         for(String name : operationDict.getNames()){
             if(operationDict.getOperationString(name).contains(selectedItem.getNameOperation())){
                 this.alert("Errore!", "Impossibile eliminare l'operazione", "L'operazione "+ selectedItem.getNameOperation() +  "è presente anche in " + name);
@@ -196,6 +224,7 @@ public class OperationsManagerController implements Initializable {
             }
             
         }
+        //se non è associata ad altre, viene eliminata.
         operationDict.removeOperation(selectedItem.getNameOperation());
         this.setObservableList();
        
