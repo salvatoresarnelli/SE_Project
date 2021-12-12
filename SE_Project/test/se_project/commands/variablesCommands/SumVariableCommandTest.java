@@ -10,5 +10,4 @@ package se_project.commands.variablesCommands;
  * @author aless
  */
 public class SumVariableCommandTest {
-    OperationCommand command
 }
