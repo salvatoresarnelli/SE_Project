@@ -56,6 +56,7 @@ import other.OperationSet;
 import other.VariableSet;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
+import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.NewVariableCommand;
@@ -213,7 +214,7 @@ public class InterfacciaController implements Initializable {
               di testo l'ultimo comando passato.
             o alla pressione del tasto freccia giù deve comparire nella casella 
               di testo il comando passato successivamente.
-        */
+         */
         inputField.setOnKeyPressed((KeyEvent event) -> {
             String tmp;
             /*se è stato premuto enter, si passa la stringa scritta nella casella
@@ -269,7 +270,8 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void ActionPush(ActionEvent event) throws InvalidVariableNameException, NonExistingVariable {
-        try {//alla pressione del tasto push, si legge il contenuto della casella di testo
+        try {
+            //alla pressione del tasto push, si legge il contenuto della casella di testo
             String text = inputField.getText();
             //si aggiunge la stringa allo storico delle stringhe inserite se la stringa  non è vuota.
             if (!text.isEmpty()) {
@@ -278,7 +280,8 @@ public class InterfacciaController implements Initializable {
             }
             OperationCommand code = null;
 
-            try {//si passa la stringa passata al parser.
+            try {
+                //si passa la stringa passata al parser.
                 code = decoratorParserOperation.parse(text);
 
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -294,9 +297,11 @@ public class InterfacciaController implements Initializable {
                 return;
 
             } catch (ExistingNameException ex) {
+                
                 /*se è stato riscontrato un inserimento di una variabile che ha già valore 
                 si chiede se la si vuole sovrascrivere*/
                 //viene mostrato un Alert che chiede come si vuole procedere.
+                
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Operazione già inserita");
                 alert.setHeaderText("L'operazione è già stata inserita");
@@ -311,23 +316,24 @@ public class InterfacciaController implements Initializable {
                     decoratorParserOperation.removeOperation(possible_name);
                     decoratorParserOperation.parse(text);
                     inputField.clear();
-                   
+
                     return;
                 } else {
-                       //Altrimenti si pulisce la casella di testo.
+                    //Altrimenti si pulisce la casella di testo.
 
                     inputField.clear();
                     return;
                 }
 
             } catch (CollisionException ex) {
-                /*se è stato riscontrata una collisione si chiede di chiarire l'
-                ambiguità*/
+                
+                /*se è stato riscontrata una collisione si chiede di chiarire l'ambiguità*/
+                
                 String message = ex.getMessage();
                 ButtonType jNumber = new ButtonType("Inserimento Numero");
                 ButtonType operation = new ButtonType("Operazione con Variabile");
 
-                Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma" + "C'è stata una collisione, cosa intendi fare?", jNumber, operation);
+                Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma. " + "C'è stata una collisione, cosa intendi fare?", jNumber, operation);
                 alert.showAndWait();
                 if (alert.getResult() == operation) {
                     if (message.charAt(0) == '+') {
@@ -392,7 +398,8 @@ public class InterfacciaController implements Initializable {
 
                 }
               
-            } else {
+            } 
+            else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
                 return;
@@ -416,9 +423,18 @@ public class InterfacciaController implements Initializable {
         }
 
         this.setVariablesList();
-       
-       
+
     }
+    
+    /**
+     * Il metodo si occupa di inserire il nome della variabile e il valore
+     * associato nella lista osservabile
+     *
+     * @param
+     *
+     * @throws InvalidVariableNameException se il nome della variabile non è
+     * valido, NonExistingVariableException se la variabile non esiste
+     */
 
     public void setVariablesList() {
         String s = "";
@@ -432,13 +448,21 @@ public class InterfacciaController implements Initializable {
                 variablesList.add(variableSet);
 
             } catch (InvalidVariableNameException | NonExistingVariable ex) {
-
+                alert("Errore", "", "Operazione non ammissibile");
             }
 
         }
 
     }
- 
+    
+    /**
+     * Il metodo si occupa di inserire il nome dell'operazione e le operazioni
+     * associate nella lista osservabile
+     *
+     * @param
+     *
+     * @throws
+     */
 
     @FXML
     public void numberOnText(ActionEvent ae) {
@@ -446,32 +470,66 @@ public class InterfacciaController implements Initializable {
         inputField.setText(inputField.getText() + no);
     }
 
+    /**
+     * Il metodo si occupa di inserire le operazioni nel campo di testo tramite
+     * la pressione dei pulsanti adatti
+     *
+     * @param ae
+     */
     @FXML
     public void operationOnText(ActionEvent ae) {
         String no = ((Button) ae.getSource()).getText();
         inputField.setText(inputField.getText() + no);
     }
 
+    /**
+     * Il metodo si occupa di inserire l'operazione di divisione nel campo di
+     * testo tramite la pressione del pulsante adatto
+     *
+     * @param event
+     */
     @FXML
-    void divisionOnText(ActionEvent event) {
+    public void divisionOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "/");
     }
 
+    /**
+     * Il metodo si occupa di inserire l'operazione di moltiplicazione nel campo di
+     * testo tramite la pressione del pulsante adatto
+     *
+     * @param event
+     */
     @FXML
-    void multiplicationOnText(ActionEvent event) {
+    public void multiplicationOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "*");
     }
 
+    /**
+     * Il metodo si occupa di inserire l'operazione di radice quadrata nel campo di
+     * testo tramite la pressione del pulsante adatto
+     *
+     * @param event
+     */
     @FXML
-    void sqrtOnText(ActionEvent event) {
+    public void sqrtOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "sqrt");
     }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
-    void invertedOnText(ActionEvent event) {
+    public void invertedOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "+-");
     }
 
+    /**
+     *
+     * @param title
+     * @param headerText
+     * @param contentText
+     */
     public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
@@ -519,13 +577,14 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
-     /**
-     * Il metodo salva le operazione definite dall'utente in un file scelto dall'utente.
+
+    /**
+     * Il metodo salva le operazione definite dall'utente in un file scelto
+     * dall'utente.
      *
-     * 
+     *
      */
     public void saveFunctions() {
-
         try {
             FileChooser fc = new FileChooser();
             fc.setTitle("Save functions ...");
@@ -550,7 +609,7 @@ public class InterfacciaController implements Initializable {
                 Nel caso in cui sia un'istanza di VariableCommand, ne viene usato il toString, in cui a seconda
                 dell'operazione viene salvato nel file. Altrimento si usa il toString indifferentemente dal tipo 
                 di OperationCommand.
-                */
+                 */
                 for (OperationCommand command : supportList) {
                     if (command instanceof ExecuteUserDefinedOperationCommand) {
                         s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
@@ -568,10 +627,12 @@ public class InterfacciaController implements Initializable {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
         }
     }
-      /**
-     * Il metodo carica le operazione definite dall'utente da un file scelto dall'utente.
+
+    /**
+     * Il metodo carica le operazione definite dall'utente da un file scelto
+     * dall'utente.
      *
-     * 
+     *
      */
     public void uploadFunctions() {
         FileChooser fileChooser = new FileChooser();
@@ -591,26 +652,19 @@ public class InterfacciaController implements Initializable {
                    for (String line : read){                      
                     //la save salva le operazioni in questo modo:
                     // nameFunction : + + + 
-                    String name = line.split("-->")[0];
-                    String operations = line.split("-->")[1];
-                    //una volta salvate le operazioni associate al nome
-                    //viene salvato il pattern che viene utilizzato per caricare le operazioni
-                    //>>nameFunctions $ + + + 
-                    String text = ">>" + name + "$" + operations;
-
                     try {
                         //si utilizza in questo caso il parser che salva appunto le operazioni.
-                        decoratorParserOperation.parse(text);
+                        decoratorParserOperation.parse(line);
                         
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                        alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
                         inputField.clear();
                         return;
                     } catch (OperationNotFoundException ex) {
-                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                        alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
                         newLines.add(line);
                     } catch (NullPointerException ex) {
-                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                        alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
                     } catch (ExistingNameException ex) {
                         //se si cerca di sovrascrivere un'operazione definita dall'utente
                         //si chiede se questa vuole essere sovrascritta o meno.
@@ -620,18 +674,13 @@ public class InterfacciaController implements Initializable {
                         alert.setContentText("Vuoi sovrascriverla?");
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == ButtonType.OK) {
-                            String textString = decoratorParserOperation.clearStringOperation(text);
+                            String textString = decoratorParserOperation.clearStringOperation(line);
                             String[] string = textString.split("\\$");
                             String possible_name = string[0];
                             possible_name = possible_name.replaceAll(" ", "");
                             decoratorParserOperation.removeOperation(possible_name);
-                            decoratorParserOperation.parse(text);
-                           
-                        } else {
-                            inputField.clear();
-                            return;
+                            decoratorParserOperation.parse(line);
                         }
-
                     } catch (Exception ex) {
                         newLines.add(line);
 
@@ -643,6 +692,7 @@ public class InterfacciaController implements Initializable {
                 }
                    read = newLines;
                 }
+              
             } catch (FileNotFoundException ex) {
                 this.alert("Errore!", "Errore nell'apertura del file", "");
             } catch (IOException ex) {
@@ -652,7 +702,6 @@ public class InterfacciaController implements Initializable {
         
         }
 
-    
     }
 
     private void variablesHandlerAction(ActionEvent event) {
@@ -697,21 +746,4 @@ public class InterfacciaController implements Initializable {
         }
 
     }
-
-    @FXML
-    private void minusVarButtonActionPush(ActionEvent event) {
-    }
-
-    @FXML
-    private void saveButtonActionPush(ActionEvent event) {
-    }
-
-    @FXML
-    private void loadButtonActionPush(ActionEvent event) {
-    }
-
-    @FXML
-    private void plusVarButtonActionPush(ActionEvent event) {
-    }
-
 }

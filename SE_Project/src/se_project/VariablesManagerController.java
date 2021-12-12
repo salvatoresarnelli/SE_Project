@@ -104,7 +104,7 @@ public class VariablesManagerController implements Initializable {
     private ListIterator<Record> iterator;
     private int index;
     @FXML
-    private TableColumn<?, ?> raw;
+    private TableColumn<Record, String> raw;
     @FXML
     private TextField input;
     @FXML
@@ -113,9 +113,9 @@ public class VariablesManagerController implements Initializable {
     private FontAwesomeIconView doubleLeft;
     @FXML
     private Button pushVariableButton;
-    
+
     private InterfacciaController interfacciaController;
-    
+
     /**
      * Initializes the controller class.
      */
@@ -206,6 +206,13 @@ public class VariablesManagerController implements Initializable {
         });
     }
 
+    /**
+     * Il metodo fa comparire un alert che notifica un messaggio sullo schermo
+     *
+     * @param String title, String headerText, String contentText
+     * @return
+     * @throws
+     */
     public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -217,6 +224,13 @@ public class VariablesManagerController implements Initializable {
 
     }
 
+    /**
+     * Il metodo si occupa di modificare il contenuto della tabella
+     *
+     * @param
+     * @return
+     * @throws
+     */
     public void updateTable() {
         VariableSet variableSet;
         observableList.clear();
@@ -235,11 +249,28 @@ public class VariablesManagerController implements Initializable {
         raw.setText("Aggiornata a: Ora");
     }
 
+    /**
+     * Il metodo si occupa di inserire la lista osservabile all'interno della
+     * tabella
+     *
+     * @param ObservableList<VariableSet> list
+     * @return
+     * @throws
+     */
     public void setObservableList(ObservableList<VariableSet> list) {
-        observableList = list;
         variablesTableView.setItems(list);
     }
 
+    /**
+     * Il metodo si occupa di eseguire le operazioni associate alle variabili
+     *
+     * @param VariableCommand command
+     * @return InvalidNumberException se il numero non è valido,
+     * EmptyStackException se lo stack è vuoto, InvalidVariableNameException se
+     * il nome della variabile non è valido, VariableExistingException se la
+     * variabile è già esistente.
+     * @throws
+     */
     private void sumDiffResolveCommand(VariableCommand command) {
         VariableSet selected = variablesTableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
@@ -273,6 +304,13 @@ public class VariablesManagerController implements Initializable {
         updateTable();
     }
 
+    /**
+     * Il metodo si occupa di eseguire l'operazione associata al button "+ var"
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void plusVarButtonActionPush(ActionEvent event) {
         if (index != variablesStack.length()) {
@@ -283,6 +321,13 @@ public class VariablesManagerController implements Initializable {
         }
     }
 
+    /**
+     * Il metodo si occupa di eseguire l'operazione associata al button "- var"
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void minusVarButtonActionPush(ActionEvent event) {
         if (index != variablesStack.length()) {
@@ -293,6 +338,13 @@ public class VariablesManagerController implements Initializable {
         }
     }
 
+    /**
+     * Il metodo si occupa di eseguire il salvataggio delle variabili
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void saveButtonActionPush(ActionEvent event) {
         variablesStack.pushVariablesSnapShot(dictionary);
@@ -301,6 +353,14 @@ public class VariablesManagerController implements Initializable {
 
     }
 
+    /**
+     * Il metodo si occupa di caricare le variabili che sono state salvate
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws NoSuchElementException se non sono è stata salvata alcuna
+     * variabile
+     */
     @FXML
     private void loadButtonActionPush(ActionEvent event) {
         Record r;
@@ -324,6 +384,14 @@ public class VariablesManagerController implements Initializable {
         }
     }
 
+    /**
+     * Il metodo si occupa di inserire una variabile nella tabella tramite un
+     * campo di testo
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void addVarButtonAction(ActionEvent event) {
 
@@ -348,6 +416,14 @@ public class VariablesManagerController implements Initializable {
         }
     }
 
+    /**
+     * Il metodo si occupa di rimuovere una variabile dalla tabella tramite un
+     * campo di testo
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void removeVarButtonAction(ActionEvent event) {
         String inputText = input.getText();
@@ -365,6 +441,14 @@ public class VariablesManagerController implements Initializable {
 
     }
 
+    /**
+     * Il metodo si occupa di accedere al salvataggio precedente dello stato
+     * delle variabili
+     *
+     * @param MouseEvent event
+     * @return
+     * @throws NoSuchElementException se non ci sono variabili salvate
+     */
     @FXML
     private void leftArrowAction(MouseEvent event) {
         try {
@@ -394,6 +478,14 @@ public class VariablesManagerController implements Initializable {
         }
     }
 
+    /**
+     * Il metodo si occupa di accedere al salvataggio successivo dello stato
+     * delle variabili
+     *
+     * @param MouseEvent event
+     * @return
+     * @throws NoSuchElementException se non ci sono variabili salvate
+     */
     @FXML
     private void rightArrowAction(MouseEvent event) {
         try {
@@ -425,13 +517,20 @@ public class VariablesManagerController implements Initializable {
         }
     }
 
+    /**
+     * Il metodo si occupa di accedere al primo salvataggio eseguito
+     *
+     * @param MouseEvent event
+     * @return
+     * @throws NoSuchElementException se non ci sono variabili salvate
+     */
     @FXML
     private void doubleRightAction(MouseEvent event) {
         HashMap<Character, ComplexNumber> map = dictionary.getTable();
         Record read = null;
-        try{
-        if (variablesStack.length() > 0) {
-                index =0;
+        try {
+            if (variablesStack.length() > 0) {
+                index = 0;
                 read = variablesStack.last();
                 map = read.getDictRecord();
                 VariableSet variableSet;
@@ -452,18 +551,34 @@ public class VariablesManagerController implements Initializable {
                 String formatDateTime = read.getDate().format(formatter);
                 raw.setText("Aggiornata a: " + formatDateTime);
             }
-            } catch (NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
 
-            }
-        
+        }
+
     }
 
+    /**
+     * Il metodo si occupa di accedere allo stato attuale di salvataggio delle
+     * variabili
+     *
+     * @param MouseEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void doubleLeftAction(MouseEvent event) {
         index = variablesStack.length();
         updateTable();
     }
 
+    /**
+     * Il metodo si occupa di inserire il valore associato alla variabile
+     * inserita nel campo di testo nello stack
+     *
+     * @param MouseEvent event
+     * @return
+     * @throws
+     */
     @FXML
     private void pushVariableAction(ActionEvent event) {
 
@@ -488,6 +603,13 @@ public class VariablesManagerController implements Initializable {
 
     }
 
+    /**
+     * Il metodo si occupa di far comparire sullo schermo un alert
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     private void showLightPane(String msg) {
         Platform.runLater(new Runnable() {
             @Override
@@ -514,12 +636,25 @@ public class VariablesManagerController implements Initializable {
         });
 
     }
-    
-    public InterfacciaController loadController() throws IOException {
+
+    /**
+     * Il metodo si occupa di inserire una variabile nella tabella tramite un
+     * campo di testo
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
+    public InterfacciaController loadController() {
+        try {
             Parent root;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("calculator.fxml"));
             root = fxmlLoader.load();
             InterfacciaController interfacciaController = fxmlLoader.getController();
             return interfacciaController;
+        } catch (IOException ex) {
+            showLightPane("Impossibile eseguire l'operazione");
+        }
+        return null;
     }
 }
