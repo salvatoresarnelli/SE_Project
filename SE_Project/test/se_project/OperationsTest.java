@@ -1486,5 +1486,153 @@ public class OperationsTest {
         ComplexNumber x = null;
         Operations.squareRoot(x);
     }
+    
+    /*-------------------------COS-----------------------------------*/
+    
+    @Test
+    public void testCos_1() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part <0, Imaginary Part <0).
+        result.setRealPart(11.331026594588057);
+        result.setImaginaryPart(7.45511362411162);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(-3.3);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_2() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part >0, Imaginary Part >0).
+        result.setRealPart(-6.038390978838917);
+        result.setImaginaryPart(+1.0547126729205143);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(2.5);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_3() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part >0, Imaginary Part <0).
+        result.setRealPart(-6.038390978838917);
+        result.setImaginaryPart(-1.0547126729205143);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(-2.5);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_4() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part <0, Imaginary Part >0).
+        result.setRealPart(11.331026594588057);
+        result.setImaginaryPart(-7.45511362411162);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(3.3);        
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_5() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(-6.7);
+        result.setRealPart(0.9143831482353194);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_6() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part =0, Imaginary Part >0).         
+        a.setImaginaryPart(8.8);
+        result.setRealPart(3317.1220785054825);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_7() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part =0, Imaginary Part <0).         
+        a.setImaginaryPart(-3.4);
+        result.setRealPart(14.998736658678668);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    @Test
+    public void testCos_8() throws InvalidNumberException, DivisionByZeroException{
+        //cos(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(0.8);
+        result.setRealPart(0.6967067093471654);
+        assertEquals(result,Operations.cos(a).getLast());
+    }
+    
+    /*-------------------------SIN-----------------------------------*/
+    
+    @Test
+    public void testSin_1() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part <0, Imaginary Part <0).
+        result.setRealPart(7.475424651164692);
+        result.setImaginaryPart(-11.300239743212877);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(-3.3);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_2() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part >0, Imaginary Part >0).
+        result.setRealPart(-1.0690222865173111);
+        result.setImaginaryPart(-5.957562877551087);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(2.5);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_3() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part >0, Imaginary Part <0).
+        result.setRealPart(-1.0690222865173111);
+        result.setImaginaryPart(5.957562877551087);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(-2.5);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_4() throws InvalidNumberException, DivisionByZeroException{
+       //sin(Real Part <0, Imaginary Part >0).
+        result.setRealPart(7.475424651164692);
+        result.setImaginaryPart(11.300239743212877);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(3.3);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_5() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(-6.7);
+        result.setRealPart(-0.4048499206165983);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_6() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part =0, Imaginary Part >0).
+        a.setImaginaryPart(8.8);
+        result.setImaginaryPart(3317.121927772407);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_7() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part =0, Imaginary Part <0).
+        a.setImaginaryPart(-3.4);
+        result.setImaginaryPart(-14.965363388718343);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    @Test
+    public void testSin_8() throws InvalidNumberException, DivisionByZeroException{
+        //sin(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(0.8);
+        result.setRealPart(0.7173560908995228);
+        assertEquals(result,Operations.sin(a).getLast());
+    }
 
 }

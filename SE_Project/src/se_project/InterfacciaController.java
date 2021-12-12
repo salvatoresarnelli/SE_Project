@@ -461,7 +461,7 @@ public class InterfacciaController implements Initializable {
      */
     @FXML
     public void divisionOnText(ActionEvent event) {
-        inputField.setText(inputField.getText() + "/");
+        inputField.setText(inputField.getText() + ":");
     }
 
     /**
