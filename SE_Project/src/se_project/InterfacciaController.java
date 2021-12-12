@@ -8,20 +8,26 @@ package se_project;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import java.io.BufferedReader;
 import se_project.parser.UserDefinedOperationParser;
 import se_project.parser.ParserString;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringReader;
 import javafx.scene.control.ListView;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -574,11 +580,15 @@ public class InterfacciaController implements Initializable {
         if (file != null) {
             Scanner sc;
             try {
+                LinkedList<String> read = new LinkedList<>();
                 sc = new Scanner(file);
+                while(sc.hasNextLine())
+                    read.add(sc.nextLine());
+               
                 //il file viene letto riga per riga, poiché in ognuna di esse c'è un operazione.
-                
-                while (sc.hasNext()) {
-                    String line = sc.nextLine();
+                for(int i=0;i<Files.lines(file.toPath()).count();i++){
+                   LinkedList<String> newLines = new LinkedList<>();
+                   for (String line : read){                      
                     //la save salva le operazioni in questo modo:
                     // nameFunction : + + + 
                     String name = line.split("-->")[0];
@@ -591,12 +601,14 @@ public class InterfacciaController implements Initializable {
                     try {
                         //si utilizza in questo caso il parser che salva appunto le operazioni.
                         decoratorParserOperation.parse(text);
+                        
                     } catch (ArrayIndexOutOfBoundsException e) {
                         alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
                         inputField.clear();
                         return;
                     } catch (OperationNotFoundException ex) {
                         alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                        newLines.add(line);
                     } catch (NullPointerException ex) {
                         alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
                     } catch (ExistingNameException ex) {
@@ -621,16 +633,23 @@ public class InterfacciaController implements Initializable {
                         }
 
                     } catch (Exception ex) {
+                        newLines.add(line);
 
                     } finally {
-                        continue;
+                        
+                    continue;
                     }
-
+                   
+                }
+                   read = newLines;
                 }
             } catch (FileNotFoundException ex) {
                 this.alert("Errore!", "Errore nell'apertura del file", "");
+            } catch (IOException ex) {
+                Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        
         }
 
     
