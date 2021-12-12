@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package se_project.commands.operationsCommand;
 
 import java.util.LinkedList;
@@ -11,9 +7,16 @@ import org.junit.Before;
 import org.junit.Test;
 import se_project.ComplexNumber;
 import se_project.Operations;
+import se_project.Solver;
 import se_project.commands.OperationCommand;
+import se_project.commands.trascendental.CosCommand;
+import se_project.commands.trascendental.SinCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.InvalidNumberException;
+import se_project.exceptions.InvalidVariableNameException;
+import se_project.exceptions.NotApplicableOperation;
+import se_project.exceptions.UndefinedPhaseException;
+import se_project.exceptions.VariableExistingException;
 import se_project.parser.ComplexNumberParser;
 import se_project.parser.ParserString;
 
@@ -23,6 +26,9 @@ import se_project.parser.ParserString;
  */
 public class CosCommandTest {
     
+    ComplexNumber a, result;
+    Solver solver;
+    
     public CosCommandTest() {
 
     }
@@ -30,6 +36,10 @@ public class CosCommandTest {
     @Before
     public void setUp() {
         
+        a = new ComplexNumber();
+        result = new ComplexNumber();
+        solver = Solver.getInstance();
+    
     }
 
     @After
@@ -40,47 +50,113 @@ public class CosCommandTest {
      * Test of sin method, of class Operations
      */
     @Test
-    public void testCosCommand() throws InvalidNumberException, DivisionByZeroException {
-        LinkedList<ComplexNumber> ret = new LinkedList();
-        ComplexNumber result = new ComplexNumber(-5.7,-3.3);
-        ComplexNumber expResult = new ComplexNumber(11.331,+7.455);
-        ret.addLast(result);
-        ret = Operations.cos(result);
-        assertEquals(expResult, ret.getLast());
-        ComplexNumber result_2 = new ComplexNumber(-5.7,3.3);
-        ComplexNumber expResult_2 = new ComplexNumber(11.331,-7.455);
-        ret.addLast(result);       
-        ret = Operations.cos(result_2);
-        assertEquals(expResult_2, ret.getLast());
-        ComplexNumber result_3 = new ComplexNumber(9.6,2.5);
-        ComplexNumber expResult_3 = new ComplexNumber(-6.038,1.055);
-        ret.addLast(result);       
-        ret = Operations.cos(result_3);
-        assertEquals(expResult_3, ret.getLast());
-        ComplexNumber result_4 = new ComplexNumber(9.6,-2.5);
-        ComplexNumber expResult_4 = new ComplexNumber(-6.038,-1.055);
-        ret.addLast(result);       
-        ret = Operations.cos(result_4);
-        assertEquals(expResult_4, ret.getLast());
-        ComplexNumber result_5 = new ComplexNumber(-6.7,0);
-        ComplexNumber expResult_5 = new ComplexNumber(0.914,0);
-        ret.addLast(result);       
-        ret = Operations.cos(result_5);
-        assertEquals(expResult_5, ret.getLast());
-        ComplexNumber result_6 = new ComplexNumber(0.0,8.8);
-        ComplexNumber expResult_6 = new ComplexNumber(3317.122,0);
-        ret.addLast(result);       
-        ret = Operations.cos(result_6);
-        assertEquals(expResult_6, ret.getLast());
-        ComplexNumber result_7 = new ComplexNumber(0.0,-3.4);
-        ComplexNumber expResult_7 = new ComplexNumber(14.999,0);
-        ret.addLast(result);       
-        ret = Operations.cos(result_7);
-        assertEquals(expResult_7, ret.getLast());
-        ComplexNumber result_8 = new ComplexNumber(0.8,0.0);
-        ComplexNumber expResult_8 = new ComplexNumber(0.697,0.0);
-        ret.addLast(result);       
-        ret = Operations.cos(result_8);
-        assertEquals(expResult_8, ret.getLast());
+    public void testCosCommandNegative_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part <0, Imaginary Part <0).
+        result.setRealPart(7.4756);
+        result.setImaginaryPart(-11.3);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(-3.3);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testCosCommandNPositive_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part >0, Imaginary Part >0).
+        result.setRealPart(-1.069);
+        result.setImaginaryPart(-5.985);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(2.5);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testCosCommandPositive_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part >0, Imaginary Part <0).
+        result.setRealPart(-1.069);
+        result.setImaginaryPart(5.985);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(-2.5);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+        public void testCosCommandNegative_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part <0, Imaginary Part >0).
+        result.setRealPart(7.475);
+        result.setImaginaryPart(11.3);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(3.3);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    @Test
+    public void testCosCommandPNegative_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(-6.7);
+        result.setRealPart(-0.405);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testCosCommandPositive_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part =0, Imaginary Part >0).         
+        a.setImaginaryPart(8.8);
+        result.setImaginaryPart(3317.122);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testCosCommandNegative_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part =0, Imaginary Part <0).         
+        a.setImaginaryPart(-3.4);
+        result.setImaginaryPart(-14.965);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testCosCommandPositive_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //cos(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(0.8);
+        result.setRealPart(0.717);
+        solver.getStructureStack().push(a);
+        CosCommand command = new CosCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
     }
 }

@@ -164,25 +164,16 @@ public interface Operations {
         if (number2.getModule() == 0) {
             throw new DivisionByZeroException();
         }
-        double n1Module = number1.getModule();
-        double n2Module = number2.getModule();
-        
-        double n1Phase;
-        try {
-            n1Phase = number1.getPhase();
-        } catch (UndefinedPhaseException ex) {
-            n1Phase = 0;
-        }
-        double n2Phase;
-        try {
-            n2Phase = number2.getPhase();
-        } catch (UndefinedPhaseException ex) {
-            n2Phase = 0;
-        }
-        double resultModule = n1Module / n2Module;
-        double resultPhase = n1Phase - n2Phase;
-        return ComplexNumber.fromTrigonometric(resultModule, resultPhase);
-    }
+        double a = number1.getRealPart();
+        double b = number1.getImaginaryPart();
+        double c = number2.getRealPart();
+        double d = number2.getImaginaryPart();
+        double re = ((a*c) + (b*d)) / ((c*c) + (d*d));
+        double im = ((b*c) - (a*d)) / ((c*c) + (d*d));
+        ComplexNumber result = new ComplexNumber(re,im);
+        return result;
+    
+}
 
     /**
      * Represents the sign Operation.

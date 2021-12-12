@@ -127,7 +127,6 @@ public class OperationsFactory {
         if(type.equals("RestoreVariableCommand")) {
             return new RestoreVariableCommand();
         }
-
         throw new OperationNotFoundException();
     }
     /**
