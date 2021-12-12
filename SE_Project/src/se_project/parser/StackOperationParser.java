@@ -16,43 +16,60 @@ import se_project.commands.stackCommands.SwapCommand;
  *
  * @author aless
  */
-public class StackOperationParser extends ParserString{
+public class StackOperationParser extends ParserString {
+
     private ParserString parser;
-    
+
     public StackOperationParser(ParserString parser) {
         this.parser = parser;
     }
 
     @Override
     public OperationCommand parse(String text) throws NullPointerException, Exception {
-         if (text.length() == 0) {
+        if (text.length() == 0) {
             return null;
         }
         OperationCommand returnValue = checkOperationStack(text);
         if (returnValue != null) {
             return returnValue;
         }
-        if(parser!=null)
+        if (parser != null) {
             return parser.parse(text);
-        else return null;
-    }    
-    
+        } else {
+            return null;
+        }
+    }
+
     public OperationCommand checkOperationStack(String text) {
         text = text.replaceAll("\\n", "");
-        String possible_operation = text.toLowerCase();
-        if(possible_operation.equals("clear"))
-            return new ClearCommand(null);
-        if(possible_operation.equals("dup")) 
-            return new DuplicateCommand(null);
-        if(possible_operation.equals("drop"))
-            return new DropCommand(null);
-        if( possible_operation.equals("over"))
-            return new OverCommand(null);
-        if(possible_operation.equals("swap"))
-            return new SwapCommand(null);
+        text = text.trim();
+
+        String possibleOperation = text.toLowerCase();
+        if (possibleOperation.length() >= 5) {
+            possibleOperation = possibleOperation.substring(0, 5);
+            if (possibleOperation.equals("clear")) {
+                return new ClearCommand(null);
+            }
+        }
+        if (possibleOperation.length() >= 4) {
+            possibleOperation = possibleOperation.substring(0, 4);
+            if (possibleOperation.equals("drop")) {
+                return new DropCommand(null);
+            }
+            if (possibleOperation.equals("over")) {
+                return new OverCommand(null);
+            }
+            if (possibleOperation.equals("swap")) {
+                return new SwapCommand(null);
+            }
+        }
+        if (possibleOperation.length() >= 3) {
+            possibleOperation = possibleOperation.substring(0, 3);
+            if (possibleOperation.equals("dup")) {
+                return new DuplicateCommand(null);
+            }
+        }
         return null;
     }
-    
 
-    
 }

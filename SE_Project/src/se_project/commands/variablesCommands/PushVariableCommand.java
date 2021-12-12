@@ -44,6 +44,8 @@ public class PushVariableCommand extends VariableCommand{
      */
     @Override
     public String toString(){
+        if(super.getVariable()==null)
+            return "";
         return ">" + super.getVariable();
     }
     

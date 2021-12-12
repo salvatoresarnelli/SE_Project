@@ -69,6 +69,7 @@ public class VariablesDictTest {
     }
     @Test(expected = NonExistingVariable.class)
     public void getNonExistingVariableTest() throws NonExistingVariable, VariableExistingException, InvalidVariableNameException, InvalidValueException {
+        dict.getTable().clear();
         char input = 'a';
         dict.setVariable(input, new ComplexNumber(0,0));
         dict.getVariableValue('b');

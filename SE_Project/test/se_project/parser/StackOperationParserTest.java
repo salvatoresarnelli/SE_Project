@@ -28,11 +28,11 @@ import se_project.commands.stackCommands.SwapCommand;
  * @author aless
  */
 public class StackOperationParserTest {
+
     private StackOperationParser parser;
     private OperationCommand result;
     private String input;
-    
-    
+
     @Before
     public void setUp() {
         input = new String();
@@ -43,33 +43,188 @@ public class StackOperationParserTest {
     @After
     public void tearDown() {
     }
+
     @Test
     public void testCheckOperation() throws Exception {
+    }
 
+    @Test
+    public void testOverOperation() throws Exception {
 
         input = "over";
         result = ((StackOperationParser) parser).parse(input);
         assertTrue(result instanceof OverCommand);
+    }
+
+    @Test
+    public void testSwapOperation() throws Exception {
         input = "swap";
         result = ((StackOperationParser) parser).parse(input);
         assertTrue(result instanceof SwapCommand);
+    }
+
+    @Test
+    public void testDropOperation() throws Exception {
         input = "drop";
         result = ((StackOperationParser) parser).parse(input);
+
         assertTrue(result instanceof DropCommand);
+    }
+
+    @Test
+    public void testDupOperation() throws Exception {
         input = "dup";
         result = ((StackOperationParser) parser).parse(input);
+
         assertTrue(result instanceof DuplicateCommand);
-        input = "clear";
-        result = ((StackOperationParser) parser).parse(input);
-        assertTrue(result instanceof ClearCommand);
-        input = "sqrt";
-        result = ((StackOperationParser) parser).parse(input);
-        assertNull(result);
-        input = "hello word";
-        result = ((StackOperationParser) parser).parse(input);
-        assertNull(result);
-        input = "\nsqrt";
-        result = ((StackOperationParser) parser).parse(input);
-        assertTrue(result instanceof SqrtCommand);
     }
+    @Test
+    public void testClearOperation() throws Exception {
+        input  = "clear";
+    result  = ((StackOperationParser) parser).parse(input);
+
+    assertTrue(result 
+    
+    
+    instanceof ClearCommand);
+    
+    }
+    
+    @Test
+    public void testOverOperationSpaceBefore() throws Exception {
+
+        input = " over";
+        result = ((StackOperationParser) parser).parse(input);
+        assertTrue(result instanceof OverCommand);
+    }
+
+    @Test
+    public void testSwapOperationSpaceBefore() throws Exception {
+        input = " swap";
+        result = ((StackOperationParser) parser).parse(input);
+        assertTrue(result instanceof SwapCommand);
+    }
+
+    @Test
+    public void testDropOperationSpaceBefore() throws Exception {
+        input = " drop";
+        result = ((StackOperationParser) parser).parse(input);
+
+        assertTrue(result instanceof DropCommand);
+    }
+
+    @Test
+    public void testDupOperationSpaceBefore() throws Exception {
+        input = " dup";
+        result = ((StackOperationParser) parser).parse(input);
+
+        assertTrue(result instanceof DuplicateCommand);
+    }
+    @Test
+    public void testClearOperationSpaceBefore() throws Exception {
+        input  = " clear";
+    result  = ((StackOperationParser) parser).parse(input);
+
+    assertTrue(result 
+    
+    
+    instanceof ClearCommand);
+    
+    }
+    
+    
+    @Test
+    public void testOverOperationSpaceAfter() throws Exception {
+
+        input = "over ";
+        result = ((StackOperationParser) parser).parse(input);
+        assertTrue(result instanceof OverCommand);
+    }
+
+    @Test
+    public void testSwapOperationSpaceAfter() throws Exception {
+        input = "swap ";
+        result = ((StackOperationParser) parser).parse(input);
+        assertTrue(result instanceof SwapCommand);
+    }
+
+    @Test
+    public void testDropOperationSpaceAfter() throws Exception {
+        input = "drop ";
+        result = ((StackOperationParser) parser).parse(input);
+
+        assertTrue(result instanceof DropCommand);
+    }
+
+    @Test
+    public void testDupOperationSpaceAfter() throws Exception {
+        input = "dup ";
+        result = ((StackOperationParser) parser).parse(input);
+
+        assertTrue(result instanceof DuplicateCommand);
+    }
+    @Test
+    public void testClearOperationSpaceAfter() throws Exception {
+        input  = "clear ";
+    result  = ((StackOperationParser) parser).parse(input);
+
+    assertTrue(result 
+    
+    
+    instanceof ClearCommand);
+    
+    }
+    
+    @Test
+    public void testOverOperationSpaceBeforeAndAfter() throws Exception {
+
+        input = " over ";
+        result = ((StackOperationParser) parser).parse(input);
+        assertTrue(result instanceof OverCommand);
+    }
+
+    @Test
+    public void testSwapOperationSpaceBeforeAndAfter() throws Exception {
+        input = " swap ";
+        result = ((StackOperationParser) parser).parse(input);
+        assertTrue(result instanceof SwapCommand);
+    }
+
+    @Test
+    public void testDropOperationSpaceBeforeAndAfter() throws Exception {
+        input = " drop ";
+        result = ((StackOperationParser) parser).parse(input);
+
+        assertTrue(result instanceof DropCommand);
+    }
+
+    @Test
+    public void testDupOperationSpaceBeforeAndAfter() throws Exception {
+        input = " dup ";
+        result = ((StackOperationParser) parser).parse(input);
+
+        assertTrue(result instanceof DuplicateCommand);
+    }
+    @Test
+    public void testClearOperationSpaceBeforeAndAfter() throws Exception {
+        input  = " clear ";
+    result  = ((StackOperationParser) parser).parse(input);
+
+    assertTrue(result 
+    
+    
+    instanceof ClearCommand);
+    
+    }
+    
+    
+    @Test
+    public void testHelloWordOperation() throws Exception {
+    input  = "hello word";
+    result  = ((StackOperationParser) parser).parse(input);
+
+    assertNull(result);
+    
+    }
+        
 }

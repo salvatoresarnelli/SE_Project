@@ -27,9 +27,9 @@ import se_project.exceptions.VariableExistingException;
  * @author aless
  */
 public class NewVariableCommandTest {
-    
-        VariablesDict dict;
-        Solver solver;
+
+    VariablesDict dict;
+    Solver solver;
 
     public NewVariableCommandTest() {
 
@@ -37,7 +37,7 @@ public class NewVariableCommandTest {
 
     @Before
     public void setUp() {
-        dict =  VariablesDict.getInstance();
+        dict = VariablesDict.getInstance();
         solver = Solver.getInstance();
     }
 
@@ -47,22 +47,22 @@ public class NewVariableCommandTest {
 
     @Test
     public void checkCorrectVariableNameStackNotEmptyTest() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
-        solver.getStructureStack().push(new ComplexNumber(0,0));
-        solver.getStructureStack().push(new ComplexNumber(1,1));
-        solver.getStructureStack().push(new ComplexNumber(2,2));
-        solver.getStructureStack().push(new ComplexNumber(3,3));
-        solver.getStructureStack().push(new ComplexNumber(4,4));
+        solver.getStructureStack().push(new ComplexNumber(0, 0));
+        solver.getStructureStack().push(new ComplexNumber(1, 1));
+        solver.getStructureStack().push(new ComplexNumber(2, 2));
+        solver.getStructureStack().push(new ComplexNumber(3, 3));
+        solver.getStructureStack().push(new ComplexNumber(4, 4));
 
         NewVariableCommand command = new NewVariableCommand();
         command.setDictionary(dict);
         command.setVariable('x');
         ComplexNumber number = solver.getStructureStack().pop();
         solver.getStructureStack().push(number);
-        
+
         solver.resolveOperation(command);
         ComplexNumber result = dict.getVariableValue('x');
-        
-        assertEquals(result,number);
+
+        assertEquals(result, number);
     }
 
     @Test(expected = InvalidVariableNameException.class)
@@ -86,26 +86,30 @@ public class NewVariableCommandTest {
         dict.setVariable(input, null);
 
     }
+
     @Test(expected = NonExistingVariable.class)
     public void getNonExistingVariableTest() throws NonExistingVariable, VariableExistingException, InvalidVariableNameException, InvalidValueException {
+        dict.getTable().clear();
+
         char input = 'a';
-        dict.setVariable(input, new ComplexNumber(0,0));
+        dict.setVariable(input, new ComplexNumber(0, 0));
         dict.getVariableValue('b');
 
     }
-    
-        @Test(expected = VariableExistingException.class)
+
+    @Test(expected = VariableExistingException.class)
     public void insertInExistingVariableTest() throws NonExistingVariable, VariableExistingException, InvalidVariableNameException, InvalidValueException {
         char input = 'a';
-        dict.setVariable(input, new ComplexNumber(0,0));
-        dict.setVariable(input,new ComplexNumber(1,1));
+        dict.setVariable(input, new ComplexNumber(0, 0));
+        dict.setVariable(input, new ComplexNumber(1, 1));
     }
+
     @Test
-      public void overrideVariableTest() throws NonExistingVariable, VariableExistingException, InvalidVariableNameException, InvalidValueException {
+    public void overrideVariableTest() throws NonExistingVariable, VariableExistingException, InvalidVariableNameException, InvalidValueException {
         char input = 'c';
-        ComplexNumber expected = new ComplexNumber(0,0);
-        dict.setVariable(input, new ComplexNumber(10,10));
-        dict.forceSettingVariable(input, new ComplexNumber(0,0));
+        ComplexNumber expected = new ComplexNumber(0, 0);
+        dict.setVariable(input, new ComplexNumber(10, 10));
+        dict.forceSettingVariable(input, new ComplexNumber(0, 0));
         ComplexNumber result = dict.getVariableValue(input);
         assertEquals(expected, result);
     }
