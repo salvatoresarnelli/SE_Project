@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import se_project.ComplexNumber;
 import se_project.Solver;
+import se_project.VariablesDict;
 import se_project.commands.InsertNumberCommand;
 import se_project.commands.OperationCommand;
 import se_project.exceptions.OperationNotFoundException;
@@ -25,8 +26,13 @@ import se_project.commands.operationsCommands.SqrtCommand;
 import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.PushVariableCommand;
+import se_project.commands.variablesCommands.RestoreVariableCommand;
+import se_project.commands.variablesCommands.SaveVariableCommand;
 import se_project.commands.variablesCommands.SumVariableCommand;
+import se_project.exceptions.CollisionException;
+import se_project.exceptions.ExistingNameException;
 import se_project.exceptions.InvalidVariableNameException;
+import se_project.exceptions.NonExistingVariable;
 
 /**
  *
@@ -55,6 +61,7 @@ public class VariableParserTest {
     /**
      * Test of checkOperation method, of class ParserString.
      */
+    /*-----------new variable------------*/
     @Test
     public void newVariableParseTest() throws OperationNotFoundException, Exception {
         input = ">xx";
@@ -66,13 +73,62 @@ public class VariableParserTest {
     }
 
     @Test
+    public void newVariableParseTestWithSpacesBefore() throws OperationNotFoundException, Exception {
+        input = " >x";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof NewVariableCommand);
+    }
+
+    @Test
+    public void newVariableParseTestWithSpacesAfter() throws OperationNotFoundException, Exception {
+        input = ">x ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof NewVariableCommand);
+
+    }
+
+    @Test
+    public void newVariableParseTestWithSpacesBeforeAndAfter() throws OperationNotFoundException, Exception {
+        input = " >x ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof NewVariableCommand);
+    }
+
+    @Test
+    public void newVariableButItsANumber() throws OperationNotFoundException, Exception {
+        input = ">1";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+    /*------------Push Variable-----------------*/
+    @Test
     public void pushVariableParseTest() throws OperationNotFoundException, Exception {
         input = "<x";
         result = ((VariableParser) parser).parse(input);
         assertTrue(result instanceof PushVariableCommand);
     }
 
-    
+    @Test
+    public void pushVariableParseTestWithSpacesBefore() throws OperationNotFoundException, Exception {
+        input = " <x";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof PushVariableCommand);
+    }
+
+    @Test
+    public void pushVariableParseTestWithSpacesAfter() throws OperationNotFoundException, Exception {
+        input = "<x ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof PushVariableCommand);
+    }
+
+    @Test
+    public void pushVariableParseTestWithSpacesBeforeAndAfter() throws OperationNotFoundException, Exception {
+        input = " <x ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof PushVariableCommand);
+    }
+
     @Test
     public void invalidPushVariableParseTest() throws OperationNotFoundException, Exception {
         input = "<xx";
@@ -84,7 +140,17 @@ public class VariableParserTest {
     }
 
     @Test
+    public void pushVariableButItsANumber() throws OperationNotFoundException, Exception {
+        input = "<1";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    /*--------------------- +var------------------------------------*/
+
+    @Test
     public void SumVariableParseTestUnexistingVariable() throws OperationNotFoundException, Exception {
+        VariablesDict.getInstance().getTable().clear();
         input = "+x";
         result = ((VariableParser) parser).parse(input);
         assertNull(result);
@@ -103,7 +169,39 @@ public class VariableParserTest {
     }
 
     @Test
+    public void SumVariableJNonExistingParseTest() throws OperationNotFoundException, Exception, NonExistingVariable {
+        VariablesDict.getInstance().getTable().clear();
+
+        input = "+j";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    @Test(expected = CollisionException.class)
+    public void SumVariableJExistingParseTest() throws OperationNotFoundException, Exception {
+        VariablesDict.getInstance().getTable().clear();
+
+        solver.getStructureStack().push(new ComplexNumber(1, 1));
+        input = ">j";
+        result = ((VariableParser) parser).parse(input);
+        solver.resolveOperation(result);
+
+        input = "+j";
+        result = ((VariableParser) parser).parse(input);
+    }
+
+    public void SumVariableButItsANumber() throws OperationNotFoundException, Exception {
+
+        input = "+1";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    /*--------------------- -var ------------------------------------*/
+    @Test
     public void DiffVariableParseTestUnexistingVariable() throws OperationNotFoundException, Exception {
+        VariablesDict.getInstance().getTable().clear();
+
         input = "-x";
         result = ((VariableParser) parser).parse(input);
         assertNull(result);
@@ -121,8 +219,52 @@ public class VariableParserTest {
     }
 
     @Test
+    public void DiffVariableJNonExistingParseTest() throws OperationNotFoundException, Exception {
+        VariablesDict.getInstance().getTable().clear();
+
+        input = "-j";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+
+    }
+
+    @Test(expected = CollisionException.class)
+    public void DiffVariableJExistingParseTest() throws OperationNotFoundException, Exception {
+        VariablesDict.getInstance().getTable().clear();
+
+        input = ">j";
+        result = ((VariableParser) parser).parse(input);
+        solver.resolveOperation(result);
+
+        input = "-j";
+        result = ((VariableParser) parser).parse(input);
+    }
+
+    public void DiffVariableButItsANumber() throws OperationNotFoundException, Exception {
+
+        input = "-1";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    /*---------------------Wrong Strings------------------------------------*/
+    @Test
     public void JusVariableNameParseTest() throws OperationNotFoundException, Exception {
         input = "x";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void nullTest() throws OperationNotFoundException, Exception {
+        input = null;
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    @Test
+    public void emptyStringTest() throws OperationNotFoundException, Exception {
+        input = "";
         result = ((VariableParser) parser).parse(input);
         assertNull(result);
     }
@@ -161,13 +303,15 @@ public class VariableParserTest {
         assertNull(result);
 
     }
+
     @Test
     public void invalidVarialeSumTest() throws OperationNotFoundException, Exception {
         input = "+<";
         result = ((VariableParser) parser).parse(input);
         assertNull(result);
     }
-     @Test(expected = InvalidVariableNameException.class)
+
+    @Test(expected = InvalidVariableNameException.class)
     public void invalidVarialeDiffTest() throws OperationNotFoundException, InvalidVariableNameException, Exception {
         input = "-<";
         result = ((VariableParser) parser).parse(input);
@@ -182,33 +326,88 @@ public class VariableParserTest {
         assertNull(result);
 
     }
-    /*
-      @Test
-    public void testParserString() throws Exception {
-        ComplexNumberParser parser = new ComplexNumberParser(new ParserString());
 
-        String text = "";
-        
-        OperationCommand result = parser.parse(text);
-        assertNull(result);
-        text = "++4";
-        result = parser.parse(text);
-        assertNull(result);
-        text = "--4";
-        result = parser.parse(text);
-        assertNull(result);
-        text = "+4 +3j";
-        ComplexNumber expNumber = new ComplexNumber(4,3);
-        result = parser.parse(text);
-        assertTrue(result instanceof InsertNumberCommand);
-        assertEquals(expNumber,((InsertNumberCommand)result).getNumber());
-        text = "+4j";
-        result = parser.parse(text);
-        assertTrue(result instanceof InsertNumberCommand);
-        expNumber.setRealPart(0);
-        expNumber.setImaginaryPart(4);
-        assertEquals(expNumber,((InsertNumberCommand)result).getNumber());
+    /*---------------------Save------------------------------------*/
+    @Test
+    public void saveTest() throws OperationNotFoundException, Exception {
 
+        input = "save";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof SaveVariableCommand);
     }
-     */
+
+    @Test
+    public void saveTestWithSpacesInside() throws OperationNotFoundException, Exception {
+
+        input = "s a v e";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    @Test
+    public void saveTestWithSpacesBefore() throws OperationNotFoundException, Exception {
+
+        input = " save";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof SaveVariableCommand);
+    }
+
+    @Test
+    public void saveTestWithSpacesAfter() throws OperationNotFoundException, Exception {
+
+        input = "save ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof SaveVariableCommand);
+    }
+
+    @Test
+    public void saveTestWithSpacesBeforeAndAfter() throws OperationNotFoundException, Exception {
+
+        input = " save ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof SaveVariableCommand);
+    }
+
+    /*---------------------Restore------------------------------------*/
+    @Test
+    public void restoreTest() throws OperationNotFoundException, Exception {
+
+        input = "restore";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof RestoreVariableCommand);
+    }
+
+    @Test
+    public void restoreTestWithSpacesInside() throws OperationNotFoundException, Exception {
+
+        input = "r e s t o r e";
+        result = ((VariableParser) parser).parse(input);
+        assertNull(result);
+    }
+
+    @Test
+    public void restoreTestWithSpacesBefore() throws OperationNotFoundException, Exception {
+
+        input = " restore";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof RestoreVariableCommand);
+    }
+
+    @Test
+    public void restoreTestWithSpacesAfter() throws OperationNotFoundException, Exception {
+
+        input = "restore ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof RestoreVariableCommand);
+    }
+
+    @Test
+    public void restoreTestWithSpacesBeforeAndAfter() throws OperationNotFoundException, Exception {
+
+        input = " restore ";
+        result = ((VariableParser) parser).parse(input);
+        assertTrue(result instanceof RestoreVariableCommand);
+    }
+
+
 }
