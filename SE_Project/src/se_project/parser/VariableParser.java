@@ -55,6 +55,14 @@ public class VariableParser extends ParserString {
      */
     @Override
     public OperationCommand parse(String text) throws ArrayIndexOutOfBoundsException, OperationNotFoundException, Exception {
+        if (checkVariableSave(text)) {
+            SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("SaveVariableCommand");
+            command.setDictionary(dict);
+            command.setVariablesStack(variablesStack);
+            return command;
+
+        }
+        
         String textString = text.replaceAll(" ", "");
 
         if (checkVariableIns(textString)) {
@@ -98,13 +106,7 @@ public class VariableParser extends ParserString {
             return command;
 
         }
-        if (checkVariableSave(textString)) {
-            SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("SaveVariableCommand");
-            command.setDictionary(dict);
-            command.setVariablesStack(variablesStack);
-            return command;
 
-        }
 
         return parser.parse(textString);
     }
@@ -160,7 +162,18 @@ public class VariableParser extends ParserString {
      *
      */
     private boolean checkVariableSave(String textString) {
-        return textString != null && textString.equals("save");
+        if(textString==null)
+            return false;
+        StringBuffer sb = new StringBuffer(textString);
+        textString = textString.trim();
+        if(textString.length()<4)
+            return false;
+        
+        String afterSave = textString.substring(4).replaceAll(" ", "");
+        if(afterSave.length()!=0)
+            return false;
+        textString = textString.replaceAll(" ","");
+        return textString.equals("save");
 
     }
 
