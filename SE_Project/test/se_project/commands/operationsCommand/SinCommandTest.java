@@ -11,9 +11,15 @@ import org.junit.Before;
 import org.junit.Test;
 import se_project.ComplexNumber;
 import se_project.Operations;
+import se_project.Solver;
 import se_project.commands.OperationCommand;
+import se_project.commands.trascendental.SinCommand;
 import se_project.exceptions.DivisionByZeroException;
 import se_project.exceptions.InvalidNumberException;
+import se_project.exceptions.InvalidVariableNameException;
+import se_project.exceptions.NotApplicableOperation;
+import se_project.exceptions.UndefinedPhaseException;
+import se_project.exceptions.VariableExistingException;
 import se_project.parser.ComplexNumberParser;
 import se_project.parser.ParserString;
 
@@ -23,6 +29,9 @@ import se_project.parser.ParserString;
  */
 public class SinCommandTest {
     
+    ComplexNumber a, result;
+    Solver solver;
+    
     public SinCommandTest() {
 
     }
@@ -30,6 +39,10 @@ public class SinCommandTest {
     @Before
     public void setUp() {
         
+        a = new ComplexNumber();
+        result = new ComplexNumber();
+        solver = Solver.getInstance();
+    
     }
 
     @After
@@ -40,60 +53,114 @@ public class SinCommandTest {
      * Test of sin method, of class Operations
      */
     @Test
-    public void testSinCommand() throws InvalidNumberException, DivisionByZeroException {
-        LinkedList<ComplexNumber> ret = new LinkedList();
-        ComplexNumber result = new ComplexNumber(-5.7,-3.3);
-        ComplexNumber expResult = new ComplexNumber(7.475,-11.3);
-        ret.addLast(result);
-        ret = Operations.sin(result);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult, ret.getLast());
-        ComplexNumber result_2 = new ComplexNumber(-5.7,3.3);
-        ComplexNumber expResult_2 = new ComplexNumber(+7.475,+11.3);
-        ret.addLast(result);       
-        ret = Operations.sin(result_2);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_2, ret.getLast());
-        ComplexNumber result_3 = new ComplexNumber(9.6,2.5);
-        ComplexNumber expResult_3 = new ComplexNumber(-1.069,-5.958);
-        ret.addLast(result);       
-        ret = Operations.sin(result_3);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_3, ret.getLast());
-        ComplexNumber result_4 = new ComplexNumber(9.6,-2.5);
-        ComplexNumber expResult_4 = new ComplexNumber(-1.069,5.958);
-        ret.addLast(result);       
-        ret = Operations.sin(result_4);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_4, ret.getLast());
-        ComplexNumber result_5 = new ComplexNumber(-6.7,0);
-        ComplexNumber expResult_5 = new ComplexNumber(-0.405,0);
-        ret.addLast(result);       
-        ret = Operations.sin(result_5);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_5, ret.getLast());
-        ComplexNumber result_6 = new ComplexNumber(0.0,8.8);
-        ComplexNumber expResult_6 = new ComplexNumber(0,3317.122);
-        ret.addLast(result);       
-        ret = Operations.sin(result_6);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_6, ret.getLast());
-        ComplexNumber result_7 = new ComplexNumber(0.0,-3.4);
-        ComplexNumber expResult_7 = new ComplexNumber(0,-14.965);
-        ret.addLast(result);       
-        ret = Operations.sin(result_7);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_7, ret.getLast());
-        ComplexNumber result_8 = new ComplexNumber(0.8,0.0);
-        ComplexNumber expResult_8 = new ComplexNumber(0.717,0.0);
-        ret.addLast(result);       
-        ret = Operations.sin(result_8);
-        //System.out.println(ret.getLast());
-        assertEquals(expResult_8, ret.getLast());
-        
-        
-        
+    public void testSinCommandNegative_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part <0, Imaginary Part <0).
+        result.setRealPart(7.475);
+        result.setImaginaryPart(-11.3);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(-3.3);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testSinCommandNPositive_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part >0, Imaginary Part >0).
+        result.setRealPart(-1.069);
+        result.setImaginaryPart(-5.985);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(2.5);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
         
     }
     
+    @Test
+    public void testSinCommandPositive_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part >0, Imaginary Part <0).
+        result.setRealPart(-1.069);
+        result.setImaginaryPart(5.985);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(-2.5);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+        public void testSinCommandNegative_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part <0, Imaginary Part >0).
+        result.setRealPart(7.475);
+        result.setImaginaryPart(11.3);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(3.3);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    @Test
+    public void testSinCommandPNegative_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(-6.7);
+        result.setRealPart(-0.405);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testSinCommandPositive_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part =0, Imaginary Part >0).         
+        a.setImaginaryPart(8.8);
+        result.setImaginaryPart(3317.122);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testSinCommandNegative_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part =0, Imaginary Part <0).         
+        a.setImaginaryPart(-3.4);
+        result.setImaginaryPart(-14.965);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
+    
+    @Test
+    public void testSinCommandPositive_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
+        //sin(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(0.8);
+        result.setRealPart(0.717);
+        solver.getStructureStack().push(a);
+        SinCommand command = new SinCommand();
+        solver.resolveOperation(command);
+        ComplexNumber peeked = solver.getStructureStack().peek();
+        assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
+        assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+    }
 }

@@ -109,7 +109,6 @@ public class InterfacciaController implements Initializable {
     @FXML
     private JFXDrawer drawer;
     private Button variablesHandler;
-
     private ObservableList<VariableSet> variablesList;
     private ObservableList<OperationSet> operationsList;
     OperationDict operationDict = OperationDict.getInstance();
@@ -356,6 +355,13 @@ public class InterfacciaController implements Initializable {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             }
             if (code != null) {
+                
+               // se il parser torna un codice diverso da null, allora si cerca di eseguire l'operazione richiesta.
+                
+                //viene utilizzata una struttura d'appoggio per la funzionalità di rollback.
+                //Le operazioni di rollback risultano decisamente importanti nell'integrità dello stack,
+                //poiché permettono di riparare lo stack , riportandolo a una versione precedente dopo aver commesso un errore.
+                //o dopo che viene lanciata un'eccezione.
                 Stack structureStack = new Stack();
                 structureStack.getStack().addAll(this.solver.getStructureStack().getStack());
                 try {
@@ -421,7 +427,6 @@ public class InterfacciaController implements Initializable {
         } catch (Exception ex) {
             alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
         }
-
         this.setVariablesList();
 
     }
@@ -672,13 +677,13 @@ public class InterfacciaController implements Initializable {
                         //si chiede se questa vuole essere sovrascritta o meno.
                         Alert alert = new Alert(AlertType.CONFIRMATION);
                         alert.setTitle("Operazione già inserita");
-                        alert.setHeaderText("L'operazione è già stata inserita");
+                        String textString = decoratorParserOperation.clearStringOperation(line);
+                        String[] string = textString.split("\\$");
+                        String possible_name = string[0];
+                        alert.setHeaderText("L'operazione " + possible_name+ " è già stata inserita");
                         alert.setContentText("Vuoi sovrascriverla?");
                         Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {
-                            String textString = decoratorParserOperation.clearStringOperation(line);
-                            String[] string = textString.split("\\$");
-                            String possible_name = string[0];
+                        if (result.get() == ButtonType.OK) {                            
                             possible_name = possible_name.replaceAll(" ", "");
                             decoratorParserOperation.removeOperation(possible_name);
                             decoratorParserOperation.parse(line);
