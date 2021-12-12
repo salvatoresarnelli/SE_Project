@@ -109,7 +109,7 @@ public class InterfacciaController implements Initializable {
     @FXML
     private JFXDrawer drawer;
     private Button variablesHandler;
-    OperationDict operationDict = OperationDict.getInstance();
+    private final OperationDict operationDict = OperationDict.getInstance();
     private VBox box;
     @FXML
     private HBox hbox;
@@ -514,13 +514,12 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void ActionClear(ActionEvent event) throws EmptyStackException {
-
         this.solver.getStructureStack().clear();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
 
     }
-
+    
     @FXML
     private void ActionDrop(ActionEvent event) throws EmptyStackException {
         this.solver.getStructureStack().drop();
@@ -556,19 +555,24 @@ public class InterfacciaController implements Initializable {
      *
      */
     public void saveFunctions() {
-        try {
+       
             FileChooser fc = new FileChooser();
             fc.setTitle("Save functions ...");
             fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
             File file = fc.showSaveDialog(new Stage());
-            //se il file non è stato scelto
+            this.SaveFunctionsFromFile(file);
+           
+    }
+    public boolean SaveFunctionsFromFile(File file){
+         //se il file non è stato scelto
             if (file == null) {
-                return;
+                return false;
             }
-            //una volta scelto il file, si costruisce la stringa da stampare nel file
+            try{//una volta scelto il file, si costruisce la stringa da stampare nel file
             PrintWriter pw = new PrintWriter(file);
             String s = "";
             //per tutte le operazioni definite dall'utente
+            if(operationDict.getNames().isEmpty())return true;
             for (String name : operationDict.getNames()) {
                 s += name + " -->";
                 //viene salvata la lista contenente tutti i comandi dell'operazione associate al nome 
@@ -596,7 +600,9 @@ public class InterfacciaController implements Initializable {
             pw.close();
         } catch (FileNotFoundException ex) {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
-        }
+        
+    }
+        return true;
     }
 
     /**
@@ -609,6 +615,11 @@ public class InterfacciaController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
         File file = fileChooser.showOpenDialog(new Stage());
+        this.uploadFunctionsFromFile(file);
+        
+
+    }
+    public void uploadFunctionsFromFile(File file){
         if (file != null) {
             Scanner sc;
             try {
@@ -674,6 +685,6 @@ public class InterfacciaController implements Initializable {
 
         
         }
-
+        
     }
 }

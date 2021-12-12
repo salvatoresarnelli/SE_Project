@@ -44,4 +44,7 @@ public class SaveVariableCommand extends VariableCommand {
         return true;
     }
 
+    public String toString(){
+        return "save";
+    }
 }

@@ -58,4 +58,7 @@ public class RestoreVariableCommand extends VariableCommand {
         return true;
     }
 
+    public String toString(){
+        return "restore";
+    }
 }
