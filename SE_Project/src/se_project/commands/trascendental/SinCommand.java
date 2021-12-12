@@ -16,7 +16,7 @@ import se_project.exceptions.NotApplicableOperation;
 import se_project.exceptions.UndefinedPhaseException;
 
 /**
- * Questa classe rappresenta un'operazione di coseno. Essa, essendo
+ * Questa classe rappresenta un'operazione di seno. Essa, essendo
  * un'operazione, estende la classe OperationCommand, ereditandone un'instanza
  * dello stack. è presente un'ulteriore attributo, "name", che rappresenta il
  * nome dell'operazione.

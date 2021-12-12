@@ -26,6 +26,7 @@ import se_project.commands.stackCommands.OverCommand;
 import se_project.commands.stackCommands.SwapCommand;
 import se_project.commands.trascendental.CosCommand;
 import se_project.commands.trascendental.SinCommand;
+import se_project.commands.trascendental.TanCommand;
 import se_project.commands.variablesCommands.RestoreVariableCommand;
 import se_project.commands.variablesCommands.SaveVariableCommand;
 
@@ -120,6 +121,9 @@ public class OperationsFactory {
         }
         if (type.equals("cos")) {
             return new CosCommand();
+        }
+        if (type.equals("tan")) {
+            return new TanCommand();
         }
         if (type.equals("SaveVariableCommand")) {
             return new SaveVariableCommand();

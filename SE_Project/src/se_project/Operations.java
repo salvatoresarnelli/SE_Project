@@ -380,5 +380,38 @@ public interface Operations {
         ret.addLast(cos); 
         return ret;
     }
+    
+    /**
+     * Represents the tan Operation.
+     *
+     * @author Pio Salvatore Morrone
+     * @version 1.0
+     * @param number
+     * @return the linkedlist with the result at the last position
+     *
+     * @throws InvalidNumberException, DivisionByZeroException
+     *
+     * Such method is a static method of the class Operations. It performs the
+     * tan of the parameter passed to such function.
+     *
+     * Such operation is executed calculating the tan of a complex number as it follows sin(z)/cos(z).
+     *
+     * As follows, some examples:
+     *
+     * o suppose 1+2j => sin(1+2j)/cos(1+2j)
+     *
+     *
+     *
+     */   
+    public static LinkedList<ComplexNumber> tan(ComplexNumber number) throws InvalidNumberException, DivisionByZeroException{
+        LinkedList<ComplexNumber> ret = new LinkedList<>();
+        if(number==null)
+            throw new InvalidNumberException();
+        ComplexNumber sin = Operations.sin(number).getLast();
+        ComplexNumber cos = Operations.cos(number).getLast();
+        ComplexNumber tg = Operations.divisionOperation(sin, cos);
+        ret.addLast(tg);
+        return ret;
+    }
 }
     
