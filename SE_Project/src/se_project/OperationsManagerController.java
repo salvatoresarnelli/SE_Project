@@ -218,7 +218,7 @@ public class OperationsManagerController implements Initializable {
         //selezionata.
         for(String name : operationDict.getNames()){
             if(operationDict.getOperationString(name).contains(selectedItem.getNameOperation())){
-                this.alert("Errore!", "Impossibile eliminare l'operazione", "L'operazione "+ selectedItem.getNameOperation() +  "è presente anche in " + name);
+                this.alert("Errore!", "Impossibile eliminare l'operazione", "L'operazione  "+ selectedItem.getNameOperation() +  " è presente anche in " + name);
                 return;
                 
             }

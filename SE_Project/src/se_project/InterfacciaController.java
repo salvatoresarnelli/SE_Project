@@ -207,7 +207,7 @@ public class InterfacciaController implements Initializable {
               di testo l'ultimo comando passato.
             o alla pressione del tasto freccia giù deve comparire nella casella 
               di testo il comando passato successivamente.
-        */
+         */
         inputField.setOnKeyPressed((KeyEvent event) -> {
             String tmp;
             /*se è stato premuto enter, si passa la stringa scritta nella casella
@@ -305,10 +305,10 @@ public class InterfacciaController implements Initializable {
                     decoratorParserOperation.removeOperation(possible_name);
                     decoratorParserOperation.parse(text);
                     inputField.clear();
-                   
+
                     return;
                 } else {
-                       //Altrimenti si pulisce la casella di testo.
+                    //Altrimenti si pulisce la casella di testo.
 
                     inputField.clear();
                     return;
@@ -385,7 +385,7 @@ public class InterfacciaController implements Initializable {
                     }
 
                 }
-              
+
             } else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
@@ -410,8 +410,7 @@ public class InterfacciaController implements Initializable {
         }
 
         this.setVariablesList();
-       
-       
+
     }
 
     public void setVariablesList() {
@@ -432,7 +431,6 @@ public class InterfacciaController implements Initializable {
         }
 
     }
- 
 
     @FXML
     public void numberOnText(ActionEvent ae) {
@@ -513,10 +511,12 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
-     /**
-     * Il metodo salva le operazione definite dall'utente in un file scelto dall'utente.
+
+    /**
+     * Il metodo salva le operazione definite dall'utente in un file scelto
+     * dall'utente.
      *
-     * 
+     *
      */
     public void saveFunctions() {
 
@@ -544,7 +544,7 @@ public class InterfacciaController implements Initializable {
                 Nel caso in cui sia un'istanza di VariableCommand, ne viene usato il toString, in cui a seconda
                 dell'operazione viene salvato nel file. Altrimento si usa il toString indifferentemente dal tipo 
                 di OperationCommand.
-                */
+                 */
                 for (OperationCommand command : supportList) {
                     if (command instanceof ExecuteUserDefinedOperationCommand) {
                         s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
@@ -562,10 +562,12 @@ public class InterfacciaController implements Initializable {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
         }
     }
-      /**
-     * Il metodo carica le operazione definite dall'utente da un file scelto dall'utente.
+
+    /**
+     * Il metodo carica le operazione definite dall'utente da un file scelto
+     * dall'utente.
      *
-     * 
+     *
      */
     public void uploadFunctions() {
         FileChooser fileChooser = new FileChooser();
@@ -576,54 +578,60 @@ public class InterfacciaController implements Initializable {
             try {
                 sc = new Scanner(file);
                 //il file viene letto riga per riga, poiché in ognuna di esse c'è un operazione.
-                
+
                 while (sc.hasNext()) {
                     String line = sc.nextLine();
                     //la save salva le operazioni in questo modo:
                     // nameFunction : + + + 
-                    String name = line.split("-->")[0];
-                    String operations = line.split("-->")[1];
-                    //una volta salvate le operazioni associate al nome
-                    //viene salvato il pattern che viene utilizzato per caricare le operazioni
-                    //>>nameFunctions $ + + + 
-                    String text = ">>" + name + "$" + operations;
-
                     try {
-                        //si utilizza in questo caso il parser che salva appunto le operazioni.
-                        decoratorParserOperation.parse(text);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
-                        inputField.clear();
-                        return;
-                    } catch (OperationNotFoundException ex) {
-                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
-                    } catch (NullPointerException ex) {
-                        alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
-                    } catch (ExistingNameException ex) {
-                        //se si cerca di sovrascrivere un'operazione definita dall'utente
-                        //si chiede se questa vuole essere sovrascritta o meno.
-                        Alert alert = new Alert(AlertType.CONFIRMATION);
-                        alert.setTitle("Operazione già inserita");
-                        alert.setHeaderText("L'operazione è già stata inserita");
-                        alert.setContentText("Vuoi sovrascriverla?");
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {
-                            String textString = decoratorParserOperation.clearStringOperation(text);
-                            String[] string = textString.split("\\$");
-                            String possible_name = string[0];
-                            possible_name = possible_name.replaceAll(" ", "");
-                            decoratorParserOperation.removeOperation(possible_name);
+                        String name = line.split("-->")[0];
+                        String operations = line.split("-->")[1];
+                        //una volta salvate le operazioni associate al nome
+                        //viene salvato il pattern che viene utilizzato per caricare le operazioni
+                        //>>nameFunctions $ + + + 
+                        String text = ">>" + name + "$" + operations;
+
+                        try {
+                            //si utilizza in questo caso il parser che salva appunto le operazioni.
                             decoratorParserOperation.parse(text);
-                           
-                        } else {
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
                             inputField.clear();
                             return;
+                        } catch (OperationNotFoundException ex) {
+                            alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                        } catch (NullPointerException ex) {
+                            alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
+                        } catch (ExistingNameException ex) {
+                            //se si cerca di sovrascrivere un'operazione definita dall'utente
+                            //si chiede se questa vuole essere sovrascritta o meno.
+                            Alert alert = new Alert(AlertType.CONFIRMATION);
+                            alert.setTitle("Operazione " + name + "è  già inserita");
+                            alert.setHeaderText("L'operazione " + name + " è già stata inserita");
+                            alert.setContentText("Vuoi sovrascriverla?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                String textString = decoratorParserOperation.clearStringOperation(text);
+                                String[] string = textString.split("\\$");
+                                String possible_name = string[0];
+                                possible_name = possible_name.replaceAll(" ", "");
+                                decoratorParserOperation.removeOperation(possible_name);
+                                decoratorParserOperation.parse(text);
+
+                            } else {
+                                inputField.clear();
+                                return;
+                            }
+
+                        } catch (Exception ex) {
+
+                        } finally {
+                            continue;
                         }
 
-                    } catch (Exception ex) {
-
-                    } finally {
-                        continue;
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        this.alert("Errore!", "Errore nella lettura del file ", "Pattern sbagliato");
+                        return;
                     }
 
                 }
@@ -633,7 +641,6 @@ public class InterfacciaController implements Initializable {
 
         }
 
-    
     }
 
     private void variablesHandlerAction(ActionEvent event) {
