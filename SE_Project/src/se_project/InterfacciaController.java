@@ -50,6 +50,7 @@ import other.OperationSet;
 import other.VariableSet;
 import se_project.commands.OperationCommand;
 import se_project.commands.userDefinedOperations.ExecuteUserDefinedOperationCommand;
+import se_project.commands.userDefinedOperations.InsertUserDefinedOperationCommand;
 import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.NewVariableCommand;
@@ -263,7 +264,8 @@ public class InterfacciaController implements Initializable {
 
     @FXML
     private void ActionPush(ActionEvent event) throws InvalidVariableNameException, NonExistingVariable {
-        try {//alla pressione del tasto push, si legge il contenuto della casella di testo
+        try {
+            //alla pressione del tasto push, si legge il contenuto della casella di testo
             String text = inputField.getText();
             //si aggiunge la stringa allo storico delle stringhe inserite se la stringa  non è vuota.
             if (!text.isEmpty()) {
@@ -272,7 +274,8 @@ public class InterfacciaController implements Initializable {
             }
             OperationCommand code = null;
 
-            try {//si passa la stringa passata al parser.
+            try {
+                //si passa la stringa passata al parser.
                 code = decoratorParserOperation.parse(text);
 
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -288,9 +291,11 @@ public class InterfacciaController implements Initializable {
                 return;
 
             } catch (ExistingNameException ex) {
+                
                 /*se è stato riscontrato un inserimento di una variabile che ha già valore 
                 si chiede se la si vuole sovrascrivere*/
                 //viene mostrato un Alert che chiede come si vuole procedere.
+                
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Operazione già inserita");
                 alert.setHeaderText("L'operazione è già stata inserita");
@@ -315,13 +320,14 @@ public class InterfacciaController implements Initializable {
                 }
 
             } catch (CollisionException ex) {
-                /*se è stato riscontrata una collisione si chiede di chiarire l'
-                ambiguità*/
+                
+                /*se è stato riscontrata una collisione si chiede di chiarire l'ambiguità*/
+                
                 String message = ex.getMessage();
                 ButtonType jNumber = new ButtonType("Inserimento Numero");
                 ButtonType operation = new ButtonType("Operazione con Variabile");
 
-                Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma" + "C'è stata una collisione, cosa intendi fare?", jNumber, operation);
+                Alert alert = new Alert(AlertType.WARNING, "Sembra che ci sia un probelma. " + "C'è stata una collisione, cosa intendi fare?", jNumber, operation);
                 alert.showAndWait();
                 if (alert.getResult() == operation) {
                     if (message.charAt(0) == '+') {
@@ -385,8 +391,9 @@ public class InterfacciaController implements Initializable {
                     }
 
                 }
-
-            } else {
+              
+            } 
+            else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
                 return;
@@ -412,6 +419,16 @@ public class InterfacciaController implements Initializable {
         this.setVariablesList();
 
     }
+    
+    /**
+     * Il metodo si occupa di inserire il nome della variabile e il valore
+     * associato nella lista osservabile
+     *
+     * @param
+     *
+     * @throws InvalidVariableNameException se il nome della variabile non è
+     * valido, NonExistingVariableException se la variabile non esiste
+     */
 
     public void setVariablesList() {
         String s = "";
@@ -425,12 +442,21 @@ public class InterfacciaController implements Initializable {
                 variablesList.add(variableSet);
 
             } catch (InvalidVariableNameException | NonExistingVariable ex) {
-
+                alert("Errore", "", "Operazione non ammissibile");
             }
 
         }
 
     }
+    
+    /**
+     * Il metodo si occupa di inserire il nome dell'operazione e le operazioni
+     * associate nella lista osservabile
+     *
+     * @param
+     *
+     * @throws
+     */
 
     @FXML
     public void numberOnText(ActionEvent ae) {
@@ -438,32 +464,66 @@ public class InterfacciaController implements Initializable {
         inputField.setText(inputField.getText() + no);
     }
 
+    /**
+     * Il metodo si occupa di inserire le operazioni nel campo di testo tramite
+     * la pressione dei pulsanti adatti
+     *
+     * @param ae
+     */
     @FXML
     public void operationOnText(ActionEvent ae) {
         String no = ((Button) ae.getSource()).getText();
         inputField.setText(inputField.getText() + no);
     }
 
+    /**
+     * Il metodo si occupa di inserire l'operazione di divisione nel campo di
+     * testo tramite la pressione del pulsante adatto
+     *
+     * @param event
+     */
     @FXML
-    void divisionOnText(ActionEvent event) {
+    public void divisionOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "/");
     }
 
+    /**
+     * Il metodo si occupa di inserire l'operazione di moltiplicazione nel campo di
+     * testo tramite la pressione del pulsante adatto
+     *
+     * @param event
+     */
     @FXML
-    void multiplicationOnText(ActionEvent event) {
+    public void multiplicationOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "*");
     }
 
+    /**
+     * Il metodo si occupa di inserire l'operazione di radice quadrata nel campo di
+     * testo tramite la pressione del pulsante adatto
+     *
+     * @param event
+     */
     @FXML
-    void sqrtOnText(ActionEvent event) {
+    public void sqrtOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "sqrt");
     }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
-    void invertedOnText(ActionEvent event) {
+    public void invertedOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "+-");
     }
 
+    /**
+     *
+     * @param title
+     * @param headerText
+     * @param contentText
+     */
     public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
@@ -519,7 +579,6 @@ public class InterfacciaController implements Initializable {
      *
      */
     public void saveFunctions() {
-
         try {
             FileChooser fc = new FileChooser();
             fc.setTitle("Save functions ...");
@@ -685,21 +744,4 @@ public class InterfacciaController implements Initializable {
         }
 
     }
-
-    @FXML
-    private void minusVarButtonActionPush(ActionEvent event) {
-    }
-
-    @FXML
-    private void saveButtonActionPush(ActionEvent event) {
-    }
-
-    @FXML
-    private void loadButtonActionPush(ActionEvent event) {
-    }
-
-    @FXML
-    private void plusVarButtonActionPush(ActionEvent event) {
-    }
-
 }

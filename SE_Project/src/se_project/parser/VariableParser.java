@@ -63,6 +63,13 @@ public class VariableParser extends ParserString {
 
         }
         
+        if (checkVariableLoad(text)) {
+            SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("LoadVariableCommand");
+            command.setDictionary(dict);
+            command.setVariablesStack(variablesStack);
+            return command;
+        }
+        
         String textString = text.replaceAll(" ", "");
 
         if (checkVariableIns(textString)) {
@@ -106,7 +113,7 @@ public class VariableParser extends ParserString {
             return command;
 
         }
-
+        
 
         return parser.parse(textString);
     }
@@ -175,6 +182,24 @@ public class VariableParser extends ParserString {
         textString = textString.replaceAll(" ","");
         return textString.equals("save");
 
+    }
+    
+    private boolean checkVariableLoad(String textString) {
+        if (textString == null) {
+            return false;
+        }
+        StringBuffer sb = new StringBuffer(textString);
+        textString = textString.trim();
+        if (textString.length() < 4) {
+            return false;
+        }
+
+        String afterSave = textString.substring(4).replaceAll(" ", "");
+        if (afterSave.length() != 0) {
+            return false;
+        }
+        textString = textString.replaceAll(" ", "");
+        return textString.equals("load");
     }
 
 }
