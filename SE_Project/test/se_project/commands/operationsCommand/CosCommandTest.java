@@ -46,14 +46,12 @@ public class CosCommandTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of sin method, of class Operations
-     */
+    /*----------------------------COS----------------------------------------*/
     @Test
     public void testCosCommandNegative_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part <0, Imaginary Part <0).
-        result.setRealPart(7.4756);
-        result.setImaginaryPart(-11.3);
+        result.setRealPart(11.331026594588057);
+        result.setImaginaryPart(7.45511362411162);
         a.setRealPart(-5.7);
         a.setImaginaryPart(-3.3);
         solver.getStructureStack().push(a);
@@ -67,8 +65,8 @@ public class CosCommandTest {
     @Test
     public void testCosCommandNPositive_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part >0, Imaginary Part >0).
-        result.setRealPart(-1.069);
-        result.setImaginaryPart(-5.985);
+        result.setRealPart(-6.038390978838917);
+        result.setImaginaryPart(+1.0547126729205143);
         a.setRealPart(9.6);
         a.setImaginaryPart(2.5);
         solver.getStructureStack().push(a);
@@ -82,8 +80,8 @@ public class CosCommandTest {
     @Test
     public void testCosCommandPositive_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part >0, Imaginary Part <0).
-        result.setRealPart(-1.069);
-        result.setImaginaryPart(5.985);
+        result.setRealPart(-6.038390978838917);
+        result.setImaginaryPart(-1.0547126729205143);
         a.setRealPart(9.6);
         a.setImaginaryPart(-2.5);
         solver.getStructureStack().push(a);
@@ -97,8 +95,8 @@ public class CosCommandTest {
     @Test
         public void testCosCommandNegative_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part <0, Imaginary Part >0).
-        result.setRealPart(7.475);
-        result.setImaginaryPart(11.3);
+        result.setRealPart(11.331026594588057);
+        result.setImaginaryPart(-7.45511362411162);
         a.setRealPart(-5.7);
         a.setImaginaryPart(3.3);
         solver.getStructureStack().push(a);
@@ -112,7 +110,7 @@ public class CosCommandTest {
     public void testCosCommandPNegative_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part <0, Imaginary Part =0).         
         a.setRealPart(-6.7);
-        result.setRealPart(-0.405);
+        result.setRealPart(0.9143831482353194);
         solver.getStructureStack().push(a);
         CosCommand command = new CosCommand();
         solver.resolveOperation(command);
@@ -125,7 +123,7 @@ public class CosCommandTest {
     public void testCosCommandPositive_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part =0, Imaginary Part >0).         
         a.setImaginaryPart(8.8);
-        result.setImaginaryPart(3317.122);
+        result.setRealPart(3317.1220785054825);
         solver.getStructureStack().push(a);
         CosCommand command = new CosCommand();
         solver.resolveOperation(command);
@@ -138,7 +136,7 @@ public class CosCommandTest {
     public void testCosCommandNegative_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part =0, Imaginary Part <0).         
         a.setImaginaryPart(-3.4);
-        result.setImaginaryPart(-14.965);
+        result.setRealPart(14.998736658678668);
         solver.getStructureStack().push(a);
         CosCommand command = new CosCommand();
         solver.resolveOperation(command);
@@ -151,7 +149,7 @@ public class CosCommandTest {
     public void testCosCommandPositive_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part <0, Imaginary Part =0).         
         a.setRealPart(0.8);
-        result.setRealPart(0.717);
+        result.setRealPart(0.6967067093471654);
         solver.getStructureStack().push(a);
         CosCommand command = new CosCommand();
         solver.resolveOperation(command);

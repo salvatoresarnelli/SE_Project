@@ -14,5 +14,5 @@ Prima Sprint - Presentazione: https://docs.google.com/presentation/d/1lrA6B-ius-
 
 Seconda Sprint - Presentazione: https://docs.google.com/presentation/d/1g6a03qpzFFw8aQGze3BN6ctRiAGbDtoAW9PVnsaYxKo/edit?usp=sharing
 
-Terza Sprint - Presentazione :
+Terza Sprint - Presentazione : https://docs.google.com/presentation/d/1IaoyQXD8GZcIXvw_e08e_Hl3TUnSn5n-pm4EauW6Dqk/edit#slide=id.g106281191e3_0_174
 

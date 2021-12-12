@@ -27,6 +27,7 @@ import se_project.exceptions.VariableExistingException;
  * @author aless
  */
 public class NewVariableCommandTest {
+    
         VariablesDict dict;
         Solver solver;
 

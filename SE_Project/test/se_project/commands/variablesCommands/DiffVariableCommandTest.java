@@ -5,10 +5,134 @@
  */
 package se_project.commands.variablesCommands;
 
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+import se_project.ComplexNumber;
+import se_project.Solver;
+import se_project.VariablesDict;
+import se_project.exceptions.DivisionByZeroException;
+import se_project.exceptions.EmptyStackException;
+import se_project.exceptions.InterruptedExecutionException;
+import se_project.exceptions.InvalidNumberException;
+import se_project.exceptions.InvalidValueException;
+import se_project.exceptions.InvalidVariableNameException;
+import se_project.exceptions.NonExistingVariable;
+import se_project.exceptions.UndefinedPhaseException;
+import se_project.exceptions.VariableExistingException;
+
 /**
  *
- * @author aless
+ * @author pionp
  */
 public class DiffVariableCommandTest {
     
+    VariablesDict dict;
+    Solver solver;
+
+    public DiffVariableCommandTest() {
+
+    }
+
+    @Before
+    public void setUp() {
+        dict =  VariablesDict.getInstance();
+        solver = Solver.getInstance();
+    }
+
+    @After
+    public void tearDown() {
+    }
+
+    /*----------------------------DIFFVARIABLE----------------------------------------*/
+    @Test
+    public void diffVariableCommandTest_1() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
+        //Variable x - (Real Part >0 + Imaginary Part >0)
+        solver.getStructureStack().push(new ComplexNumber(1,1));
+        DiffVariableCommand command = new DiffVariableCommand();
+        command.setDictionary(dict);
+        command.setVariable('x');
+        dict.forceSettingVariable('x', new ComplexNumber(1,1));
+        solver.resolveOperation(command);
+        ComplexNumber number = new ComplexNumber(0,0);
+        solver.getStructureStack().push(number);
+        ComplexNumber result = dict.getVariableValue('x');      
+        assertEquals(result,number);
+    }
+    
+    @Test
+    public void diffVariableCommandTest_2() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
+        //Variable x - (Real Part <0 + Imaginary Part <0)
+        solver.getStructureStack().push(new ComplexNumber(1,1));
+        DiffVariableCommand command = new DiffVariableCommand();
+        command.setDictionary(dict);
+        command.setVariable('x');
+        dict.forceSettingVariable('x', new ComplexNumber(-1,-1));
+        solver.resolveOperation(command);
+        ComplexNumber number = new ComplexNumber(-2,-2);
+        solver.getStructureStack().push(number);
+        ComplexNumber result = dict.getVariableValue('x');      
+        assertEquals(result,number);
+    }
+    
+    @Test
+    public void diffVariableCommandTest_3() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
+        //Variable x - (Real Part >0 + Imaginary Part <0)
+        solver.getStructureStack().push(new ComplexNumber(1,1));
+        DiffVariableCommand command = new DiffVariableCommand();
+        command.setDictionary(dict);
+        command.setVariable('x');
+        dict.forceSettingVariable('x', new ComplexNumber(1,-1));
+        solver.resolveOperation(command);
+        ComplexNumber number = new ComplexNumber(0,-2);
+        solver.getStructureStack().push(number);
+        ComplexNumber result = dict.getVariableValue('x');      
+        assertEquals(result,number);
+    }
+    
+    @Test
+    public void diffVariableCommandTest_4() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
+        //Variable x - (Real Part <0 + Imaginary Part >0)
+        solver.getStructureStack().push(new ComplexNumber(1,1));
+        DiffVariableCommand command = new DiffVariableCommand();
+        command.setDictionary(dict);
+        command.setVariable('x');
+        dict.forceSettingVariable('x', new ComplexNumber(-1,1));
+        solver.resolveOperation(command);
+        ComplexNumber number = new ComplexNumber(-2,0);
+        solver.getStructureStack().push(number);
+        ComplexNumber result = dict.getVariableValue('x');      
+        assertEquals(result,number);
+    }
+    
+    @Test
+    public void diffVariableCommandTest_5() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
+        //Variable x - (Real Part >0 + Imaginary Part =0)
+        solver.getStructureStack().push(new ComplexNumber(1,1));
+        DiffVariableCommand command = new DiffVariableCommand();
+        command.setDictionary(dict);
+        command.setVariable('x');
+        dict.forceSettingVariable('x', new ComplexNumber(1,0));
+        solver.resolveOperation(command);
+        ComplexNumber number = new ComplexNumber(0,-1);
+        solver.getStructureStack().push(number);
+        ComplexNumber result = dict.getVariableValue('x');      
+        assertEquals(result,number);
+    }
+    
+    @Test
+    public void diffVariableCommandTest_6() throws VariableExistingException, InvalidVariableNameException, NonExistingVariable, InvalidValueException, InvalidNumberException, EmptyStackException, UndefinedPhaseException, DivisionByZeroException, InterruptedExecutionException, Exception {
+        //Variable x - (Real Part =0 + Imaginary Part >0)
+        solver.getStructureStack().push(new ComplexNumber(1,1));
+        DiffVariableCommand command = new DiffVariableCommand();
+        command.setDictionary(dict);
+        command.setVariable('x');
+        dict.forceSettingVariable('x', new ComplexNumber(0,1));
+        solver.resolveOperation(command);
+        ComplexNumber number = new ComplexNumber(-1,0);
+        solver.getStructureStack().push(number);
+        ComplexNumber result = dict.getVariableValue('x');      
+        assertEquals(result,number);
+    }
 }
