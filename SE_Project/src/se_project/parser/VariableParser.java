@@ -145,7 +145,8 @@ public class VariableParser extends ParserString {
      */
     private boolean checkVariableSum(String txtString) {
         try {
-            return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '+' && dict.getVariableValue(txtString.charAt(1)) != null;
+            return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '+' 
+                   && (txtString.charAt(1)>='a' && txtString.charAt(1)<='z')&& dict.getVariableValue(txtString.charAt(1)) != null;
         } catch (NonExistingVariable | InvalidVariableNameException ex) {
             return false;
         }
@@ -158,7 +159,8 @@ public class VariableParser extends ParserString {
      */
     private boolean checkVariableDiff(String txtString) throws NonExistingVariable, InvalidVariableNameException {
         try {
-            return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '-' && dict.getVariableValue(txtString.charAt(1)) != null;
+            return txtString != null && txtString.length() == 2 && txtString.charAt(0) == '-' && 
+                    (txtString.charAt(1)>='a' && txtString.charAt(1)<='z')&& dict.getVariableValue(txtString.charAt(1)) != null;
         } catch (NonExistingVariable ex) {
             return false;
         }
