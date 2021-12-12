@@ -70,6 +70,7 @@ public class ComplexNumberParser extends ParserString {
         //viene controllato se la stringa data in input è un numero complesso attraverso il metodo
         //checkComplexNumber, in caso positivo viene definito il comando InsertNumberCommand
         String ret = checkComplexNumber(text);
+
         if (ret.equals(complex_number)) {
             return new InsertNumberCommand(recognizeComplexNumber(text), null);
         }
@@ -84,6 +85,8 @@ public class ComplexNumberParser extends ParserString {
 
         if (ret == single_number) {
 
+            ComplexNumber recognizeNumber = recognizeNumber((first + text).replaceAll(" ", ""));
+            if(recognizeNumber == null) return null;
             return new InsertNumberCommand(recognizeNumber((first + text).replaceAll(" ", "")), null);
         }
         return null;
