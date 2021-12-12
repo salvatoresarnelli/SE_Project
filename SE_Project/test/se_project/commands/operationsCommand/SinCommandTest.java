@@ -49,14 +49,12 @@ public class SinCommandTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of sin method, of class Operations
-     */
+    /*----------------------------SIN----------------------------------------*/
     @Test
     public void testSinCommandNegative_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part <0, Imaginary Part <0).
-        result.setRealPart(7.475);
-        result.setImaginaryPart(-11.3);
+        result.setRealPart(7.475424651164692);
+        result.setImaginaryPart(-11.300239743212877);
         a.setRealPart(-5.7);
         a.setImaginaryPart(-3.3);
         solver.getStructureStack().push(a);
@@ -70,8 +68,8 @@ public class SinCommandTest {
     @Test
     public void testSinCommandNPositive_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part >0, Imaginary Part >0).
-        result.setRealPart(-1.069);
-        result.setImaginaryPart(-5.985);
+        result.setRealPart(-1.0690222865173111);
+        result.setImaginaryPart(-5.957562877551087);
         a.setRealPart(9.6);
         a.setImaginaryPart(2.5);
         solver.getStructureStack().push(a);
@@ -86,8 +84,8 @@ public class SinCommandTest {
     @Test
     public void testSinCommandPositive_Negative() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part >0, Imaginary Part <0).
-        result.setRealPart(-1.069);
-        result.setImaginaryPart(5.985);
+        result.setRealPart(-1.0690222865173111);
+        result.setImaginaryPart(5.957562877551087);
         a.setRealPart(9.6);
         a.setImaginaryPart(-2.5);
         solver.getStructureStack().push(a);
@@ -101,8 +99,8 @@ public class SinCommandTest {
     @Test
         public void testSinCommandNegative_Positive() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part <0, Imaginary Part >0).
-        result.setRealPart(7.475);
-        result.setImaginaryPart(11.3);
+        result.setRealPart(7.475424651164692);
+        result.setImaginaryPart(11.300239743212877);
         a.setRealPart(-5.7);
         a.setImaginaryPart(3.3);
         solver.getStructureStack().push(a);
@@ -116,20 +114,21 @@ public class SinCommandTest {
     public void testSinCommandPNegative_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part <0, Imaginary Part =0).         
         a.setRealPart(-6.7);
-        result.setRealPart(-0.405);
+        result.setRealPart(-0.4048499206165983);
         solver.getStructureStack().push(a);
         SinCommand command = new SinCommand();
         solver.resolveOperation(command);
         ComplexNumber peeked = solver.getStructureStack().peek();
         assertEquals(result.getRealPart(), peeked.getRealPart(), 4);
         assertEquals(result.getImaginaryPart(), peeked.getImaginaryPart(), 4);
+
     }
     
     @Test
     public void testSinCommandPositive_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part =0, Imaginary Part >0).         
         a.setImaginaryPart(8.8);
-        result.setImaginaryPart(3317.122);
+        result.setImaginaryPart(3317.121927772407);
         solver.getStructureStack().push(a);
         SinCommand command = new SinCommand();
         solver.resolveOperation(command);
@@ -142,7 +141,7 @@ public class SinCommandTest {
     public void testSinCommandNegative_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part =0, Imaginary Part <0).         
         a.setImaginaryPart(-3.4);
-        result.setImaginaryPart(-14.965);
+        result.setImaginaryPart(-14.965363388718343);
         solver.getStructureStack().push(a);
         SinCommand command = new SinCommand();
         solver.resolveOperation(command);
@@ -155,7 +154,7 @@ public class SinCommandTest {
     public void testSinCommandPositive_2() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part <0, Imaginary Part =0).         
         a.setRealPart(0.8);
-        result.setRealPart(0.717);
+        result.setRealPart(0.7173560908995228);
         solver.getStructureStack().push(a);
         SinCommand command = new SinCommand();
         solver.resolveOperation(command);
