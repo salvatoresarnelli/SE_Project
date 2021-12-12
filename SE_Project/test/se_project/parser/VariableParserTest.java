@@ -311,7 +311,7 @@ public class VariableParserTest {
         assertNull(result);
     }
 
-    @Test(expected = InvalidVariableNameException.class)
+    @Test
     public void invalidVarialeDiffTest() throws OperationNotFoundException, InvalidVariableNameException, Exception {
         input = "-<";
         result = ((VariableParser) parser).parse(input);

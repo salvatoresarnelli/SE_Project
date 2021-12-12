@@ -43,13 +43,18 @@ public class RestoreVariableCommand extends VariableCommand {
      */
     @Override
     public Object execute() throws Exception {
-        Record record = variablesStack.popVariableSnapShot();
-        HashMap<Character,ComplexNumber> varRecord = record.getDictRecord();
-        for(Character c: varRecord.keySet()){
-            ComplexNumber value = varRecord.get(c);
-            if(value != null)
-                dictionary.forceSettingVariable(c, value);  
-        }
+         Record r;
+        ComplexNumber c;
+            r = variablesStack.popVariableSnapShot();
+            VariablesDict.getInstance().getTable().clear();
+            for (Character ch : r.getDictRecord().keySet()) {
+                c = r.getDictRecord().get(ch);
+                if (c != null) {
+                    VariablesDict.getInstance().getTable().put(ch, c);
+
+                }
+            }
+        
         return true;
     }
 
