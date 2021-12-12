@@ -12,6 +12,7 @@ import se_project.exceptions.OperationNotFoundException;
 import se_project.commands.variablesCommands.DiffVariableCommand;
 import se_project.commands.variablesCommands.NewVariableCommand;
 import se_project.commands.variablesCommands.PushVariableCommand;
+import se_project.commands.variablesCommands.RestoreVariableCommand;
 import se_project.commands.variablesCommands.SaveVariableCommand;
 import se_project.commands.variablesCommands.SumVariableCommand;
 import se_project.exceptions.CollisionException;
@@ -64,7 +65,7 @@ public class VariableParser extends ParserString {
         }
         
         if (checkVariableLoad(text)) {
-            SaveVariableCommand command = (SaveVariableCommand) parser.getFactory().getOperationCommand("LoadVariableCommand");
+            RestoreVariableCommand command = (RestoreVariableCommand) parser.getFactory().getOperationCommand("RestoreVariableCommand");
             command.setDictionary(dict);
             command.setVariablesStack(variablesStack);
             return command;
@@ -190,16 +191,16 @@ public class VariableParser extends ParserString {
         }
         StringBuffer sb = new StringBuffer(textString);
         textString = textString.trim();
-        if (textString.length() < 4) {
+        if (textString.length() < 7) {
             return false;
         }
 
-        String afterSave = textString.substring(4).replaceAll(" ", "");
+        String afterSave = textString.substring(7).replaceAll(" ", "");
         if (afterSave.length() != 0) {
             return false;
         }
         textString = textString.replaceAll(" ", "");
-        return textString.equals("load");
+        return textString.equals("restore");
     }
 
 }

@@ -5,6 +5,9 @@
  */
 package se_project.commands.variablesCommands;
 
+import java.util.HashMap;
+import se_project.ComplexNumber;
+import se_project.Record;
 import se_project.VariablesDict;
 import se_project.VariablesStack;
 
@@ -14,7 +17,7 @@ import se_project.VariablesStack;
  *
  * @author aless
  */
-public class LoadVariableCommand extends VariableCommand {
+public class RestoreVariableCommand extends VariableCommand {
 
     private VariablesStack variablesStack;
     private VariablesDict dictionary;
@@ -23,7 +26,7 @@ public class LoadVariableCommand extends VariableCommand {
         this.variablesStack = stack;
     }
 
-    public LoadVariableCommand() {
+    public RestoreVariableCommand() {
     }
 
     @Override
@@ -40,7 +43,13 @@ public class LoadVariableCommand extends VariableCommand {
      */
     @Override
     public Object execute() throws Exception {
-        variablesStack.popVariableSnapShot();
+        Record record = variablesStack.popVariableSnapShot();
+        HashMap<Character,ComplexNumber> varRecord = record.getDictRecord();
+        for(Character c: varRecord.keySet()){
+            ComplexNumber value = varRecord.get(c);
+            if(value != null)
+                dictionary.forceSettingVariable(c, value);  
+        }
         return true;
     }
 

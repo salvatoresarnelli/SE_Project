@@ -26,7 +26,7 @@ import se_project.commands.stackCommands.OverCommand;
 import se_project.commands.stackCommands.SwapCommand;
 import se_project.commands.trascendental.CosCommand;
 import se_project.commands.trascendental.SinCommand;
-import se_project.commands.variablesCommands.LoadVariableCommand;
+import se_project.commands.variablesCommands.RestoreVariableCommand;
 import se_project.commands.variablesCommands.SaveVariableCommand;
 
 /**
@@ -124,8 +124,8 @@ public class OperationsFactory {
         if (type.equals("SaveVariableCommand")) {
             return new SaveVariableCommand();
         }
-        if(type.equals("LoadVariableCommand")) {
-            return new LoadVariableCommand();
+        if(type.equals("RestoreVariableCommand")) {
+            return new RestoreVariableCommand();
         }
 
         throw new OperationNotFoundException();
