@@ -297,6 +297,28 @@ public interface Operations {
         return ret;
     }
     
+    /**
+     * Represents the sin Operation.
+     *
+     * @author Pio Salvatore Morrone
+     * @version 1.0
+     * @param number
+     * @return the linkedlist with the result at the last position
+     *
+     * @throws InvalidNumberException, DivisionByZeroException
+     *
+     * Such method is a static method of the class Operations. It performs the
+     * sin of the parameter passed to such function.
+     *
+     * Such operation is executed calculating the sin of a complex number as it follows (exp(j(z))-exp(-j(z))/(2j).
+     *
+     * As follows, some examples:
+     *
+     * o suppose 1+2j => sin (1+2j) = (exp(i(1+2j))-exp(-j(1+2j))/(2j) 
+     *
+     *
+     *
+     */    
     public static LinkedList<ComplexNumber> sin(ComplexNumber number) throws InvalidNumberException, DivisionByZeroException{
         LinkedList<ComplexNumber> ret = new LinkedList<>();
         if(number==null)
@@ -317,6 +339,28 @@ public interface Operations {
         return ret;
     }
     
+    /**
+     * Represents the cos Operation.
+     *
+     * @author Pio Salvatore Morrone
+     * @version 1.0
+     * @param number
+     * @return the linkedlist with the result at the last position
+     *
+     * @throws InvalidNumberException, DivisionByZeroException
+     *
+     * Such method is a static method of the class Operations. It performs the
+     * cos of the parameter passed to such function.
+     *
+     * Such operation is executed calculating the cos of a complex number as it follows (exp(j(z))+exp(-j(z))/(2).
+     *
+     * As follows, some examples:
+     *
+     * o suppose 1+2j => cos (1+2j) = (exp(i(1+2j))-exp(-j(1+2j))/(2) = 
+     *
+     *
+     *
+     */   
     public static LinkedList<ComplexNumber> cos(ComplexNumber number) throws InvalidNumberException, DivisionByZeroException{
         LinkedList<ComplexNumber> ret = new LinkedList<>();
         if(number==null)
