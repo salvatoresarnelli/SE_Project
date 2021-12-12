@@ -109,8 +109,6 @@ public class InterfacciaController implements Initializable {
     @FXML
     private JFXDrawer drawer;
     private Button variablesHandler;
-    private ObservableList<VariableSet> variablesList;
-    private ObservableList<OperationSet> operationsList;
     OperationDict operationDict = OperationDict.getInstance();
     private VBox box;
     @FXML
@@ -262,8 +260,6 @@ public class InterfacciaController implements Initializable {
         variablesStack = VariablesStack.getInstance();
         observableList.addAll(solver.getStructureStack().getStack());
         listView.setItems(observableList);
-        variablesList = FXCollections.observableArrayList();
-        operationsList = FXCollections.observableArrayList();
 
     }
 
@@ -426,36 +422,6 @@ public class InterfacciaController implements Initializable {
             alert("Errore!", "Operazione non valida", "Divisione per zero");
         } catch (Exception ex) {
             alert("Errore!", "Operazione non valida", "Si è verificato un errore...");
-        }
-        this.setVariablesList();
-
-    }
-    
-    /**
-     * Il metodo si occupa di inserire il nome della variabile e il valore
-     * associato nella lista osservabile
-     *
-     * @param
-     *
-     * @throws InvalidVariableNameException se il nome della variabile non è
-     * valido, NonExistingVariableException se la variabile non esiste
-     */
-
-    public void setVariablesList() {
-        String s = "";
-        VariableSet variableSet;
-        variablesList.clear();
-        for (Character ch : variableParser.getDict().getTable().keySet()) {
-            ComplexNumber value;
-            try {
-                value = variableParser.getDict().getVariableValue(ch);
-                variableSet = new VariableSet(ch.toString(), value.toString());
-                variablesList.add(variableSet);
-
-            } catch (InvalidVariableNameException | NonExistingVariable ex) {
-                alert("Errore", "", "Operazione non ammissibile");
-            }
-
         }
 
     }
@@ -707,49 +673,6 @@ public class InterfacciaController implements Initializable {
             }
 
         
-        }
-
-    }
-
-    private void variablesHandlerAction(ActionEvent event) {
-        if (event.getSource() == variablesHandler) {
-            LoadStages("VariablesManager.fxml");
-        }
-    }
-
-    private void LoadStages(String fxml) {
-        try {
-            Parent root;
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-            root = fxmlLoader.load();
-            VariablesManagerController variableHandlerPaneController = fxmlLoader.getController();
-            variableHandlerPaneController.setObservableList(variablesList);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
-            stage.setTitle("Variabili Definite");
-            stage.show();
-
-        } catch (IOException e) {
-            System.err.println("Error while opening new window.");
-        }
-    }
-
-    private void operationHandlerAction(ActionEvent event) {
-        try {
-            Parent root;
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OperationsManager.fxml"));
-            root = fxmlLoader.load();
-            OperationsManagerController operationsManagerController = fxmlLoader.getController();
-            //operationsManagerController.setObservableListOperations(operationsList);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.getIcons().add(new Image("file:MathSolverIcon.jpg"));
-            stage.setTitle("Operazioni  Definite");
-            stage.show();
-
-        } catch (IOException e) {
-            System.err.println("Error while opening new window.");
         }
 
     }

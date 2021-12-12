@@ -250,18 +250,6 @@ public class VariablesManagerController implements Initializable {
     }
 
     /**
-     * Il metodo si occupa di inserire la lista osservabile all'interno della
-     * tabella
-     *
-     * @param ObservableList<VariableSet> list
-     * @return
-     * @throws
-     */
-    public void setObservableList(ObservableList<VariableSet> list) {
-        variablesTableView.setItems(list);
-    }
-
-    /**
      * Il metodo si occupa di eseguire le operazioni associate alle variabili
      *
      * @param VariableCommand command
@@ -604,7 +592,7 @@ public class VariablesManagerController implements Initializable {
     }
 
     /**
-     * Il metodo si occupa di far comparire sullo schermo un alert
+     * Il metodo si occupa di far comparire sullo schermo un alert che notifica un messaggio di avviso
      *
      * @param ActionEvent event
      * @return
@@ -638,13 +626,14 @@ public class VariablesManagerController implements Initializable {
     }
 
     /**
-     * Il metodo si occupa di inserire una variabile nella tabella tramite un
-     * campo di testo
+     * Il metodo si occupa di creare un riferimento al controller della pagina
+     * principale
      *
      * @param ActionEvent event
      * @return
      * @throws
      */
+    
     public InterfacciaController loadController() {
         try {
             Parent root;

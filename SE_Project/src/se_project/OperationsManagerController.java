@@ -157,9 +157,9 @@ public class OperationsManagerController implements Initializable {
         });
 
     }
-   /**
-     *Il metodo viene utilizzato per aggiornare l'observable list che è 
-     * legata alla tableView.
+    /**
+     * Il metodo viene utilizzato per aggiornare l'observable list che è legata
+     * alla tableView.
      *
      */
 
@@ -203,9 +203,10 @@ public class OperationsManagerController implements Initializable {
 
     }
     /**
-     *Il metodo, associato al button remove, viene utilizzato per rimuovere un'operazione presente all'interno
-     * della tableView.
-     *@param ActionEvent event.
+     * Il metodo, associato al button remove, viene utilizzato per rimuovere
+     * un'operazione presente all'interno della tableView.
+     *
+     * @param ActionEvent event.
      *
      */
   
@@ -229,6 +230,15 @@ public class OperationsManagerController implements Initializable {
         this.setObservableList();
        
     }
+    
+    /**
+     * Il metodo si occupa di creare un riferimento al controller della pagina
+     * principale
+     *
+     * @param ActionEvent event
+     * @return
+     * @throws
+     */
     
     public InterfacciaController loadController() throws IOException {
             Parent root;
