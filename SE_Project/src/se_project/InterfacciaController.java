@@ -654,8 +654,10 @@ public class InterfacciaController implements Initializable {
                     // nameFunction : + + + 
                     try {
                         //si utilizza in questo caso il parser che salva appunto le operazioni.
-                        decoratorParserOperation.parse(line);
-                        
+                         String[] lines = line.split("-->");
+                         
+                         decoratorParserOperation.parse(">>"+lines[0]+"$ "+lines[1]);
+                       // solver.resolveOperation(insertOperationCommand);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
                         inputField.clear();
