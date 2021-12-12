@@ -305,7 +305,7 @@ public class InterfacciaController implements Initializable {
                     decoratorParserOperation.removeOperation(possible_name);
                     decoratorParserOperation.parse(text);
                     inputField.clear();
-                    this.setOperationsList();
+                   
                     return;
                 } else {
                        //Altrimenti si pulisce la casella di testo.
@@ -343,7 +343,6 @@ public class InterfacciaController implements Initializable {
             } catch (Exception ex) {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             }
-
             if (code != null) {
                 Stack structureStack = new Stack();
                 structureStack.getStack().addAll(this.solver.getStructureStack().getStack());
@@ -411,7 +410,8 @@ public class InterfacciaController implements Initializable {
         }
 
         this.setVariablesList();
-        this.setOperationsList();
+       
+       
     }
 
     public void setVariablesList() {
@@ -432,31 +432,7 @@ public class InterfacciaController implements Initializable {
         }
 
     }
-
-    public void setOperationsList() {
-        operationsList.clear();
-        String s = "";
-        for (String name : operationDict.getNames()) {
-            OperationSet operationSet;
-            LinkedList<OperationCommand> supportList = operationDict.getOperations(name).getCommandList();
-            for (OperationCommand command : supportList) {
-                if (command instanceof ExecuteUserDefinedOperationCommand) {
-                    s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
-                } else if (command instanceof VariableCommand) {
-                    s += " " + ((VariableCommand) command).toString();
-                } else {
-                    s += " " + command.toString();
-                }
-            }
-            s += "\n";
-
-            operationSet = new OperationSet(name, s);
-
-            operationsList.add(operationSet);
-            s = "";
-        }
-
-    }
+ 
 
     @FXML
     public void numberOnText(ActionEvent ae) {
@@ -537,7 +513,11 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
-
+     /**
+     * Il metodo salva le operazione definite dall'utente in un file scelto dall'utente.
+     *
+     * 
+     */
     public void saveFunctions() {
 
         try {
@@ -545,14 +525,26 @@ public class InterfacciaController implements Initializable {
             fc.setTitle("Save functions ...");
             fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
             File file = fc.showSaveDialog(new Stage());
+            //se il file non è stato scelto
             if (file == null) {
                 return;
             }
+            //una volta scelto il file, si costruisce la stringa da stampare nel file
             PrintWriter pw = new PrintWriter(file);
             String s = "";
+            //per tutte le operazioni definite dall'utente
             for (String name : operationDict.getNames()) {
-                s += name + " :";
+                s += name + " -->";
+                //viene salvata la lista contenente tutti i comandi dell'operazione associate al nome 
                 LinkedList<OperationCommand> supportList = operationDict.getOperations(name).getCommandList();
+                /*
+                In questo caso a seconda del tipo di Comando, la stampa è diversa. 
+                Nel caso in cui sia un ExecuteUserDefinedOperationCommand, viene salvato solamente il nome
+                cosi da non perdere le relazioni che possono esserci tra varie operazioni.
+                Nel caso in cui sia un'istanza di VariableCommand, ne viene usato il toString, in cui a seconda
+                dell'operazione viene salvato nel file. Altrimento si usa il toString indifferentemente dal tipo 
+                di OperationCommand.
+                */
                 for (OperationCommand command : supportList) {
                     if (command instanceof ExecuteUserDefinedOperationCommand) {
                         s += " " + ((ExecuteUserDefinedOperationCommand) command).getName();
@@ -570,7 +562,11 @@ public class InterfacciaController implements Initializable {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
         }
     }
-
+      /**
+     * Il metodo carica le operazione definite dall'utente da un file scelto dall'utente.
+     *
+     * 
+     */
     public void uploadFunctions() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open file ...");
@@ -579,13 +575,21 @@ public class InterfacciaController implements Initializable {
             Scanner sc;
             try {
                 sc = new Scanner(file);
+                //il file viene letto riga per riga, poiché in ognuna di esse c'è un operazione.
+                
                 while (sc.hasNext()) {
                     String line = sc.nextLine();
-                    String name = line.split(":")[0];
-                    String operations = line.split(":")[1];
+                    //la save salva le operazioni in questo modo:
+                    // nameFunction : + + + 
+                    String name = line.split("-->")[0];
+                    String operations = line.split("-->")[1];
+                    //una volta salvate le operazioni associate al nome
+                    //viene salvato il pattern che viene utilizzato per caricare le operazioni
+                    //>>nameFunctions $ + + + 
                     String text = ">>" + name + "$" + operations;
 
                     try {
+                        //si utilizza in questo caso il parser che salva appunto le operazioni.
                         decoratorParserOperation.parse(text);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
@@ -596,6 +600,8 @@ public class InterfacciaController implements Initializable {
                     } catch (NullPointerException ex) {
                         alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
                     } catch (ExistingNameException ex) {
+                        //se si cerca di sovrascrivere un'operazione definita dall'utente
+                        //si chiede se questa vuole essere sovrascritta o meno.
                         Alert alert = new Alert(AlertType.CONFIRMATION);
                         alert.setTitle("Operazione già inserita");
                         alert.setHeaderText("L'operazione è già stata inserita");
@@ -608,7 +614,7 @@ public class InterfacciaController implements Initializable {
                             possible_name = possible_name.replaceAll(" ", "");
                             decoratorParserOperation.removeOperation(possible_name);
                             decoratorParserOperation.parse(text);
-                            this.setOperationsList();
+                           
                         } else {
                             inputField.clear();
                             return;
@@ -627,7 +633,7 @@ public class InterfacciaController implements Initializable {
 
         }
 
-        this.setOperationsList();
+    
     }
 
     private void variablesHandlerAction(ActionEvent event) {

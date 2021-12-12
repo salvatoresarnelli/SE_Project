@@ -70,7 +70,7 @@ public class ComplexNumberParser extends ParserString {
         //viene controllato se la stringa data in input è un numero complesso attraverso il metodo
         //checkComplexNumber, in caso positivo viene definito il comando InsertNumberCommand
         String ret = checkComplexNumber(text);
-        System.out.println(ret);
+
         if (ret.equals(complex_number)) {
             return new InsertNumberCommand(recognizeComplexNumber(text), null);
         }
@@ -78,7 +78,7 @@ public class ComplexNumberParser extends ParserString {
             return null;
         }
         ret = checkPossibleOneNumber(text);
-        System.out.println(ret);
+ 
         /*
         si è cercata di fare la differenza tra un numero complesso, definito completo, il quale contiene sia parte immaginaria 
         che reale, ed un single_number, il quale è un numero puramente reale o puramente immaginario.

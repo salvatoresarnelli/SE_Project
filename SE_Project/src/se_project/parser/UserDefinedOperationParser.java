@@ -236,7 +236,7 @@ public class UserDefinedOperationParser extends ParserString {
 
             ExecuteUserDefinedOperationCommand userDefOp = userOperation(textString);
             if (userDefOp != null) {
-              
+              return  userDefOp;
             }
         }
         //altrimenti vengono chiamate le funzionalità del parser decorato.
