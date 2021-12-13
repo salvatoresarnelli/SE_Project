@@ -57,5 +57,8 @@ public class RestoreVariableCommand extends VariableCommand {
         
         return true;
     }
-
+   @Override 
+    public String toString(){
+    return "restore";
+    }
 }

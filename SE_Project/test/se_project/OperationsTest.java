@@ -1555,7 +1555,7 @@ public class OperationsTest {
     
     @Test
     public void testCos_8() throws InvalidNumberException, DivisionByZeroException{
-        //cos(Real Part <0, Imaginary Part =0).         
+        //cos(Real Part >0, Imaginary Part =0).         
         a.setRealPart(0.8);
         result.setRealPart(0.6967067093471654);
         assertEquals(result,Operations.cos(a).getLast());
@@ -1629,10 +1629,84 @@ public class OperationsTest {
     
     @Test
     public void testSin_8() throws InvalidNumberException, DivisionByZeroException{
-        //sin(Real Part <0, Imaginary Part =0).         
+        //sin(Real Part >0, Imaginary Part =0).         
         a.setRealPart(0.8);
         result.setRealPart(0.7173560908995228);
         assertEquals(result,Operations.sin(a).getLast());
+    }
+    
+    /*-------------------------TAN-----------------------------------*/
+    
+    @Test
+    public void testTan_1() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part <0, Imaginary Part <0).
+        result.setRealPart(0.0024985707289502767);
+        result.setImaginaryPart(-0.9989268648704096);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(-3.3);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_2() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part >0, Imaginary Part >0).
+        result.setRealPart(0.004568446118239934);
+        result.setImaginaryPart(+0.9874122587394989);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(2.5);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_3() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part >0, Imaginary Part <0).
+        result.setRealPart(0.004568446118239934);
+        result.setImaginaryPart(-0.9874122587394989);
+        a.setRealPart(9.6);
+        a.setImaginaryPart(-2.5);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_4() throws InvalidNumberException, DivisionByZeroException{
+       //tan(Real Part <0, Imaginary Part >0).
+        result.setRealPart(0.0024985707289502767);
+        result.setImaginaryPart(0.9989268648704096);
+        a.setRealPart(-5.7);
+        a.setImaginaryPart(3.3);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_5() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part <0, Imaginary Part =0).         
+        a.setRealPart(-6.7);
+        result.setRealPart(-0.4427574167327162);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_6() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part =0, Imaginary Part >0).
+        a.setImaginaryPart(8.8);
+        result.setImaginaryPart(0.999999954559081);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_7() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part =0, Imaginary Part <0).
+        a.setImaginaryPart(-3.4);
+        result.setImaginaryPart(-0.9977749279342795);
+        assertEquals(result,Operations.tan(a).getLast());
+    }
+    
+    @Test
+    public void testTan_8() throws InvalidNumberException, DivisionByZeroException{
+        //tan(Real Part >0, Imaginary Part =0).         
+        a.setRealPart(0.8);
+        result.setRealPart(1.0296385570503641);
+        assertEquals(result,Operations.tan(a).getLast());
     }
 
 }

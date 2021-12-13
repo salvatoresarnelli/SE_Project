@@ -43,5 +43,9 @@ public class SaveVariableCommand extends VariableCommand {
         variablesStack.pushVariablesSnapShot(dictionary);
         return true;
     }
-
+    
+    @Override 
+    public String toString(){
+    return "save";
+    }
 }

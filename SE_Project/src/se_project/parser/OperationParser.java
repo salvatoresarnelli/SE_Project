@@ -53,7 +53,7 @@ public class OperationParser extends ParserString {
     public OperationCommand checkOperation(String text) {
         text = text.replaceAll("\\n", "");
         if (text.equals("+") || (text.equals("-")) || (text.equals("*")) || (text.equals(":"))
-                || (text.equals("+-")) || (text.equals("sqrt")) || (text.equals("sin")) || text.equals("cos"))
+                || (text.equals("+-")) || (text.equals("sqrt")) || (text.equals("sin")) || text.equals("cos") || text.equals("tan"))
             try {
             return parser.getFactory().getOperationCommand(text, null);
         } catch (OperationNotFoundException ex) {
