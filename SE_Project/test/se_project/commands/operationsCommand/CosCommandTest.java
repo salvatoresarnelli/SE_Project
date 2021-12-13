@@ -122,8 +122,10 @@ public class CosCommandTest {
     @Test
     public void testCosCommandPositive_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //cos(Real Part =0, Imaginary Part >0).         
-        a.setImaginaryPart(8.8);
-        result.setRealPart(3317.1220785054825);
+        a.setImaginaryPart(3.14);
+        a.setImaginaryPart(0);
+        result.setRealPart(1);
+        result.setImaginaryPart(0);
         solver.getStructureStack().push(a);
         CosCommand command = new CosCommand();
         solver.resolveOperation(command);

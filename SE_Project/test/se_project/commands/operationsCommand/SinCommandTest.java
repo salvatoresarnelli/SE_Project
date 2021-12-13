@@ -127,8 +127,10 @@ public class SinCommandTest {
     @Test
     public void testSinCommandPositive_1() throws InvalidNumberException, DivisionByZeroException, NotApplicableOperation, InvalidVariableNameException, UndefinedPhaseException, VariableExistingException, Exception {
         //sin(Real Part =0, Imaginary Part >0).         
-        a.setImaginaryPart(8.8);
-        result.setImaginaryPart(3317.121927772407);
+        a.setImaginaryPart(3.14);
+        a.setRealPart(3.14);
+        result.setRealPart(0.018433);
+        result.setImaginaryPart(-11.530277);
         solver.getStructureStack().push(a);
         SinCommand command = new SinCommand();
         solver.resolveOperation(command);

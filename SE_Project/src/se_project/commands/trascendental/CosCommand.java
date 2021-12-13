@@ -43,12 +43,11 @@ public class CosCommand extends OperationCommand{
      * @throws se_project.exceptions.DivisionByZeroException     
      */
     @Override
-    public LinkedList<ComplexNumber> execute() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException, DivisionByZeroException {
+    public ComplexNumber execute() throws EmptyStackException, UndefinedPhaseException, NotApplicableOperation, InvalidNumberException, DivisionByZeroException {
         if (super.getTarget().size() >= 1) {
             ComplexNumber c1 = super.getTarget().pop();
-            LinkedList<ComplexNumber> result = Operations.cos(c1);
-            for(ComplexNumber c: result)
-                 super.getTarget().push(c);
+            ComplexNumber result = Operations.cos(c1);
+                 super.getTarget().push(result);
             return result;
         } else {
             throw new NotApplicableOperation();

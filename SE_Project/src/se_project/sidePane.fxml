@@ -13,7 +13,7 @@
             <Image url="@MathSolver.JPG" />
          </image>
       </ImageView>
-      <Button fx:id="homeButton" accessibleText="home" mnemonicParsing="false" onAction="#homeButtonAction" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #757c8a; -fx-text-fill: white;" text="Button">
+      <Button fx:id="homeButton" accessibleText="home" mnemonicParsing="false" onAction="#homeButtonAction" prefHeight="44.0" prefWidth="214.0" style="-fx-background-color: #757c8a; -fx-text-fill: white;" text="Home">
          <graphic>
             <FontAwesomeIconView fill="WHITE" glyphName="HOME" />
          </graphic>
