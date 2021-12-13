@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 
 /**
  *
- * @author aless Questa classe mantiene uno stack di Record, mantendo un
+ * @author aless Questa classe mantiene uno stack di Record, mantenendo un
  * dizionario di variabili. Tale classe è un singleton.
  */
 public class VariablesStack {
@@ -103,5 +103,5 @@ public class VariablesStack {
      */
     public Record top(){
         return history.get(length()-1);
-    }
+    } 
 }

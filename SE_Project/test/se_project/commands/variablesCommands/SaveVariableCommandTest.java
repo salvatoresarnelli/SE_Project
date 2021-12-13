@@ -55,7 +55,7 @@ public class SaveVariableCommandTest {
         command.setVariablesStack(stack);
         command.execute();
         assertEquals(stack.length(),1);
-        
+
 
     }
 

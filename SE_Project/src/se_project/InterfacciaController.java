@@ -268,6 +268,13 @@ public class InterfacciaController implements Initializable {
         listView.setItems(observableList);
 
     }
+    
+    /**
+     * Il metodo si occupa di effettuare le operazioni associate al tasto "push"
+     * presente nell'interfaccia grafica
+     *
+     * @param event
+     */
 
     @FXML
     private void ActionPush(ActionEvent event) throws InvalidVariableNameException, NonExistingVariable {
@@ -492,21 +499,27 @@ public class InterfacciaController implements Initializable {
         inputField.setText(inputField.getText() + "sqrt");
     }
 
+
     /**
+     * Il metodo si occupa di inserire l'operazione di inversione di segno nel
+     * campo di testo tramite la pressione del pulsante adatto
      *
      * @param event
      */
+    
     @FXML
     public void invertedOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "+-");
     }
 
     /**
+     * Il metodo si occupa di far comparire un alert
      *
      * @param title
      * @param headerText
      * @param contentText
      */
+    
     public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
@@ -517,6 +530,14 @@ public class InterfacciaController implements Initializable {
         });
 
     }
+    
+    /**
+     * Il metodo si occupa di associare l'operazione di clear dello stack alla
+     * pressione del pulsante "clear"
+     *
+     * @param event
+     *
+     */
 
     @FXML
     private void ActionClear(ActionEvent event) throws EmptyStackException {
@@ -526,12 +547,28 @@ public class InterfacciaController implements Initializable {
 
     }
     
+    /**
+     * Il metodo si occupa di associare l'operazione di drop dello stack alla
+     * pressione del pulsante "drop"
+     *
+     * @param event
+     *
+     */
+    
     @FXML
     private void ActionDrop(ActionEvent event) throws EmptyStackException {
         this.solver.getStructureStack().drop();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
+    
+        /**
+     * Il metodo si occupa di associare l'operazione di duplicate dello stack
+     * alla pressione del pulsante "duplicate"
+     *
+     * @param event
+     *
+     */
 
     @FXML
     private void ActionDuplicate(ActionEvent event) throws EmptyStackException {
@@ -539,6 +576,14 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
+    
+       /**
+     * Il metodo si occupa di associare l'operazione di swap dello stack alla
+     * pressione del pulsante "swap"
+     *
+     * @param event
+     *
+     */
 
     @FXML
     private void ActionSwap(ActionEvent event) throws EmptyStackException, InvalidOperationException {
@@ -546,6 +591,14 @@ public class InterfacciaController implements Initializable {
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
+    
+    /**
+     * Il metodo si occupa di associare l'operazione di over dello stack alla
+     * pressione del pulsante "over"
+     *
+     * @param event
+     *
+     */
 
     @FXML
     private void ActionOver(ActionEvent event) throws EmptyStackException, InvalidOperationException {
@@ -557,8 +610,6 @@ public class InterfacciaController implements Initializable {
     /**
      * Il metodo salva le operazione definite dall'utente in un file scelto
      * dall'utente.
-     *
-     *
      */
     public void saveFunctions() {
        
@@ -569,6 +620,7 @@ public class InterfacciaController implements Initializable {
             this.SaveFunctionsFromFile(file);
            
     }
+    
     public boolean SaveFunctionsFromFile(File file){
          //se il file non è stato scelto
             if (file == null) {
@@ -614,8 +666,6 @@ public class InterfacciaController implements Initializable {
     /**
      * Il metodo carica le operazione definite dall'utente da un file scelto
      * dall'utente.
-     *
-     *
      */
     public void uploadFunctions() {
         FileChooser fileChooser = new FileChooser();
@@ -687,31 +737,52 @@ public class InterfacciaController implements Initializable {
                 Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }
-        
-        
+        } 
         
     }
+    
+    /**
+     * Il metodo si occupa di cancellare gli elementi dal campo di testo tramite
+     * la pressione del pulsante adatto
+     *
+     */
     
     @FXML
     public void deleteTextField(){
         inputField.clear();
     }
+    
+    /**
+     * Il metodo si occupa di inserire il carattere pi-greco tramite la
+     * pressione del pulsante adatto.
+     *
+     */
 
     @FXML
     private void piButtonAction(ActionEvent event) {
         inputField.setText(inputField.getText() + Math.PI);
     }
+    
+    /**
+     * Il metodo si occupa di inserire il carattere "j" tramite la pressione del
+     * pulsante adatto.
+     *
+     */
 
     @FXML
     private void jButtonAction(ActionEvent event) {
         inputField.setText(inputField.getText() + "j");
 
     }
+    
+    /**
+     * Il metodo si occupa di inserire il carattere "E" (esponenziale) tramite
+     * la pressione del pulsante adatto.
+     *
+     */
 
     @FXML
     private void eButtonAction(ActionEvent event) {
         inputField.setText(inputField.getText() + Math.E);
-
     }
 }
