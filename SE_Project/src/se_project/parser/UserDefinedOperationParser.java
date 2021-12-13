@@ -53,7 +53,7 @@ public class UserDefinedOperationParser extends ParserString {
         this.parserString = parserString;
         operationDict = OperationDict.getInstance();
         linkedList = new LinkedList<>();
-        Collections.addAll(linkedList, "+", "-", "+-", "sqrt", "*", ":", "dup", "swap", "over", "drop");
+        Collections.addAll(linkedList, "+", "-", "+-", "sqrt", "*", ":", "dup", "swap", "over", "drop","save", "restore", "tan", "sin", "cos");
 
     }
 
@@ -121,6 +121,12 @@ public class UserDefinedOperationParser extends ParserString {
             if (Character.isDigit(c)) {
                 return false;
             }
+        }
+        if(text.length() == 2 && (text.charAt(0) == '>' || text.charAt(0) == '<')) {
+            return false;
+        }
+         if(text.length() == 2 && (text.charAt(0) == '+' || text.charAt(0) == '-')) {
+            return false;
         }
         return true;
     }
