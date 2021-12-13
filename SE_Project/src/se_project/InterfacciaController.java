@@ -268,14 +268,13 @@ public class InterfacciaController implements Initializable {
         listView.setItems(observableList);
 
     }
-    
+
     /**
      * Il metodo si occupa di effettuare le operazioni associate al tasto "push"
      * presente nell'interfaccia grafica
      *
      * @param event
      */
-
     @FXML
     private void ActionPush(ActionEvent event) throws InvalidVariableNameException, NonExistingVariable {
         try {
@@ -305,11 +304,10 @@ public class InterfacciaController implements Initializable {
                 return;
 
             } catch (ExistingNameException ex) {
-                
+
                 /*se è stato riscontrato un inserimento di una variabile che ha già valore 
                 si chiede se la si vuole sovrascrivere*/
                 //viene mostrato un Alert che chiede come si vuole procedere.
-                
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Operazione già inserita");
                 alert.setHeaderText("L'operazione è già stata inserita");
@@ -334,9 +332,8 @@ public class InterfacciaController implements Initializable {
                 }
 
             } catch (CollisionException ex) {
-                
+
                 /*se è stato riscontrata una collisione si chiede di chiarire l'ambiguità*/
-                
                 String message = ex.getMessage();
                 ButtonType jNumber = new ButtonType("Inserimento Numero");
                 ButtonType operation = new ButtonType("Operazione con Variabile");
@@ -364,9 +361,8 @@ public class InterfacciaController implements Initializable {
                 alert("Errore!", "Operazione non valida", text + "--> L'inserimento non è valido");
             }
             if (code != null) {
-                
-               // se il parser torna un codice diverso da null, allora si cerca di eseguire l'operazione richiesta.
-                
+
+                // se il parser torna un codice diverso da null, allora si cerca di eseguire l'operazione richiesta.
                 //viene utilizzata una struttura d'appoggio per la funzionalità di rollback.
                 //Le operazioni di rollback risultano decisamente importanti nell'integrità dello stack,
                 //poiché permettono di riparare lo stack , riportandolo a una versione precedente dopo aver commesso un errore.
@@ -412,9 +408,8 @@ public class InterfacciaController implements Initializable {
                     }
 
                 }
-              
-            } 
-            else {
+
+            } else {
                 alert("Attenzione!", "impossibile eseguire l'operazione richiesta.", "operazione sconosciuta.");
                 inputField.clear();
                 return;
@@ -438,7 +433,7 @@ public class InterfacciaController implements Initializable {
         }
 
     }
-    
+
     /**
      * Il metodo si occupa di inserire il nome dell'operazione e le operazioni
      * associate nella lista osservabile
@@ -447,7 +442,6 @@ public class InterfacciaController implements Initializable {
      *
      * @throws
      */
-
     @FXML
     public void numberOnText(ActionEvent ae) {
         String no = ((Button) ae.getSource()).getText();
@@ -478,8 +472,8 @@ public class InterfacciaController implements Initializable {
     }
 
     /**
-     * Il metodo si occupa di inserire l'operazione di moltiplicazione nel campo di
-     * testo tramite la pressione del pulsante adatto
+     * Il metodo si occupa di inserire l'operazione di moltiplicazione nel campo
+     * di testo tramite la pressione del pulsante adatto
      *
      * @param event
      */
@@ -489,8 +483,8 @@ public class InterfacciaController implements Initializable {
     }
 
     /**
-     * Il metodo si occupa di inserire l'operazione di radice quadrata nel campo di
-     * testo tramite la pressione del pulsante adatto
+     * Il metodo si occupa di inserire l'operazione di radice quadrata nel campo
+     * di testo tramite la pressione del pulsante adatto
      *
      * @param event
      */
@@ -499,14 +493,12 @@ public class InterfacciaController implements Initializable {
         inputField.setText(inputField.getText() + "sqrt");
     }
 
-
     /**
      * Il metodo si occupa di inserire l'operazione di inversione di segno nel
      * campo di testo tramite la pressione del pulsante adatto
      *
      * @param event
      */
-    
     @FXML
     public void invertedOnText(ActionEvent event) {
         inputField.setText(inputField.getText() + "+-");
@@ -519,7 +511,6 @@ public class InterfacciaController implements Initializable {
      * @param headerText
      * @param contentText
      */
-    
     public void alert(String title, String headerText, String contentText) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
@@ -530,7 +521,7 @@ public class InterfacciaController implements Initializable {
         });
 
     }
-    
+
     /**
      * Il metodo si occupa di associare l'operazione di clear dello stack alla
      * pressione del pulsante "clear"
@@ -538,7 +529,6 @@ public class InterfacciaController implements Initializable {
      * @param event
      *
      */
-
     @FXML
     private void ActionClear(ActionEvent event) throws EmptyStackException {
         this.solver.getStructureStack().clear();
@@ -546,7 +536,7 @@ public class InterfacciaController implements Initializable {
         observableList.addAll(solver.getStructureStack().getStack());
 
     }
-    
+
     /**
      * Il metodo si occupa di associare l'operazione di drop dello stack alla
      * pressione del pulsante "drop"
@@ -554,44 +544,41 @@ public class InterfacciaController implements Initializable {
      * @param event
      *
      */
-    
     @FXML
     private void ActionDrop(ActionEvent event) throws EmptyStackException {
         this.solver.getStructureStack().drop();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
-    
-        /**
+
+    /**
      * Il metodo si occupa di associare l'operazione di duplicate dello stack
      * alla pressione del pulsante "duplicate"
      *
      * @param event
      *
      */
-
     @FXML
     private void ActionDuplicate(ActionEvent event) throws EmptyStackException {
         this.solver.getStructureStack().duplicate();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
-    
-       /**
+
+    /**
      * Il metodo si occupa di associare l'operazione di swap dello stack alla
      * pressione del pulsante "swap"
      *
      * @param event
      *
      */
-
     @FXML
     private void ActionSwap(ActionEvent event) throws EmptyStackException, InvalidOperationException {
         this.solver.getStructureStack().swap();
         observableList.clear();
         observableList.addAll(solver.getStructureStack().getStack());
     }
-    
+
     /**
      * Il metodo si occupa di associare l'operazione di over dello stack alla
      * pressione del pulsante "over"
@@ -599,7 +586,6 @@ public class InterfacciaController implements Initializable {
      * @param event
      *
      */
-
     @FXML
     private void ActionOver(ActionEvent event) throws EmptyStackException, InvalidOperationException {
         this.solver.getStructureStack().over();
@@ -612,25 +598,27 @@ public class InterfacciaController implements Initializable {
      * dall'utente.
      */
     public void saveFunctions() {
-       
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Save functions ...");
-            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
-            File file = fc.showSaveDialog(new Stage());
-            this.SaveFunctionsFromFile(file);
-           
+
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Save functions ...");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("text file", "*.txt"));
+        File file = fc.showSaveDialog(new Stage());
+        this.SaveFunctionsFromFile(file);
+
     }
-    
-    public boolean SaveFunctionsFromFile(File file){
-         //se il file non è stato scelto
-            if (file == null) {
-                return false;
-            }
-            try{//una volta scelto il file, si costruisce la stringa da stampare nel file
+
+    public boolean SaveFunctionsFromFile(File file) {
+        //se il file non è stato scelto
+        if (file == null) {
+            return false;
+        }
+        try {//una volta scelto il file, si costruisce la stringa da stampare nel file
             PrintWriter pw = new PrintWriter(file);
             String s = "";
             //per tutte le operazioni definite dall'utente
-            if(operationDict.getNames().isEmpty())return true;
+            if (operationDict.getNames().isEmpty()) {
+                return true;
+            }
             for (String name : operationDict.getNames()) {
                 s += name + " -->";
                 //viene salvata la lista contenente tutti i comandi dell'operazione associate al nome 
@@ -658,8 +646,8 @@ public class InterfacciaController implements Initializable {
             pw.close();
         } catch (FileNotFoundException ex) {
             this.alert("Impossibile effettuare il salvataggio sul file", "Errore", " ");
-        
-    }
+
+        }
         return true;
     }
 
@@ -672,115 +660,113 @@ public class InterfacciaController implements Initializable {
         fileChooser.setTitle("Open file ...");
         File file = fileChooser.showOpenDialog(new Stage());
         this.uploadFunctionsFromFile(file);
-        
 
     }
-    public void uploadFunctionsFromFile(File file){
+
+    public boolean uploadFunctionsFromFile(File file) {
         if (file != null) {
             Scanner sc;
             try {
                 LinkedList<String> read = new LinkedList<>();
                 sc = new Scanner(file);
-                while(sc.hasNextLine())
+                while (sc.hasNextLine()) {
                     read.add(sc.nextLine());
-               
-                //il file viene letto riga per riga, poiché in ognuna di esse c'è un operazione.
-                for(int i=0;i<Files.lines(file.toPath()).count();i++){
-                   LinkedList<String> newLines = new LinkedList<>();
-                   for (String line : read){                      
-                    //la save salva le operazioni in questo modo:
-                    // nameFunction : + + + 
-                    try {
-                        //si utilizza in questo caso il parser che salva appunto le operazioni.
-                         String[] lines = line.split("-->");
-                         decoratorParserOperation.parse(">>"+lines[0]+"$ "+lines[1]);
-                       // solver.resolveOperation(insertOperationCommand);
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
-                        inputField.clear();
-                        return;
-                    } catch (OperationNotFoundException ex) {
-                        alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
-                        newLines.add(line);
-                    } catch (NullPointerException ex) {
-                        alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
-                    } catch (ExistingNameException ex) {
-                        //se si cerca di sovrascrivere un'operazione definita dall'utente
-                        //si chiede se questa vuole essere sovrascritta o meno.
-                        Alert alert = new Alert(AlertType.CONFIRMATION);
-                        alert.setTitle("Operazione già inserita");
-                         String[] lines = line.split("-->");
-                        String possible_name = lines[0];
-                        alert.setHeaderText("L'operazione " + possible_name+ " è già stata inserita");
-                        alert.setContentText("Vuoi sovrascriverla?");
-                        Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.OK) {                            
-                            possible_name = possible_name.replaceAll(" ", "");
-                            decoratorParserOperation.removeOperation(possible_name);
-                            decoratorParserOperation.parse(">>"+lines[0]+"$ "+lines[1]);
-                        }
-                    } catch (Exception ex) {
-                        newLines.add(line);
+                }
 
-                    } finally {
-                        
-                    continue;
+                //il file viene letto riga per riga, poiché in ognuna di esse c'è un operazione.
+                for (int i = 0; i < Files.lines(file.toPath()).count(); i++) {
+                    LinkedList<String> newLines = new LinkedList<>();
+                    for (String line : read) {
+                        //la save salva le operazioni in questo modo:
+                        // nameFunction : + + + 
+                        try {
+                            //si utilizza in questo caso il parser che salva appunto le operazioni.
+                            String[] lines = line.split("-->");
+                            decoratorParserOperation.parse(">>" + lines[0] + "$ " + lines[1]);
+                            // solver.resolveOperation(insertOperationCommand);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
+                            inputField.clear();
+                            return false;
+                        } catch (OperationNotFoundException ex) {
+                            alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
+                            newLines.add(line);
+                        } catch (NullPointerException ex) {
+                            alert("Errore!", "Operazione non valida", line + "--> L'inserimento non è valido");
+                        } catch (ExistingNameException ex) {
+                            //se si cerca di sovrascrivere un'operazione definita dall'utente
+                            //si chiede se questa vuole essere sovrascritta o meno.
+                            Alert alert = new Alert(AlertType.CONFIRMATION);
+                            alert.setTitle("Operazione già inserita");
+                            String[] lines = line.split("-->");
+                            String possible_name = lines[0];
+                            alert.setHeaderText("L'operazione " + possible_name + " è già stata inserita");
+                            alert.setContentText("Vuoi sovrascriverla?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                possible_name = possible_name.replaceAll(" ", "");
+                                decoratorParserOperation.removeOperation(possible_name);
+                                decoratorParserOperation.parse(">>" + lines[0] + "$ " + lines[1]);
+                            }
+                        } catch (Exception ex) {
+                            newLines.add(line);
+
+                        } finally {
+
+                            continue;
+                        }
+
                     }
-                   
+                    read = newLines;
                 }
-                   read = newLines;
-                }
-              
+
             } catch (FileNotFoundException ex) {
                 this.alert("Errore!", "Errore nell'apertura del file", "");
             } catch (IOException ex) {
-                Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
+                this.alert("Errore!", "Errore nell'apertura del file", "");
             }
+            return true;
+        }
+        return false;
 
-        } 
-        
     }
-    
+
     /**
      * Il metodo si occupa di cancellare gli elementi dal campo di testo tramite
      * la pressione del pulsante adatto
      *
      */
-    
     @FXML
-    public void deleteTextField(){
+    public void deleteTextField() {
         inputField.clear();
     }
-    
+
     /**
      * Il metodo si occupa di inserire il carattere pi-greco tramite la
      * pressione del pulsante adatto.
      *
      */
-
     @FXML
     private void piButtonAction(ActionEvent event) {
         inputField.setText(inputField.getText() + Math.PI);
     }
-    
+
     /**
      * Il metodo si occupa di inserire il carattere "j" tramite la pressione del
      * pulsante adatto.
      *
      */
-
     @FXML
     private void jButtonAction(ActionEvent event) {
         inputField.setText(inputField.getText() + "j");
 
     }
-    
+
     /**
      * Il metodo si occupa di inserire il carattere "E" (esponenziale) tramite
      * la pressione del pulsante adatto.
      *
      */
-
     @FXML
     private void eButtonAction(ActionEvent event) {
         inputField.setText(inputField.getText() + Math.E);

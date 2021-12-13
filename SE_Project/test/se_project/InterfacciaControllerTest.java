@@ -35,7 +35,7 @@ public class InterfacciaControllerTest {
     private InterfacciaController interfacciaController = new InterfacciaController();
     private final Solver solver = Solver.getInstance();
     private final VariableParser variableParser = new VariableParser(new StackOperationParser(new OperationParser(new ComplexNumberParser(new ParserString()))));
-    private final UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(variableParser);
+    private UserDefinedOperationParser decoratorParserOperation = new UserDefinedOperationParser(variableParser);
     private VariablesStack variablesStack;
     OperationDict operationDict = OperationDict.getInstance();
 
@@ -65,7 +65,7 @@ public class InterfacciaControllerTest {
         boolean result = interfacciaController.SaveFunctionsFromFile(file);
         boolean expResult = false;
         assertEquals(expResult, result);
-        file = new File("file:op.txt");
+        file = new File("op.txt");
         //con un OperationDict vuoto.
         result = interfacciaController.SaveFunctionsFromFile(file);
         expResult = true;
@@ -80,17 +80,16 @@ public class InterfacciaControllerTest {
         //nameFunctions --> lista di operazioni.
         String line = sc.nextLine();
         //la prima linea contiene differenza.
-        assertArrayEquals("differenza ".toCharArray(),line.split("-->")[0].toCharArray());
-        String operationList = operationDict.getOperationString(line.split("-->")[0]);
-        System.out.println(operationDict.getOperationString("differenza"));
-        assertEquals(operationList,"-");
+        String name = line.split("-->")[0].replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals("differenza", name);
+        String operationList = operationDict.getOperationString(name).replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals(operationList, "-");
         line = sc.nextLine();
         //la prima linea contiene differenza.
-        assertArrayEquals("somma ".toCharArray(),line.split("-->")[0].toCharArray());
-        operationList = operationDict.getOperationString(line.split("-->")[0]);
-        assertArrayEquals(operationList.toCharArray(), "+".toCharArray());
-        
-        
+        name = line.split("-->")[0].replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals("somma", name);
+        operationList = operationDict.getOperationString(name).replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals(operationList, "+");
 
     }
 
@@ -98,13 +97,39 @@ public class InterfacciaControllerTest {
      * Test of uploadFunctionsFromFile method, of class InterfacciaController.
      */
     @Test
-    public void testUploadFunctionsFromFile() {
+    public void testUploadFunctionsFromFile() throws ExistingNameException, OperationNotFoundException, InvalidNameException, Exception {
         System.out.println("uploadFunctionsFromFile");
         File file = null;
         InterfacciaController instance = new InterfacciaController();
-        instance.uploadFunctionsFromFile(file);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean result = instance.uploadFunctionsFromFile(file);
+        boolean expResult = false;
+        assertEquals(expResult, result);
+        file = new File("op.txt");
+        result = interfacciaController.SaveFunctionsFromFile(file);
+        decoratorParserOperation.removeOperation("somma");
+        decoratorParserOperation.removeOperation("differenza");
+        instance = new InterfacciaController();
+        result = instance.uploadFunctionsFromFile(file);
+        expResult = true;
+        assertEquals(expResult, result);
+        //controllo che le operazioni siano state salvate correttamente.
+        Scanner sc = new Scanner(file);
+        //il metodo salva le operazioni con questo pattern
+        //nameFunctions --> lista di operazioni.
+        String line = sc.nextLine();
+        //la prima linea contiene differenza.
+        String name = line.split("-->")[0].replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals("differenza", name);
+        String operationList = operationDict.getOperationString(name).replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals(operationList, "-");
+        line = sc.nextLine();
+        //la prima linea contiene differenza.
+        name = line.split("-->")[0].replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals("somma", name);
+        operationList = operationDict.getOperationString(name).replaceAll(" ", "").replaceAll("\\n", "");
+        assertEquals(operationList, "+");
+        
+
     }
 
 }
