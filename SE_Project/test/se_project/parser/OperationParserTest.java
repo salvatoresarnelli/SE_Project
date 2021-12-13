@@ -74,7 +74,7 @@ public class OperationParserTest {
         assertTrue(result instanceof SqrtCommand);
     }
       @Test
-    public void testParserString() throws Exception {
+    public void parse() throws Exception {
         ComplexNumberParser parser = new ComplexNumberParser(new ParserString());
 
         String text = "";

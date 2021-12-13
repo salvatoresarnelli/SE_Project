@@ -6,9 +6,11 @@
 package se_project.parser;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import se_project.commands.OperationCommand;
 import se_project.commands.operationsCommands.ColonsCommand;
@@ -32,6 +34,14 @@ public class StackOperationParserTest {
     private StackOperationParser parser;
     private OperationCommand result;
     private String input;
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
 
     @Before
     public void setUp() {
@@ -226,5 +236,9 @@ public class StackOperationParserTest {
     assertNull(result);
     
     }
+
+    
+
+
         
 }
