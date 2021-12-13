@@ -1708,5 +1708,4 @@ public class OperationsTest {
         result.setRealPart(1.0296385570503641);
         assertEquals(result,Operations.tan(a).getLast());
     }
-
 }
