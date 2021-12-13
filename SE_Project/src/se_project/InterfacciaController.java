@@ -637,7 +637,6 @@ public class InterfacciaController implements Initializable {
                     try {
                         //si utilizza in questo caso il parser che salva appunto le operazioni.
                          String[] lines = line.split("-->");
-                         
                          decoratorParserOperation.parse(">>"+lines[0]+"$ "+lines[1]);
                        // solver.resolveOperation(insertOperationCommand);
                     } catch (ArrayIndexOutOfBoundsException e) {
@@ -654,16 +653,15 @@ public class InterfacciaController implements Initializable {
                         //si chiede se questa vuole essere sovrascritta o meno.
                         Alert alert = new Alert(AlertType.CONFIRMATION);
                         alert.setTitle("Operazione già inserita");
-                        String textString = decoratorParserOperation.clearStringOperation(line);
-                        String[] string = textString.split("\\$");
-                        String possible_name = string[0];
+                         String[] lines = line.split("-->");
+                        String possible_name = lines[0];
                         alert.setHeaderText("L'operazione " + possible_name+ " è già stata inserita");
                         alert.setContentText("Vuoi sovrascriverla?");
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.get() == ButtonType.OK) {                            
                             possible_name = possible_name.replaceAll(" ", "");
                             decoratorParserOperation.removeOperation(possible_name);
-                            decoratorParserOperation.parse(line);
+                            decoratorParserOperation.parse(">>"+lines[0]+"$ "+lines[1]);
                         }
                     } catch (Exception ex) {
                         newLines.add(line);

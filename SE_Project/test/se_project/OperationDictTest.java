@@ -129,10 +129,10 @@ public class OperationDictTest {
     public void testGetOperationString() throws ExistingNameException, OperationNotFoundException, InvalidNameException, Exception {
         System.out.println("getOperationString");
         String text = "provasei";
-        String expResult = " +\n";
+        String expResult = "+";
         decoratorParserOperation.parse(">>provasei $ + ");
         String result = operationDict.getOperationString(text);
-        //assertEquals(true, result.equals(expResult));
+        assertEquals(String.valueOf(result.toCharArray()[1]), expResult);
         text = "invalid_insert";
         result = operationDict.getOperationString(text);
         assertEquals("", result);

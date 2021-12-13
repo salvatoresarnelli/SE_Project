@@ -80,8 +80,9 @@ public class InterfacciaControllerTest {
         //nameFunctions --> lista di operazioni.
         String line = sc.nextLine();
         //la prima linea contiene differenza.
-        assertArrayEquals("differenza ".toCharArray(),line.split("-->")[0].toCharArray());
-        String operationList = operationDict.getOperationString(line.split("-->")[0]);
+        String name = line.split("-->")[0].replaceAll(" ", "");
+        assertArrayEquals("differenza".toCharArray(),name.toCharArray());
+        String operationList = operationDict.getOperationString(name);
         System.out.println(operationDict.getOperationString("differenza"));
         assertEquals(operationList,"-");
         line = sc.nextLine();
