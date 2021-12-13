@@ -683,8 +683,14 @@ public class InterfacciaController implements Initializable {
                 Logger.getLogger(InterfacciaController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        
         }
         
+        
+        
     }
+    
+    public void deleteTextField(){
+        inputField.clear();
+    }
+    
 }
