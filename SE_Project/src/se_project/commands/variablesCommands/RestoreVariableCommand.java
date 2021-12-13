@@ -60,5 +60,7 @@ public class RestoreVariableCommand extends VariableCommand {
    @Override 
     public String toString(){
     return "restore";
+
+ 
     }
 }
